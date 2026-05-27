@@ -16,6 +16,7 @@ export default function SearchForm() {
     if (query?.trim()) {
       const params = new URLSearchParams(searchParams);
       params.set("q", query);
+      params.delete("page");
       router.push(`${pathname}?${params.toString()}`);
     }
   }, [pathname, router, searchParams]);

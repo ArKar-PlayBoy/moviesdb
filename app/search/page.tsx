@@ -1,33 +1,34 @@
 import { MovieType } from "@/types/global";
-import Link from "next/link";
 import { Suspense } from "react";
 import SearchForm from "./search-form";
+import Pagination from "@/components/pagination";
+import Movie from "@/components/movie";
 
-const url = "http://image.tmdb.org/t/p/w185";
-
-async function searchMovies(query: string): Promise<MovieType[]> {
-  const res = await fetch(`https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`, {
+async function searchMovies(query: string, page: number = 1): Promise<{ movies: MovieType[]; totalPages: number }> {
+  const res = await fetch(`https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=${page}`, {
     headers: {
       Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
     },
+    next: { revalidate: 60 },
   });
 
   if (!res.ok) {
-    return [];
+    return { movies: [], totalPages: 0 };
   }
 
   const data = await res.json();
-  return data.results || [];
+  return { movies: data.results || [], totalPages: data.total_pages };
 }
 
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; page?: string }>;
 }) {
-  const { q } = await searchParams;
+  const { q, page: pageStr } = await searchParams;
   const query = q || "";
-  const movies = query ? await searchMovies(query) : [];
+  const page = Math.max(1, parseInt(pageStr || "1", 10) || 1);
+  const result = query ? await searchMovies(query, page) : { movies: [], totalPages: 0 };
 
   return (
     <div>
@@ -42,32 +43,28 @@ export default async function SearchPage({
 
       {query && (
         <p className="mb-4 text-muted-foreground">
-          {movies.length} results for &ldquo;{query}&rdquo;
+          {result.movies.length} results for &ldquo;{query}&rdquo;
         </p>
       )}
 
-      {movies.length > 0 ? (
+      {result.movies.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {movies.map((movie) => (
-            <div key={movie.id} className="text-center">
-              <Link href={`/view/${movie.id}`}>
-                <img
-                  className="hover:scale-105 transition-all rounded-lg"
-                  src={url + movie.poster_path}
-                  alt={movie.title}
-                />
-              </Link>
-              <h3 className="font-bold mt-2 line-clamp-1">{movie.title}</h3>
-              <div className="text-muted-foreground text-sm">
-                {movie.release_date?.split("-")[0]}
-              </div>
-            </div>
+          {result.movies.map((movie) => (
+            <Movie key={movie.id} movie={movie} />
           ))}
         </div>
       ) : query ? (
         <p className="text-muted-foreground">No movies found for your search.</p>
       ) : (
         <p className="text-muted-foreground">Enter a search term to find movies.</p>
+      )}
+
+      {result.totalPages > 1 && (
+        <Pagination
+          currentPage={page}
+          totalPages={result.totalPages}
+          baseUrl={`/search?q=${encodeURIComponent(query)}&page=`}
+        />
       )}
     </div>
   );

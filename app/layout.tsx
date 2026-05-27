@@ -3,10 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import Link from "next/link";
-import { Clapperboard, Play, Search, Home, Film } from "lucide-react";
+import { Clapperboard, Play, Search, Home, Heart, Film } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import MobileGenreFilter from "@/components/mobile-genre-filter";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ async function fetchGenres(): Promise<{id: string; name: string}[]> {
       headers: {
         Authorization: `Bearer ${process.env.TMDB_TOKEN}`
       },
+      next: { revalidate: 86400 },
     });
 
     const data = await res.json();
@@ -69,6 +71,12 @@ export default async function RootLayout({
                       <Link href="/search">
                         <Search className="h-4 w-4 mr-2" />
                         Search
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" asChild>
+                      <Link href="/favorites">
+                        <Heart className="h-4 w-4 mr-2" />
+                        Favorites
                       </Link>
                     </Button>
                   </nav>
@@ -114,7 +122,10 @@ export default async function RootLayout({
                 </div>
               </aside>
               
-              <main className="relative w-full">{children}</main>
+              <main className="relative w-full">
+                <MobileGenreFilter genres={genres} />
+                {children}
+              </main>
             </div>
           </div>
         </ThemeProvider>
