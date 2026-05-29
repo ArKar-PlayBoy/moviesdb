@@ -1,13 +1,18 @@
-# Movie App 🎬
+# WorldCup 2026 ⚽
 
-A Next.js movie discovery app powered by [TMDB](https://www.themoviedb.org/) (The Movie Database) API. Browse popular and now-playing movies, search for titles, filter by genre, and view detailed information including cast & crew.
+A FIFA World Cup 2026 fan hub built with Next.js. Browse teams, players, matches, venues, and more for the USA-Canada-Mexico tournament.
 
 ## Features
 
-- **Browse** — Popular and now-playing movies on the home page
-- **Search** — Find movies by title with live search results
-- **Genres** — Filter movies by genre
-- **Details** — View movie info, cast, crew, and credits
+- **Home** — Hero with countdown, quick stats, top scorers preview, Star of the Week, groups at a glance
+- **Teams** — All 48 teams across 12 groups with flags, rankings, and confederations
+- **Matches** — Group stage and knockout match schedule with scores
+- **Players** — 240+ player directory with search, position & group filtering, and Wikipedia photos
+- **Bracket** — Knockout bracket with simulated matchups
+- **Compare** — Side-by-side team comparison
+- **Venues** — All 16 stadiums across 3 host nations
+- **Top Scorers** — Goal leaderboard with podium and paginated list
+- **Search** — Command palette (Cmd+K) to search players and teams
 - **Theme** — Light/dark mode toggle
 
 ## Tech Stack
@@ -20,36 +25,23 @@ A Next.js movie discovery app powered by [TMDB](https://www.themoviedb.org/) (Th
 
 ## Getting Started
 
-### Prerequisites
+```bash
+npm install
+npm run dev
+```
 
-- Node.js 18+
-- A TMDB API read access token — [get one here](https://www.themoviedb.org/settings/api)
+Open [http://localhost:3000](http://localhost:3000).
 
-### Setup
+## Environment
 
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/your-username/movie-app.git
-   cd movie-app
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Create a `.env` file in the root directory and add your TMDB token:
-   ```env
-   TMDB_TOKEN="your-tmdb-api-read-access-token"
-   ```
-
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `SPORTSRC_KEY` | No | SportSRC API key for live match data (only functional after tournament starts) |
 
 ## Deployment
 
-The easiest way to deploy is [Vercel](https://vercel.com/new). Make sure to add the `TMDB_TOKEN` environment variable in your Vercel project settings.
+Deploy on [Vercel](https://vercel.com/new). Add `SPORTSRC_KEY` to your project environment variables if needed.
+
+## Data
+
+All match results are simulated using a seed-based algorithm weighted by FIFA rankings. Live data from SportSRC activates after the tournament begins (June 11, 2026).
