@@ -73,7 +73,7 @@ export default function SearchPalette() {
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh]" onClick={() => setOpen(false)} role="dialog" aria-modal="true" aria-label="Search players and teams">
       <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" />
       <div
-        className="relative w-full max-w-lg bg-background border border-border rounded-xl shadow-2xl overflow-hidden"
+        className="relative w-[calc(100%-2rem)] sm:w-full max-w-lg bg-background border border-border rounded-xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-3 px-4 py-3 border-b border-border">

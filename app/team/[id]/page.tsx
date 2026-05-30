@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getTeamById, getMatchesForTeam, getTeamName, getTeamFlag } from "@/data/worldcup-2026";
+import { getTeamById, getMatchesForTeam, getTeamName, getTeamFlag, getAllTeams } from "@/data/worldcup-2026";
 import TeamPlayerSection from "@/components/team-player-section";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -14,6 +14,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     title: `${team.name} — WorldCup 2026`,
     description: `${team.name} — Group ${team.group} · FIFA Ranking #${team.fifaRanking} · Coach: ${team.coach}. View key players and match schedule.`,
   };
+}
+
+export function generateStaticParams() {
+  return getAllTeams().map((t) => ({ id: t.id }));
 }
 
 export default async function TeamPage({ params }: { params: Promise<{ id: string }> }) {

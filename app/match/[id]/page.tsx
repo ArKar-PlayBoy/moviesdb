@@ -22,6 +22,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   };
 }
 
+export function generateStaticParams() {
+  return MATCHES.map((m) => ({ id: m.id }));
+}
+
 export default async function MatchDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const match = MATCHES.find(m => m.id === id);
@@ -69,9 +73,9 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
           </div>
 
           <div className="flex items-center justify-center gap-4 md:gap-10 py-6">
-            <Link href={`/team/${match.team1}`} className="flex flex-col items-center gap-3 group w-28 md:w-36">
-              <span className="text-5xl md:text-7xl group-hover:scale-110 transition-transform duration-300">{t1.flag}</span>
-              <span className={`font-bold text-sm md:text-base text-center leading-tight group-hover:text-primary transition-colors ${t1Won ? "text-primary" : ""}`}>
+            <Link href={`/team/${match.team1}`} className="flex flex-col items-center gap-3 group min-w-0 w-24 sm:w-28 md:w-36">
+              <span className="text-4xl sm:text-5xl md:text-7xl group-hover:scale-110 transition-transform duration-300">{t1.flag}</span>
+              <span className={`font-bold text-xs sm:text-sm md:text-base text-center leading-tight group-hover:text-primary transition-colors truncate max-w-full ${t1Won ? "text-primary" : ""}`}>
                 {t1.name}
               </span>
               <span className="text-[10px] text-muted-foreground">FIFA #{t1.fifaRanking}</span>
@@ -114,9 +118,9 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
               )}
             </div>
 
-            <Link href={`/team/${match.team2}`} className="flex flex-col items-center gap-3 group w-28 md:w-36">
-              <span className="text-5xl md:text-7xl group-hover:scale-110 transition-transform duration-300">{t2.flag}</span>
-              <span className={`font-bold text-sm md:text-base text-center leading-tight group-hover:text-primary transition-colors ${t1Won ? "" : "font-medium"}`}>
+            <Link href={`/team/${match.team2}`} className="flex flex-col items-center gap-3 group min-w-0 w-24 sm:w-28 md:w-36">
+              <span className="text-4xl sm:text-5xl md:text-7xl group-hover:scale-110 transition-transform duration-300">{t2.flag}</span>
+              <span className={`font-bold text-xs sm:text-sm md:text-base text-center leading-tight group-hover:text-primary transition-colors truncate max-w-full ${t1Won ? "" : "font-medium"}`}>
                 {t2.name}
               </span>
               <span className="text-[10px] text-muted-foreground">FIFA #{t2.fifaRanking}</span>

@@ -26,10 +26,16 @@ const iconSizeMap = {
 };
 
 export default function PlayerAvatar({ name, photoUrl, size = "md", className = "" }: PlayerAvatarProps) {
-  const [photo, setPhoto] = useState<string | null>(photoUrl || null);
-  const [loading, setLoading] = useState(!photoUrl);
+  const noPhoto = photoUrl === null;
+  const [photo, setPhoto] = useState<string | null>(photoUrl !== undefined ? photoUrl : null);
+  const [loading, setLoading] = useState(!noPhoto && photoUrl === undefined);
 
   useEffect(() => {
+    if (photoUrl === null) {
+      setPhoto(null);
+      setLoading(false);
+      return;
+    }
     if (photoUrl) {
       setPhoto(photoUrl);
       setLoading(false);

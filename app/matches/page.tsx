@@ -112,12 +112,12 @@ export default function MatchesPage() {
                     </span>
                   </div>
 
-                  <div className="shrink-0 flex items-center gap-3 text-[10px] text-muted-foreground">
-                    <span className="hidden sm:inline-flex items-center gap-1">
+                  <div className="shrink-0 flex items-center gap-1.5 md:gap-3 text-[10px] text-muted-foreground">
+                    <span className="inline-flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {match.date}
                     </span>
-                    <span className="hidden md:inline-flex items-center gap-1 max-w-[120px] truncate" title={match.venue}>
+                    <span className="hidden sm:inline-flex items-center gap-1 max-w-[100px] md:max-w-[120px] truncate" title={match.venue}>
                       <MapPin className="h-3 w-3 shrink-0" />
                       <span className="truncate">{match.venue}</span>
                     </span>
@@ -165,12 +165,8 @@ export default function MatchesPage() {
                 {!played && (
                   <div className="mt-2 flex items-center gap-2 text-[10px] text-muted-foreground">
                     <span className="inline-flex items-center gap-1 sm:hidden">
-                      <Calendar className="h-3 w-3" />
-                      {match.date}
-                    </span>
-                    <span className="inline-flex items-center gap-1 md:hidden max-w-[120px] truncate" title={match.venue}>
-                      <MapPin className="h-3 w-3 shrink-0" />
-                      <span className="truncate">{match.venue}</span>
+                      <MapPin className="h-3 w-3" />
+                      <span className="truncate max-w-[80px]" title={match.venue}>{match.venue}</span>
                     </span>
                     <div className="flex items-center gap-1 ml-auto">
                       <Sparkles className="h-3 w-3 text-muted-foreground/40" />
@@ -185,12 +181,12 @@ export default function MatchesPage() {
       </div>
 
       <div className="flex items-center justify-between mb-8">
-        <div className="flex gap-1">
+        <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
           {GROUPS.map((g, i) => (
             <button
               key={g}
               onClick={() => setGroupIdx(i)}
-              className={`w-8 h-8 rounded-lg text-xs font-medium transition-colors ${
+              className={`shrink-0 w-9 h-9 rounded-lg text-xs font-medium transition-colors ${
                 i === groupIdx
                   ? "bg-primary text-primary-foreground"
                   : "hover:bg-secondary text-muted-foreground"

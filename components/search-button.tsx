@@ -17,7 +17,7 @@ export default function SearchButton() {
       </button>
       <button
         onClick={() => document.dispatchEvent(new CustomEvent("opensearch"))}
-        className="sm:hidden p-2 text-muted-foreground hover:text-foreground"
+        className="sm:hidden flex items-center justify-center min-w-[44px] min-h-[44px] text-muted-foreground hover:text-foreground"
         aria-label="Open search"
       >
         <Search className="h-5 w-5" />

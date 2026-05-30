@@ -55,14 +55,14 @@ export default function ComparePage() {
       {t1 && t2 && (
         <div className="space-y-6">
           {/* Overview */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <CompareCard label="FIFA Ranking" v1={`#${t1.fifaRanking}`} v2={`#${t2.fifaRanking}`} better={t1.fifaRanking < t2.fifaRanking ? 1 : t1.fifaRanking > t2.fifaRanking ? 2 : 0} />
             <CompareCard label="Group" v1={t1.group} v2={t2.group} />
             <CompareCard label="Confederation" v1={t1.confederation} v2={t2.confederation} />
           </div>
 
           {/* Squad size */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <CompareCard label="Squad Size" v1={String(t1.players.length)} v2={String(t2.players.length)} better={t1.players.length > t2.players.length ? 1 : t1.players.length < t2.players.length ? 2 : 0} />
             <CompareCard label="Avg Age" v1={String(avgAge(t1.players))} v2={String(avgAge(t2.players))} better={avgAge(t1.players) < avgAge(t2.players) ? 1 : avgAge(t1.players) > avgAge(t2.players) ? 2 : 0} />
             <CompareCard label="Coach" v1={t1.coach} v2={t2.coach} />
@@ -71,7 +71,7 @@ export default function ComparePage() {
           {/* Group stage projection */}
           <div className="bg-card rounded-xl border border-border p-6">
             <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">Group Stage Projection</h3>
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
               <TeamProjection teamId={t1.id} />
               <TeamProjection teamId={t2.id} />
             </div>

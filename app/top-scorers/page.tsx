@@ -72,11 +72,11 @@ export default function TopScorersPage() {
         <>
           {/* Podium — top 3 */}
           {page === 0 && allScorers.length >= 3 && (
-            <div className="flex items-end justify-center gap-3 mb-8">
+            <div className="flex items-end justify-center gap-2 sm:gap-3 mb-8">
               {[1, 0, 2].map((pos) => {
                 const s = allScorers[pos];
                 if (!s) return null;
-                const height = pos === 0 ? "h-40" : pos === 1 ? "h-32" : "h-28";
+                const height = pos === 0 ? "h-28 sm:h-40" : pos === 1 ? "h-24 sm:h-32" : "h-20 sm:h-28";
                 return (
                   <Link
                     key={s.playerName}
@@ -167,12 +167,12 @@ export default function TopScorersPage() {
                 <ChevronLeft className="h-4 w-4" />
                 Prev
               </button>
-              <div className="flex gap-1">
+              <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none max-w-[200px] sm:max-w-none">
                 {Array.from({ length: totalPages }, (_, i) => (
                   <button
                     key={i}
                     onClick={() => setPage(i)}
-                    className={`w-9 h-9 rounded-lg text-xs font-medium transition-colors ${
+                    className={`shrink-0 w-9 h-9 rounded-lg text-xs font-medium transition-colors ${
                       i === page
                         ? "bg-primary text-primary-foreground shadow-md"
                         : "hover:bg-secondary text-muted-foreground"
