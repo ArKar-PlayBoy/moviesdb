@@ -4,14 +4,10 @@ import { execSync } from "child_process";
 export const maxDuration = 120;
 
 export async function GET(request: Request) {
-  const authHeader = request.headers.get("authorization") || "";
-  const expectedToken = `Bearer ${process.env.CRON_SECRET || ""}`;
+  const { searchParams } = new URL(request.url);
+  const key = searchParams.get("key");
 
-  if (!expectedToken || expectedToken === "Bearer ") {
-    return NextResponse.json({ ok: false, error: "CRON_SECRET not configured" }, { status: 500 });
-  }
-
-  if (authHeader !== expectedToken) {
+  if (key !== process.env.CRON_SECRET) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
 
