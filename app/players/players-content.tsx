@@ -1,35 +1,60 @@
 "use client";
 
-import { useState, useMemo, type FC, useRef, useEffect } from "react";
+import { useState, useMemo, useEffect, type FC, useRef } from "react";
 import Link from "next/link";
-import { slugify, GROUPS, type PlayerWithTeam } from "@/data/worldcup-2026";
+import { slugify } from "@/data/worldcup-2026";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import PlayerAvatar from "@/components/player-avatar";
 import { Search, X, ChevronLeft, ChevronRight, Users, Goal, Shield, Clock, Filter, ArrowUpDown } from "lucide-react";
 
+interface PlayerItem {
+  name: string; position: string; age: number;
+  teamId: string; teamName: string; teamFlag: string; teamGroup: string;
+}
+
 const POSITION_TABS = [
   { key: "All", label: "All", icon: Users, color: "", bg: "" },
-  { key: "FW", label: "Forwards", icon: Goal, color: "text-rose-500", bg: "bg-rose-500/10 border-rose-500/20 group-hover:border-rose-500/40" },
-  { key: "MF", label: "Midfielders", icon: ArrowUpDown, color: "text-blue-500", bg: "bg-blue-500/10 border-blue-500/20 group-hover:border-blue-500/40" },
-  { key: "DF", label: "Defenders", icon: Shield, color: "text-emerald-500", bg: "bg-emerald-500/10 border-emerald-500/20 group-hover:border-emerald-500/40" },
-  { key: "GK", label: "Goalkeepers", icon: Clock, color: "text-amber-500", bg: "bg-amber-500/10 border-amber-500/20 group-hover:border-amber-500/40" },
+  { key: "FW", label: "Forwards", icon: Goal, color: "text-rose-500", bg: "bg-rose-500/10 border-rose-500/20" },
+  { key: "MF", label: "Midfielders", icon: ArrowUpDown, color: "text-blue-500", bg: "bg-blue-500/10 border-blue-500/20" },
+  { key: "DF", label: "Defenders", icon: Shield, color: "text-emerald-500", bg: "bg-emerald-500/10 border-emerald-500/20" },
+  { key: "GK", label: "Goalkeepers", icon: Clock, color: "text-amber-500", bg: "bg-amber-500/10 border-amber-500/20" },
 ];
 
 const PER_PAGE = 24;
 
+const GROUPS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
+
 interface PlayersContentProps {
-  allPlayers: PlayerWithTeam[];
   initialPhotos: Record<string, string | null>;
+  worldCupSelection?: Set<string>;
 }
 
-const PlayersContent: FC<PlayersContentProps> = ({ allPlayers, initialPhotos }) => {
+const PlayersContent: FC<PlayersContentProps> = ({ initialPhotos, worldCupSelection }) => {
+  const [allPlayers, setAllPlayers] = useState<PlayerItem[]>([]);
   const [search, setSearch] = useState("");
   const [positionFilter, setPositionFilter] = useState("All");
   const [groupFilter, setGroupFilter] = useState("All");
+  const [showAll, setShowAll] = useState(false);
   const [page, setPage] = useState(0);
   const gridRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    fetch("/api/players")
+      .then((r) => r.json())
+      .then(setAllPlayers)
+      .catch(() => {});
+  }, []);
+
+  const safePlayers = allPlayers || [];
+
+  const selectionFiltered = useMemo(() => {
+    if (showAll || !worldCupSelection) return safePlayers;
+    return safePlayers.filter(p => worldCupSelection.has(p.name));
+  }, [safePlayers, showAll, worldCupSelection]);
+
   const filtered = useMemo(() => {
-    return allPlayers.filter((p) => {
+    return selectionFiltered.filter((p) => {
       if (search) {
         const q = search.toLowerCase();
         if (!p.name.toLowerCase().includes(q) && !p.teamName.toLowerCase().includes(q)) return false;
@@ -38,7 +63,7 @@ const PlayersContent: FC<PlayersContentProps> = ({ allPlayers, initialPhotos }) 
       if (groupFilter !== "All" && p.teamGroup !== groupFilter) return false;
       return true;
     });
-  }, [allPlayers, search, positionFilter, groupFilter]);
+  }, [selectionFiltered, search, positionFilter, groupFilter]);
 
   const totalPages = Math.ceil(filtered.length / PER_PAGE);
   const currentPage = Math.min(page, Math.max(0, totalPages - 1));
@@ -59,50 +84,68 @@ const PlayersContent: FC<PlayersContentProps> = ({ allPlayers, initialPhotos }) 
 
   return (
     <div>
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Players</h1>
           <p className="text-muted-foreground mt-1">
             <span className="font-semibold text-foreground">{filtered.length}</span> player{filtered.length !== 1 ? "s" : ""}
+            {!showAll && worldCupSelection && (
+              <span className="text-muted-foreground/60"> · World Cup Selection</span>
+            )}
             {activeFilters.length > 0 && (
               <span className="text-muted-foreground/60"> · filtered by {activeFilters.join(", ")}</span>
             )}
           </p>
         </div>
         <div className="relative w-full sm:w-72">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
+          <Input
             type="text"
             placeholder="Search players or teams..."
             value={search}
             onChange={(e) => onFilter("search", e.target.value)}
-            className="w-full h-11 pl-10 pr-10 rounded-xl border border-border bg-card text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+            className="pl-10 pr-10"
           />
           {search && (
-            <button onClick={() => onFilter("search", "")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors">
+            <Button variant="ghost" size="icon-xs" onClick={() => onFilter("search", "")} className="absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" aria-label="Clear search">
               <X className="h-4 w-4" />
-            </button>
+            </Button>
           )}
         </div>
       </div>
 
-      {/* Position filter */}
+      {worldCupSelection && (
+        <div className="flex items-center gap-2 mb-4">
+          <Button
+            variant={showAll ? "outline" : "default"}
+            size="sm"
+            onClick={() => { setShowAll(false); setSearch(""); setPositionFilter("All"); setGroupFilter("All"); setPage(0); }}
+          >
+            World Cup Selection
+          </Button>
+          <Button
+            variant={showAll ? "default" : "outline"}
+            size="sm"
+            onClick={() => { setShowAll(true); setSearch(""); setPositionFilter("All"); setGroupFilter("All"); setPage(0); }}
+          >
+            All Players ({allPlayers.length})
+          </Button>
+        </div>
+      )}
+
       <div className="flex flex-wrap gap-2 mb-4">
         {POSITION_TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = positionFilter === tab.key;
           return (
-            <button
+            <Button
               key={tab.key}
+              variant={isActive ? "default" : "outline"}
+              size="sm"
               onClick={() => onFilter("position", tab.key)}
-              className={`group flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-xl border transition-all ${
-                isActive
-                  ? `${tab.bg || "bg-primary text-primary-foreground border-primary"} ${tab.color || "text-primary-foreground"} shadow-sm`
-                  : "bg-card text-muted-foreground border-border hover:border-foreground/20 hover:text-foreground"
-              }`}
+              className={isActive && tab.key !== "All" ? tab.color : ""}
             >
-              <Icon className={`h-4 w-4 ${isActive ? "" : "text-muted-foreground/60 group-hover:text-foreground/80"}`} />
+              <Icon className={`h-4 w-4 ${isActive ? "" : "text-muted-foreground/60"}`} />
               {tab.label}
               {isActive && positionFilter !== "All" && (
                 <span className={`ml-1 inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold ${
@@ -111,50 +154,41 @@ const PlayersContent: FC<PlayersContentProps> = ({ allPlayers, initialPhotos }) 
                   positionFilter === "DF" ? "bg-emerald-500/20" :
                   "bg-amber-500/20"
                 }`}>
-                  {allPlayers.filter(p => p.position === positionFilter).length}
+                  {safePlayers.filter(p => p.position === positionFilter).length}
                 </span>
               )}
-            </button>
+            </Button>
           );
         })}
       </div>
 
-      {/* Group filter */}
       <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-1 scrollbar-none">
         <Filter className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-        <button
+        <Button
+          variant={groupFilter === "All" ? "default" : "outline"}
+          size="xs"
           onClick={() => onFilter("group", "All")}
-          className={`shrink-0 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all ${
-            groupFilter === "All"
-              ? "bg-foreground text-background border-foreground"
-              : "bg-card text-muted-foreground border-border hover:border-foreground/30"
-          }`}
         >
           All
-        </button>
+        </Button>
         {GROUPS.map((g) => (
-          <button
+          <Button
             key={g}
+            variant={groupFilter === g ? "default" : "outline"}
+            size="xs"
             onClick={() => onFilter("group", g)}
-            className={`shrink-0 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all ${
-              groupFilter === g
-                ? "bg-foreground text-background border-foreground"
-                : "bg-card text-muted-foreground border-border hover:border-foreground/30"
-            }`}
           >
             Group {g}
-          </button>
+          </Button>
         ))}
       </div>
 
-      {/* Grid */}
       <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-3">
         {paginated.map((player, i) => (
           <PlayerCard key={`${player.teamId}-${player.name}`} player={player} photoUrl={initialPhotos[player.name]} index={i} />
         ))}
       </div>
 
-      {/* Empty */}
       {filtered.length === 0 && (
         <div className="text-center py-20">
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary to-card mx-auto flex items-center justify-center mb-4 ring-1 ring-border">
@@ -162,26 +196,23 @@ const PlayersContent: FC<PlayersContentProps> = ({ allPlayers, initialPhotos }) 
           </div>
           <h3 className="text-lg font-bold mb-1">No players found</h3>
           <p className="text-sm text-muted-foreground mb-4">Try adjusting your search or filters</p>
-          <button
-            onClick={() => { setSearch(""); setPositionFilter("All"); setGroupFilter("All"); }}
-            className="text-sm text-primary hover:underline"
-          >
+          <Button variant="link" onClick={() => { setSearch(""); setPositionFilter("All"); setGroupFilter("All"); }}>
             Clear all filters
-          </button>
+          </Button>
         </div>
       )}
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2 mt-10">
-          <button
+          <Button
+            variant="outline"
             onClick={() => setPage(currentPage - 1)}
             disabled={currentPage === 0}
-            className="flex items-center gap-1 px-4 h-10 rounded-xl border border-border text-sm font-medium hover:bg-secondary transition-colors disabled:opacity-40 disabled:pointer-events-none"
+            className="flex items-center gap-1"
           >
             <ChevronLeft className="h-4 w-4" />
             <span className="hidden sm:inline">Prev</span>
-          </button>
+          </Button>
           <div className="flex items-center gap-1">
             {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
               let pageNum = totalPages <= 7
@@ -192,28 +223,26 @@ const PlayersContent: FC<PlayersContentProps> = ({ allPlayers, initialPhotos }) 
                     ? totalPages - 7 + i
                     : currentPage - 3 + i;
               return (
-                <button
+                <Button
                   key={pageNum}
+                  variant={pageNum === currentPage ? "default" : "outline"}
+                  size="icon"
                   onClick={() => setPage(pageNum)}
-                  className={`w-10 h-10 rounded-xl text-sm font-medium transition-all ${
-                    pageNum === currentPage
-                      ? "bg-foreground text-background shadow-md"
-                      : "hover:bg-secondary text-muted-foreground"
-                  }`}
                 >
                   {pageNum + 1}
-                </button>
+                </Button>
               );
             })}
           </div>
-          <button
+          <Button
+            variant="outline"
             onClick={() => setPage(currentPage + 1)}
             disabled={currentPage >= totalPages - 1}
-            className="flex items-center gap-1 px-4 h-10 rounded-xl border border-border text-sm font-medium hover:bg-secondary transition-colors disabled:opacity-40 disabled:pointer-events-none"
+            className="flex items-center gap-1"
           >
             <span className="hidden sm:inline">Next</span>
             <ChevronRight className="h-4 w-4" />
-          </button>
+          </Button>
         </div>
       )}
     </div>
@@ -231,9 +260,8 @@ const POSITION_NAMES: Record<string, string> = {
   FW: "Forward", MF: "Midfielder", DF: "Defender", GK: "Goalkeeper",
 };
 
-function PlayerCard({ player, photoUrl, index }: { player: PlayerWithTeam; photoUrl?: string | null; index: number }) {
+function PlayerCard({ player, photoUrl, index }: { player: PlayerItem; photoUrl?: string | null; index: number }) {
   const styles = POSITION_CARD_STYLES[player.position] || POSITION_CARD_STYLES.FW;
-  const initials = player.name.split(" ").map(n => n[0]).join("");
 
   return (
     <Link
@@ -241,28 +269,21 @@ function PlayerCard({ player, photoUrl, index }: { player: PlayerWithTeam; photo
       className={`group relative bg-card rounded-2xl border border-border ${styles.border} transition-all duration-300 overflow-hidden`}
       style={{ animationDelay: `${index * 0.04}s` }}
     >
-      {/* Position gradient overlay */}
       <div className={`absolute inset-0 bg-gradient-to-b ${styles.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
 
-      {/* Top section with avatar */}
       <div className="relative pt-6 pb-2 flex flex-col items-center">
-        {/* Position badge */}
         <span className={`absolute top-3 right-3 px-2 py-0.5 text-[9px] font-bold rounded-md border border-current/20 ${styles.accent} bg-background/80 backdrop-blur-sm z-10`}>
           {player.position}
         </span>
 
-        {/* Avatar with ring */}
         <div className="relative mb-3">
-          <div className={`absolute -inset-2 rounded-full bg-gradient-to-br from-${player.position === "FW" ? "rose" : player.position === "MF" ? "blue" : player.position === "DF" ? "emerald" : "amber"}-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg`} />
           <PlayerAvatar name={player.name} photoUrl={photoUrl} size="lg" className="ring-2 ring-border group-hover:ring-primary/40 transition-all duration-300" />
         </div>
 
-        {/* Name */}
         <p className="font-bold text-sm text-center leading-tight px-3 group-hover:text-primary transition-colors truncate max-w-full">
           {player.name}
         </p>
 
-        {/* Team + age */}
         <div className="flex items-center justify-center gap-1 mt-0.5 text-[11px] text-muted-foreground">
           <span>{player.teamFlag}</span>
           <span className="truncate max-w-[80px]">{player.teamName}</span>
@@ -271,7 +292,6 @@ function PlayerCard({ player, photoUrl, index }: { player: PlayerWithTeam; photo
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className={`relative border-t border-border/50 px-3 py-2 flex items-center justify-between ${styles.accent}`}>
         <span className="text-[10px] font-medium text-muted-foreground">{POSITION_NAMES[player.position] || player.position}</span>
         <span className="text-[10px] font-bold opacity-60 group-hover:opacity-100 transition-opacity">
@@ -279,7 +299,6 @@ function PlayerCard({ player, photoUrl, index }: { player: PlayerWithTeam; photo
         </span>
       </div>
 
-      {/* Team flag watermark */}
       <div className="absolute -bottom-4 -right-4 text-6xl opacity-[0.03] pointer-events-none select-none group-hover:opacity-[0.06] transition-opacity duration-500">
         {player.teamFlag}
       </div>

@@ -1,27 +1,32 @@
 "use client";
 
 import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function SearchButton() {
   return (
     <>
-      <button
+      <Button
+        variant="outline"
+        size="sm"
         onClick={() => document.dispatchEvent(new CustomEvent("opensearch"))}
-        className="hidden sm:inline-flex items-center gap-2 h-9 px-3 rounded-lg border border-border bg-secondary/50 text-xs text-muted-foreground hover:text-foreground hover:border-primary transition-colors"
+        className="hidden sm:inline-flex items-center gap-2 text-xs text-muted-foreground"
       >
         <Search className="h-3.5 w-3.5" />
         <span>Search...</span>
-        <kbd className="flex items-center gap-0.5 text-[10px] text-muted-foreground bg-background px-1 py-0.5 rounded border border-border ml-2">
+        <kbd className="flex items-center gap-0.5 text-[10px] bg-background px-1 py-0.5 rounded border ml-1">
           <span>⌘</span>K
         </kbd>
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={() => document.dispatchEvent(new CustomEvent("opensearch"))}
-        className="sm:hidden flex items-center justify-center min-w-[44px] min-h-[44px] text-muted-foreground hover:text-foreground"
+        className="sm:hidden"
         aria-label="Open search"
       >
         <Search className="h-5 w-5" />
-      </button>
+      </Button>
     </>
   );
 }

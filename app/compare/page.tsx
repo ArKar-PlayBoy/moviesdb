@@ -1,11 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import TEAMS, { getGroupStandings } from "@/data/worldcup-2026";
-import { Trophy, Users, Shield, ArrowLeftRight, Search, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ArrowLeftRight, Search, X } from "lucide-react";
+
+interface CompareTeam {
+  id: string; name: string; flag: string; fifaRanking: number;
+  group: string; confederation: string; coach: string; players: { age: number }[];
+}
+
+interface StandingEntry {
+  teamId: string; teamName: string; teamFlag: string; won: number;
+  drawn: number; lost: number; goalsFor: number; goalsAgainst: number; points: number;
+}
 
 export default function ComparePage() {
+  const [teams, setTeams] = useState<CompareTeam[]>([]);
+  const [standings, setStandings] = useState<Record<string, StandingEntry[]>>({});
   const [team1, setTeam1] = useState("");
   const [team2, setTeam2] = useState("");
   const [search1, setSearch1] = useState("");
@@ -13,11 +26,23 @@ export default function ComparePage() {
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
 
-  const filtered1 = TEAMS.filter((t) => t.name.toLowerCase().includes(search1.toLowerCase()));
-  const filtered2 = TEAMS.filter((t) => t.name.toLowerCase().includes(search2.toLowerCase()));
+  useEffect(() => {
+    fetch("/api/teams")
+      .then((r) => r.json())
+      .then(setTeams)
+      .catch(() => {});
+    fetch("/api/teams/standings")
+      .then((r) => r.json())
+      .then(setStandings)
+      .catch(() => {});
+  }, []);
 
-  const t1 = TEAMS.find((t) => t.id === team1);
-  const t2 = TEAMS.find((t) => t.id === team2);
+  const safeTeams = teams || [];
+  const filtered1 = safeTeams.filter((t) => t.name.toLowerCase().includes(search1.toLowerCase()));
+  const filtered2 = safeTeams.filter((t) => t.name.toLowerCase().includes(search2.toLowerCase()));
+
+  const t1 = safeTeams.find((t) => t.id === team1);
+  const t2 = safeTeams.find((t) => t.id === team2);
 
   return (
     <div>
@@ -54,30 +79,26 @@ export default function ComparePage() {
 
       {t1 && t2 && (
         <div className="space-y-6">
-          {/* Overview */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <CompareCard label="FIFA Ranking" v1={`#${t1.fifaRanking}`} v2={`#${t2.fifaRanking}`} better={t1.fifaRanking < t2.fifaRanking ? 1 : t1.fifaRanking > t2.fifaRanking ? 2 : 0} />
             <CompareCard label="Group" v1={t1.group} v2={t2.group} />
             <CompareCard label="Confederation" v1={t1.confederation} v2={t2.confederation} />
           </div>
 
-          {/* Squad size */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <CompareCard label="Squad Size" v1={String(t1.players.length)} v2={String(t2.players.length)} better={t1.players.length > t2.players.length ? 1 : t1.players.length < t2.players.length ? 2 : 0} />
             <CompareCard label="Avg Age" v1={String(avgAge(t1.players))} v2={String(avgAge(t2.players))} better={avgAge(t1.players) < avgAge(t2.players) ? 1 : avgAge(t1.players) > avgAge(t2.players) ? 2 : 0} />
             <CompareCard label="Coach" v1={t1.coach} v2={t2.coach} />
           </div>
 
-          {/* Group stage projection */}
           <div className="bg-card rounded-xl border border-border p-6">
             <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">Group Stage Projection</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-              <TeamProjection teamId={t1.id} />
-              <TeamProjection teamId={t2.id} />
+              <TeamProjection entry={getTeamEntry(standings, t1.id)} teamName={t1.name} />
+              <TeamProjection entry={getTeamEntry(standings, t2.id)} teamName={t2.name} />
             </div>
           </div>
 
-          {/* Head to head */}
           <div className="bg-card rounded-xl border border-border p-6 text-center">
             <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">Head to Head</h3>
             <p className="text-muted-foreground">
@@ -98,12 +119,20 @@ function avgAge(players: { age: number }[]) {
   return (players.reduce((s, p) => s + p.age, 0) / players.length).toFixed(1);
 }
 
+function getTeamEntry(standings: Record<string, StandingEntry[]>, teamId: string): StandingEntry | undefined {
+  for (const group of Object.values(standings)) {
+    const entry = group.find((e) => e.teamId === teamId);
+    if (entry) return entry;
+  }
+  return undefined;
+}
+
 function TeamSelector({ label, team, search, setSearch, filtered, open, setOpen, onSelect }: {
   label: string;
-  team: typeof TEAMS[0] | undefined;
+  team: CompareTeam | undefined;
   search: string;
   setSearch: (s: string) => void;
-  filtered: typeof TEAMS;
+  filtered: CompareTeam[];
   open: boolean;
   setOpen: (o: boolean) => void;
   onSelect: (id: string) => void;
@@ -111,14 +140,15 @@ function TeamSelector({ label, team, search, setSearch, filtered, open, setOpen,
   return (
     <div className="relative">
       <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">{label}</p>
-      <button
+      <Button
+        variant="outline"
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center gap-3 bg-card border border-border rounded-xl p-4 hover:ring-2 hover:ring-primary transition-all text-left"
+        className="w-full flex items-center gap-3 p-4 h-auto justify-start"
       >
         {team ? (
           <>
             <span className="text-4xl">{team.flag}</span>
-            <div>
+            <div className="text-left min-w-0">
               <p className="font-bold text-lg">{team.name}</p>
               <p className="text-xs text-muted-foreground">Group {team.group} · FIFA #{team.fifaRanking}</p>
             </div>
@@ -129,41 +159,42 @@ function TeamSelector({ label, team, search, setSearch, filtered, open, setOpen,
             <span>Select a team...</span>
           </div>
         )}
-      </button>
+      </Button>
 
       {open && (
         <div className="absolute top-full left-0 right-0 z-20 mt-1 bg-card border border-border rounded-xl shadow-2xl overflow-hidden">
           <div className="p-2 border-b border-border">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <input
+              <Input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search teams..."
-                className="w-full h-9 pl-9 pr-8 rounded-lg bg-secondary text-sm outline-none"
+                className="pl-9 pr-8"
                 autoFocus
               />
               {search && (
-                <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                <Button variant="ghost" size="icon-xs" onClick={() => setSearch("")} className="absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground" aria-label="Clear search">
                   <X className="h-4 w-4" />
-                </button>
+                </Button>
               )}
             </div>
           </div>
           <div className="max-h-60 overflow-y-auto p-1">
             {filtered.map((t) => (
-              <button
+              <Button
                 key={t.id}
+                variant="ghost"
                 onClick={() => onSelect(t.id)}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm hover:bg-secondary transition-colors text-left"
+                className="w-full flex items-center gap-3 px-3 py-2.5 h-auto justify-start"
               >
                 <span className="text-2xl">{t.flag}</span>
-                <div>
+                <div className="text-left min-w-0">
                   <p className="font-medium">{t.name}</p>
                   <p className="text-xs text-muted-foreground">Group {t.group}</p>
                 </div>
-              </button>
+              </Button>
             ))}
             {filtered.length === 0 && <p className="p-3 text-sm text-muted-foreground text-center">No teams found</p>}
           </div>
@@ -189,10 +220,10 @@ function CompareCard({ label, v1, v2, better }: { label: string; v1: string; v2:
   );
 }
 
-function TeamProjection({ teamId }: { teamId: string }) {
-  const standings = getGroupStandings(TEAMS.find((t) => t.id === teamId)?.group || "");
-  const entry = standings.find((s) => s.teamId === teamId);
-  if (!entry) return null;
+function TeamProjection({ entry, teamName }: { entry: StandingEntry | undefined; teamName: string }) {
+  if (!entry) {
+    return <div className="text-center text-sm text-muted-foreground">No standings data for {teamName}</div>;
+  }
   return (
     <div className="text-center">
       <p className="text-sm font-medium mb-2">Projected Record</p>

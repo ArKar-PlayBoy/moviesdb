@@ -7,5 +7,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Missing name parameter" }, { status: 400 });
   }
   const image = await getWikipediaImage(name);
-  return NextResponse.json({ image });
+  return NextResponse.json({ image }, {
+    headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" },
+  });
 }

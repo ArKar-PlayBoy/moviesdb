@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import Link from "next/link";
-import { Trophy, Home, Calendar, Users, MapPin, Grid3X3, ArrowLeftRight, Goal } from "lucide-react";
+import { Trophy, Home, Calendar, Users, MapPin, Grid3X3, ArrowLeftRight, Goal, ListOrdered, Shield, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -50,7 +50,7 @@ export default async function RootLayout({
                     <span className="text-base md:text-xl font-bold truncate max-w-[120px] md:max-w-none">WorldCup 2026</span>
                   </Link>
                   <MobileNav />
-                  <nav className="hidden md:flex items-center gap-1">
+                  <nav className="hidden lg:flex items-center gap-1">
                     <Button variant="ghost" size="sm" asChild>
                       <Link href="/">
                         <Home className="h-4 w-4 mr-2" />
@@ -61,6 +61,18 @@ export default async function RootLayout({
                       <Link href="/matches">
                         <Calendar className="h-4 w-4 mr-2" />
                         Matches
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link href="/standings">
+                        <ListOrdered className="h-4 w-4 mr-2" />
+                        Standings
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link href="/teams">
+                        <Shield className="h-4 w-4 mr-2" />
+                        Teams
                       </Link>
                     </Button>
                     <Button variant="ghost" size="sm" asChild>
@@ -91,6 +103,12 @@ export default async function RootLayout({
                       <Link href="/top-scorers">
                         <Goal className="h-4 w-4 mr-2" />
                         Top Scorers
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link href="/about">
+                        <Info className="h-4 w-4 mr-2" />
+                        About
                       </Link>
                     </Button>
                   </nav>

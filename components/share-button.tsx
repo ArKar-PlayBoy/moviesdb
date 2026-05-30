@@ -1,6 +1,7 @@
 "use client";
 
 import { Share2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function ShareButton({ title, text }: { title: string; text: string }) {
   async function handleShare() {
@@ -16,13 +17,15 @@ export default function ShareButton({ title, text }: { title: string; text: stri
   }
 
   return (
-    <button
+    <Button
+      variant="link"
+      size="sm"
       onClick={handleShare}
-      className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
       aria-label="Share this page"
+      className="text-xs text-muted-foreground hover:text-foreground p-0 h-auto"
     >
       <Share2 className="h-3.5 w-3.5" />
       Share
-    </button>
+    </Button>
   );
 }

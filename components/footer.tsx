@@ -40,8 +40,9 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="border-t border-border pt-4 text-center text-xs text-muted-foreground">
-          FIFA World Cup 2026 — unofficial fan hub. Not affiliated with FIFA.
+        <div className="border-t border-border pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
+          <span>FIFA World Cup 2026 — unofficial fan hub. Not affiliated with FIFA.</span>
+          <span>Developed by <span className="font-semibold text-foreground">Ar Kar Moe Myint</span></span>
         </div>
       </div>
     </footer>

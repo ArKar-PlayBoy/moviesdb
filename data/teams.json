@@ -1,0 +1,578 @@
+[
+  {
+    "id": "mexico",
+    "group": "A",
+    "fifaRanking": 12,
+    "players": [
+      "Santiago Giménez",
+      "Edson Álvarez",
+      "Julián Quiñones",
+      "Luis Chávez",
+      "Guillermo Ochoa"
+    ]
+  },
+  {
+    "id": "south-africa",
+    "group": "A",
+    "fifaRanking": 54,
+    "players": [
+      "Percy Tau",
+      "Lyle Foster",
+      "Teboho Mokoena",
+      "Mothobi Mvala",
+      "Rowen Williams"
+    ]
+  },
+  {
+    "id": "south-korea",
+    "group": "A",
+    "fifaRanking": 23,
+    "players": [
+      "Son Heung-min",
+      "Kim Min-jae",
+      "Lee Kang-in",
+      "Hwang Hee-chan",
+      "Hwang In-beom"
+    ]
+  },
+  {
+    "id": "czech-republic",
+    "group": "A",
+    "fifaRanking": 36,
+    "players": [
+      "Patrik Schick",
+      "Tomáš Souček",
+      "Vladimír Coufal",
+      "Antonín Barák",
+      "Ladislav Krejčí"
+    ]
+  },
+  {
+    "id": "canada",
+    "group": "B",
+    "fifaRanking": 45,
+    "players": [
+      "Alphonso Davies",
+      "Jonathan David",
+      "Stephen Eustáquio",
+      "Cyle Larin",
+      "Tajon Buchanan"
+    ]
+  },
+  {
+    "id": "bosnia",
+    "group": "B",
+    "fifaRanking": 57,
+    "players": [
+      "Edin Džeko",
+      "Miralem Pjanić",
+      "Sead Kolašinac",
+      "Ermedin Demirović",
+      "Rade Krunić"
+    ]
+  },
+  {
+    "id": "qatar",
+    "group": "B",
+    "fifaRanking": 46,
+    "players": [
+      "Akram Afif",
+      "Almoez Ali",
+      "Hassan Al-Haydos",
+      "Boualem Khoukhi",
+      "Abdelkarim Hassan"
+    ]
+  },
+  {
+    "id": "switzerland",
+    "group": "B",
+    "fifaRanking": 15,
+    "players": [
+      "Granit Xhaka",
+      "Manuel Akanji",
+      "Xherdan Shaqiri",
+      "Ruben Vargas",
+      "Gregor Kobel"
+    ]
+  },
+  {
+    "id": "brazil",
+    "group": "C",
+    "fifaRanking": 5,
+    "players": [
+      "Vinícius Jr.",
+      "Rodrygo",
+      "Raphinha",
+      "Bruno Guimarães",
+      "Alisson"
+    ]
+  },
+  {
+    "id": "morocco",
+    "group": "C",
+    "fifaRanking": 13,
+    "players": [
+      "Achraf Hakimi",
+      "Hakim Ziyech",
+      "Sofyan Amrabat",
+      "Noussair Mazraoui",
+      "Bilal El Khannouss"
+    ]
+  },
+  {
+    "id": "haiti",
+    "group": "C",
+    "fifaRanking": 82,
+    "players": [
+      "Duckens Nazon",
+      "Frantzdy Pierrot",
+      "Johnny Placide",
+      "Ricardo Adé",
+      "Carlens Arcus"
+    ]
+  },
+  {
+    "id": "scotland",
+    "group": "C",
+    "fifaRanking": 34,
+    "players": [
+      "Scott McTominay",
+      "Andy Robertson",
+      "John McGinn",
+      "Kieran Tierney",
+      "Che Adams"
+    ]
+  },
+  {
+    "id": "usa",
+    "group": "D",
+    "fifaRanking": 13,
+    "players": [
+      "Christian Pulisic",
+      "Weston McKennie",
+      "Tyler Adams",
+      "Folarin Balogun",
+      "Antonee Robinson"
+    ]
+  },
+  {
+    "id": "paraguay",
+    "group": "D",
+    "fifaRanking": 51,
+    "players": [
+      "Miguel Almirón",
+      "Julio Enciso",
+      "Diego Gómez",
+      "Gustavo Gómez",
+      "Robert Rojas"
+    ]
+  },
+  {
+    "id": "australia",
+    "group": "D",
+    "fifaRanking": 25,
+    "players": [
+      "Craig Goodwin",
+      "Jackson Irvine",
+      "Harry Souttar",
+      "Mathew Ryan",
+      "Riley McGree"
+    ]
+  },
+  {
+    "id": "turkey",
+    "group": "D",
+    "fifaRanking": 29,
+    "players": [
+      "Hakan Çalhanoğlu",
+      "Arda Güler",
+      "Kenan Yıldız",
+      "Çağlar Söyüncü",
+      "Orkun Kökçü"
+    ]
+  },
+  {
+    "id": "germany",
+    "group": "E",
+    "fifaRanking": 9,
+    "players": [
+      "Jamal Musiala",
+      "Florian Wirtz",
+      "İlkay Gündoğan",
+      "Manuel Neuer",
+      "Jonathan Tah"
+    ]
+  },
+  {
+    "id": "curacao",
+    "group": "E",
+    "fifaRanking": 84,
+    "players": [
+      "Leandro Bacuna",
+      "Juninho Bacuna",
+      "Charlison Benschop",
+      "Cuco Martina",
+      "Richairo Živković"
+    ]
+  },
+  {
+    "id": "ivory-coast",
+    "group": "E",
+    "fifaRanking": 38,
+    "players": [
+      "Sébastien Haller",
+      "Franck Kessié",
+      "Nicolas Pépé",
+      "Serge Aurier",
+      "Amad Diallo"
+    ]
+  },
+  {
+    "id": "ecuador",
+    "group": "E",
+    "fifaRanking": 27,
+    "players": [
+      "Enner Valencia",
+      "Moisés Caicedo",
+      "Pervis Estupiñán",
+      "Alan Franco",
+      "Willian Pacho"
+    ]
+  },
+  {
+    "id": "netherlands",
+    "group": "F",
+    "fifaRanking": 7,
+    "players": [
+      "Virgil van Dijk",
+      "Frenkie de Jong",
+      "Cody Gakpo",
+      "Xavi Simons",
+      "Memphis Depay"
+    ]
+  },
+  {
+    "id": "japan",
+    "group": "F",
+    "fifaRanking": 17,
+    "players": [
+      "Takefusa Kubo",
+      "Wataru Endō",
+      "Kaoru Mitoma",
+      "Ayase Ueda",
+      "Takehiro Tomiyasu"
+    ]
+  },
+  {
+    "id": "sweden",
+    "group": "F",
+    "fifaRanking": 24,
+    "players": [
+      "Alexander Isak",
+      "Dejan Kulusevski",
+      "Victor Lindelöf",
+      "Emil Forsberg",
+      "Anthony Elanga"
+    ]
+  },
+  {
+    "id": "tunisia",
+    "group": "F",
+    "fifaRanking": 31,
+    "players": [
+      "Ellyes Skhiri",
+      "Wahbi Khazri",
+      "Ali Abdi",
+      "Anis Ben Slimane",
+      "Bechir Ben Saïd"
+    ]
+  },
+  {
+    "id": "belgium",
+    "group": "G",
+    "fifaRanking": 6,
+    "players": [
+      "Kevin De Bruyne",
+      "Romelu Lukaku",
+      "Jeremy Doku",
+      "Youri Tielemans",
+      "Thibaut Courtois"
+    ]
+  },
+  {
+    "id": "egypt",
+    "group": "G",
+    "fifaRanking": 33,
+    "players": [
+      "Mohamed Salah",
+      "Mohamed Elneny",
+      "Mahmoud Trezeguet",
+      "Mostafa Mohamed",
+      "Mohamed Abdelmonem"
+    ]
+  },
+  {
+    "id": "iran",
+    "group": "G",
+    "fifaRanking": 20,
+    "players": [
+      "Mehdi Taremi",
+      "Sardar Azmoun",
+      "Alireza Jahanbakhsh",
+      "Saeid Ezatolahi",
+      "Ali Gholizadeh"
+    ]
+  },
+  {
+    "id": "new-zealand",
+    "group": "G",
+    "fifaRanking": 94,
+    "players": [
+      "Chris Wood",
+      "Liberato Cacace",
+      "Joe Bell",
+      "Stipe Ukich",
+      "Michael Boxall"
+    ]
+  },
+  {
+    "id": "spain",
+    "group": "H",
+    "fifaRanking": 3,
+    "players": [
+      "Lamine Yamal",
+      "Pedri",
+      "Rodri",
+      "Nico Williams",
+      "Dani Olmo"
+    ]
+  },
+  {
+    "id": "cape-verde",
+    "group": "H",
+    "fifaRanking": 64,
+    "players": [
+      "Ryan Mendes",
+      "Jamiro Monteiro",
+      "Garry Rodrigues",
+      "Steven Moreira",
+      "Marco Soares"
+    ]
+  },
+  {
+    "id": "saudi-arabia",
+    "group": "H",
+    "fifaRanking": 56,
+    "players": [
+      "Salem Al-Dawsari",
+      "Feras Al-Brikan",
+      "Mohamed Kanno",
+      "Saud Abdulhamid",
+      "Yasser Al-Shahrani"
+    ]
+  },
+  {
+    "id": "uruguay",
+    "group": "H",
+    "fifaRanking": 11,
+    "players": [
+      "Federico Valverde",
+      "Darwin Núñez",
+      "Ronald Araújo",
+      "Manuel Ugarte",
+      "Facundo Pellistri"
+    ]
+  },
+  {
+    "id": "france",
+    "group": "I",
+    "fifaRanking": 2,
+    "players": [
+      "Kylian Mbappé",
+      "Eduardo Camavinga",
+      "William Saliba",
+      "Aurélien Tchouaméni",
+      "Mike Maignan"
+    ]
+  },
+  {
+    "id": "senegal",
+    "group": "I",
+    "fifaRanking": 19,
+    "players": [
+      "Ismaïla Sarr",
+      "Idrissa Gueye",
+      "Kalidou Koulibaly",
+      "Nicolas Jackson",
+      "Pape Matar Sarr"
+    ]
+  },
+  {
+    "id": "iraq",
+    "group": "I",
+    "fifaRanking": 59,
+    "players": [
+      "Ayman Hussein",
+      "Ali Adnan",
+      "Ibrahim Bayesh",
+      "Jalal Hassan",
+      "Mohammed Ali"
+    ]
+  },
+  {
+    "id": "norway",
+    "group": "I",
+    "fifaRanking": 43,
+    "players": [
+      "Erling Haaland",
+      "Martin Ødegaard",
+      "Alexander Sørloth",
+      "Andreas Hanche-Olsen",
+      "Sander Berge"
+    ]
+  },
+  {
+    "id": "argentina",
+    "group": "J",
+    "fifaRanking": 1,
+    "players": [
+      "Lionel Messi",
+      "Julián Álvarez",
+      "Enzo Fernández",
+      "Lautaro Martínez",
+      "Emiliano Martínez"
+    ]
+  },
+  {
+    "id": "algeria",
+    "group": "J",
+    "fifaRanking": 40,
+    "players": [
+      "Riyad Mahrez",
+      "Islam Slimani",
+      "Ramiz Zerrouki",
+      "Sofiane Feghouli",
+      "Aïssa Mandi"
+    ]
+  },
+  {
+    "id": "austria",
+    "group": "J",
+    "fifaRanking": 22,
+    "players": [
+      "David Alaba",
+      "Marcel Sabitzer",
+      "Christoph Baumgartner",
+      "Marko Arnautović",
+      "Konrad Laimer"
+    ]
+  },
+  {
+    "id": "jordan",
+    "group": "J",
+    "fifaRanking": 67,
+    "players": [
+      "Musa Al-Taamari",
+      "Ali Olwan",
+      "Noor Al-Rawabdeh",
+      "Yazan Al-Arab",
+      "Nizar Al-Rashdan"
+    ]
+  },
+  {
+    "id": "portugal",
+    "group": "K",
+    "fifaRanking": 8,
+    "players": [
+      "Cristiano Ronaldo",
+      "Bruno Fernandes",
+      "Rafael Leão",
+      "Bernardo Silva",
+      "Rúben Dias"
+    ]
+  },
+  {
+    "id": "dr-congo",
+    "group": "K",
+    "fifaRanking": 60,
+    "players": [
+      "Chancel Mbemba",
+      "Gaël Kakuta",
+      "Yoane Wissa",
+      "Cédric Bakambu",
+      "Arthur Masuaku"
+    ]
+  },
+  {
+    "id": "uzbekistan",
+    "group": "K",
+    "fifaRanking": 72,
+    "players": [
+      "Eldor Shomurodov",
+      "Odiljon Hamrobekov",
+      "Azizbek Turgunboev",
+      "Rustam Ashurmatov",
+      "Jaloliddin Masharipov"
+    ]
+  },
+  {
+    "id": "colombia",
+    "group": "K",
+    "fifaRanking": 14,
+    "players": [
+      "James Rodríguez",
+      "Luis Díaz",
+      "Jhon Arias",
+      "Yerson Mosquera",
+      "David Ospina"
+    ]
+  },
+  {
+    "id": "england",
+    "group": "L",
+    "fifaRanking": 4,
+    "players": [
+      "Harry Kane",
+      "Jude Bellingham",
+      "Bukayo Saka",
+      "Declan Rice",
+      "Phil Foden"
+    ]
+  },
+  {
+    "id": "croatia",
+    "group": "L",
+    "fifaRanking": 10,
+    "players": [
+      "Luka Modrić",
+      "Mateo Kovačić",
+      "Joško Gvardiol",
+      "Andrej Kramarić",
+      "Lovro Majer"
+    ]
+  },
+  {
+    "id": "ghana",
+    "group": "L",
+    "fifaRanking": 42,
+    "players": [
+      "Mohammed Kudus",
+      "Thomas Partey",
+      "Inaki Williams",
+      "Antoine Semenyo",
+      "Alexander Djiku"
+    ]
+  },
+  {
+    "id": "panama",
+    "group": "L",
+    "fifaRanking": 52,
+    "players": [
+      "Ismael Díaz",
+      "Adalberto Carrasquilla",
+      "Cecilio Waterman",
+      "José Córdoba",
+      "Orlando Mosquera"
+    ]
+  }
+]

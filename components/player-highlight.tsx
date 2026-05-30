@@ -14,6 +14,7 @@ interface PlayerHighlightProps {
   teamId: string;
   position: string;
   age: number;
+  photoUrl?: string | null;
   onClose?: () => void;
 }
 
@@ -23,7 +24,7 @@ const TABS: { key: HighlightTab; label: string; query: string; icon: typeof Play
   { key: "moments", label: "Best Moments", query: "best moments", icon: Star },
 ];
 
-export default function PlayerHighlight({ name, teamName, teamId, position, age, onClose = () => {} }: PlayerHighlightProps) {
+export default function PlayerHighlight({ name, teamName, teamId, position, age, photoUrl, onClose = () => {} }: PlayerHighlightProps) {
   const [activeTab, setActiveTab] = useState<HighlightTab>("highlights");
   const [playerActivated, setPlayerActivated] = useState(false);
   const [playerLoaded, setPlayerLoaded] = useState(false);
@@ -34,17 +35,14 @@ export default function PlayerHighlight({ name, teamName, teamId, position, age,
   return (
     <div className="bg-card rounded-xl border border-border p-6 mb-8">
       <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
-        <PlayerAvatar name={name} size="lg" />
+        <PlayerAvatar name={name} photoUrl={photoUrl} size="lg" />
         <div className="flex-1 text-center sm:text-left">
           <h3 className="text-xl font-bold">{name}</h3>
           <p className="text-sm text-muted-foreground">{position} · Age {age} · {teamName}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button
-            onClick={() => {
-              if (!playerActivated) setPlayerActivated(true);
-              else setPlayerActivated(false);
-            }}
+            onClick={() => setPlayerActivated(!playerActivated)}
             className="gap-2"
           >
             <Play className="h-4 w-4 fill-current" />
@@ -60,21 +58,16 @@ export default function PlayerHighlight({ name, teamName, teamId, position, age,
         <>
           <div className="flex flex-wrap gap-2 mb-4">
             {TABS.map((t) => (
-              <button
+              <Button
                 key={t.key}
-                onClick={() => {
-                  setActiveTab(t.key);
-                  setPlayerLoaded(false);
-                }}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition ${
-                  activeTab === t.key
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-card text-muted-foreground border-border hover:border-primary"
-                }`}
+                variant={activeTab === t.key ? "default" : "outline"}
+                size="sm"
+                onClick={() => { setActiveTab(t.key); setPlayerLoaded(false); }}
+                className="flex items-center gap-1.5"
               >
                 <t.icon className={`h-3.5 w-3.5 ${t.key === "goals" ? "fill-current" : ""}`} />
                 {t.label}
-              </button>
+              </Button>
             ))}
           </div>
 
@@ -89,7 +82,6 @@ export default function PlayerHighlight({ name, teamName, teamId, position, age,
               src={embedUrl}
               title={`${name} - ${tab.label}`}
               className="w-full h-full"
-              allowFullScreen
               allow="autoplay; fullscreen"
               sandbox="allow-scripts allow-same-origin allow-presentation"
               onLoad={() => setPlayerLoaded(true)}

@@ -548,6 +548,21 @@ export function getTeamFlag(id: string): string {
   return TEAMS.find(t => t.id === id)?.flag || "";
 }
 
+// ---------------------------------------------------------------------------
+// Live results override
+// When data/live-results.json exists (committed by GitHub Action during
+// tournament), these results take priority over deterministic simulation.
+// ---------------------------------------------------------------------------
+let LIVE_RESULTS: Record<string, { score1: number; score2: number; goalScorers?: { playerName: string; teamId: string; minute: number }[] }> = {};
+try {
+  // Next.js resolves require() of JSON at build/SSR time; silent fail in browser
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const data = require("../data/live-results.json");
+  LIVE_RESULTS = data?.matches || {};
+} catch {
+  LIVE_RESULTS = {};
+}
+
 export interface PlayerWithTeam extends PlayerData {
   teamId: string;
   teamName: string;
@@ -572,6 +587,20 @@ export function getAllPlayers(): PlayerWithTeam[] {
   return result;
 }
 
+const SELECTION_PER_TEAM = 2;
+
+export function getWorldCupSelection(): PlayerWithTeam[] {
+  const result: PlayerWithTeam[] = [];
+  for (const team of TEAMS) {
+    const count = Math.min(SELECTION_PER_TEAM, team.players.length);
+    for (let i = 0; i < count; i++) {
+      const p = team.players[i];
+      result.push({ ...p, teamId: team.id, teamName: team.name, teamFlag: team.flag, teamGroup: team.group });
+    }
+  }
+  return result;
+}
+
 export function getAllTeams(): TeamData[] {
   return TEAMS;
 }
@@ -588,6 +617,7 @@ export interface Standing {
   goalsAgainst: number;
   goalDiff: number;
   points: number;
+  form: ("W" | "D" | "L")[];
 }
 
 const RANDOM_SEED: Record<string, number> = {};
@@ -615,8 +645,12 @@ export function getGroupStandings(group: string): Standing[] {
       goalsAgainst: 0,
       goalDiff: 0,
       points: 0,
+      form: [],
     };
   }
+
+  const formTracker: Record<string, ("W" | "D" | "L")[]> = {};
+  for (const team of teams) formTracker[team.id] = [];
 
   for (const match of matches) {
     const t1 = teams.find((t) => t.id === match.team1);
@@ -624,18 +658,7 @@ export function getGroupStandings(group: string): Standing[] {
     if (!t1 || !t2) continue;
     if (!isMatchDatePassed(match.date)) continue;
 
-    const rank1 = t1.fifaRanking;
-    const rank2 = t2.fifaRanking;
-    const s1 = seededRandom(`${match.id}-score-1`);
-    const s2 = seededRandom(`${match.id}-score-2`);
-    const strength1 = 1 / rank1;
-    const strength2 = 1 / rank2;
-    const total = strength1 + strength2;
-    const prob1 = strength1 / total;
-    const prob2 = strength2 / total;
-
-    const goals1 = Math.round(prob1 * (2 + s1 * 3));
-    const goals2 = Math.round(prob2 * (2 + s2 * 3));
+    const [goals1, goals2] = getMatchScore(match.id, match.team1, match.team2, match.date);
 
     stats[match.team1].played++;
     stats[match.team2].played++;
@@ -648,20 +671,26 @@ export function getGroupStandings(group: string): Standing[] {
       stats[match.team1].won++;
       stats[match.team1].points += 3;
       stats[match.team2].lost++;
+      formTracker[match.team1].push("W");
+      formTracker[match.team2].push("L");
     } else if (goals2 > goals1) {
       stats[match.team2].won++;
       stats[match.team2].points += 3;
       stats[match.team1].lost++;
+      formTracker[match.team2].push("W");
+      formTracker[match.team1].push("L");
     } else {
       stats[match.team1].drawn++;
       stats[match.team1].points += 1;
       stats[match.team2].drawn++;
       stats[match.team2].points += 1;
+      formTracker[match.team1].push("D");
+      formTracker[match.team2].push("D");
     }
   }
 
   return Object.values(stats)
-    .map((s) => ({ ...s, goalDiff: s.goalsFor - s.goalsAgainst }))
+    .map((s) => ({ ...s, goalDiff: s.goalsFor - s.goalsAgainst, form: formTracker[s.teamId]?.slice(-5) ?? [] }))
     .sort((a, b) => b.points - a.points || b.goalDiff - a.goalDiff || b.goalsFor - a.goalsFor);
 }
 
@@ -700,7 +729,9 @@ function isMatchDatePassed(dateStr: string): boolean {
 }
 
 export function getMatchScore(matchId: string, team1Id: string, team2Id: string, date?: string): [number, number] {
-  if (date && !isMatchDatePassed(date)) return [0, 0];
+  if (!isMatchDatePassed(date || "")) return [0, 0];
+  const live = LIVE_RESULTS[matchId];
+  if (live) return [live.score1, live.score2];
   const t1 = TEAMS.find((t) => t.id === team1Id);
   const t2 = TEAMS.find((t) => t.id === team2Id);
   if (!t1 || !t2) return [0, 0];
@@ -828,10 +859,16 @@ export interface MatchGoalScorer {
 }
 
 export function getMatchGoalScorers(matchId: string, team1Id: string, team2Id: string, date?: string): { scorers1: MatchGoalScorer[]; scorers2: MatchGoalScorer[] } {
+  const live = LIVE_RESULTS[matchId];
+  if (live?.goalScorers) {
+    const scorers1 = live.goalScorers.filter(g => g.teamId === team1Id).map(g => ({ playerName: g.playerName, teamId: g.teamId, minute: g.minute }));
+    const scorers2 = live.goalScorers.filter(g => g.teamId === team2Id).map(g => ({ playerName: g.playerName, teamId: g.teamId, minute: g.minute }));
+    return { scorers1, scorers2 };
+  }
   const t1 = getTeamById(team1Id);
   const t2 = getTeamById(team2Id);
   if (!t1 || !t2) return { scorers1: [], scorers2: [] };
-  if (date && !isMatchDatePassed(date)) return { scorers1: [], scorers2: [] };
+  if (!isMatchDatePassed(date || "")) return { scorers1: [], scorers2: [] };
   const [s1, s2] = getMatchScore(matchId, team1Id, team2Id, date);
   const pw: Record<string, number> = { FW: 0.60, MF: 0.30, DF: 0.08, GK: 0.02 };
 
@@ -1001,6 +1038,39 @@ export function getRelatedPlayers(name: string, teamId: string, position: string
       result.push(p);
     }
     if (result.length >= limit) break;
+  }
+  return result;
+}
+
+export interface PlayerPOTMEntry extends StarOfMatch {
+  matchId: string;
+}
+
+export function getPlayerPOTMMatches(playerName: string, teamId: string): PlayerPOTMEntry[] {
+  const result: PlayerPOTMEntry[] = [];
+  for (const match of MATCHES) {
+    if (!isMatchDatePassed(match.date)) continue;
+    if (match.team1 !== teamId && match.team2 !== teamId) continue;
+    const star = getStarOfTheMatch(match.id);
+    if (star && star.playerName === playerName) {
+      result.push({ ...star, matchId: match.id });
+    }
+  }
+  return result;
+}
+
+export function getRecentPOTMs(count = 5): (StarOfMatch & { matchId: string; matchDate: string; stage: string })[] {
+  const passed = MATCHES
+    .filter(m => isMatchDatePassed(m.date))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  const result: (StarOfMatch & { matchId: string; matchDate: string; stage: string })[] = [];
+  for (const match of passed) {
+    const star = getStarOfTheMatch(match.id);
+    if (star) {
+      result.push({ ...star, matchId: match.id, matchDate: match.date, stage: match.stage });
+      if (result.length >= count) break;
+    }
   }
   return result;
 }

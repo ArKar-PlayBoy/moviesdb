@@ -3,27 +3,16 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Trophy, Users, MapPin, Calendar, ChevronRight, Goal, Clock, Activity, Award, Shirt, Star, Zap, Swords, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { findPlayerByName, slugify, getAdjacentPlayers, getRelatedPlayers, getPlayerMatchPerformances, getTeamById, getAllPlayers } from "@/data/worldcup-2026";
+import { findPlayerByName, slugify, getAdjacentPlayers, getRelatedPlayers, getPlayerMatchPerformances, getPlayerPOTMMatches, getTeamById, getAllPlayers } from "@/data/worldcup-2026";
 import PlayerHighlight from "@/components/player-highlight";
 import PlayerAvatar from "@/components/player-avatar";
+import RadarChart from "@/components/radar-chart";
 import ShareButton from "@/components/share-button";
-import { getPlayerAttributes, ATTR_LABELS as ATTR_LABELS_UI, ATTR_COLORS as ATTR_COLORS_UI } from "@/lib/player-attributes";
+import { getPlayerAttributes, isGkAttributes, OF_ATTR_LABELS, OF_ATTR_COLORS, GK_ATTR_LABELS, GK_ATTR_COLORS } from "@/lib/player-attributes";
+import { getAllPlayerPhotos, getPlayerDescription, getPlayerWikiUrl } from "@/lib/player-photo-map";
 
 function titleCase(name: string): string {
   return name.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
-}
-
-async function getWikipediaData(name: string) {
-  try {
-    const res = await fetch(
-      `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`,
-      { next: { revalidate: 86400 } }
-    );
-    if (!res.ok) return null;
-    return res.json();
-  } catch {
-    return null;
-  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -68,9 +57,10 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
   if (!result) notFound();
 
   const { player, team } = result;
-  const wiki = await getWikipediaData(player.name);
-  const photo = wiki?.thumbnail?.source || null;
-  const description = wiki?.extract || null;
+  const allPhotosMap = await getAllPlayerPhotos();
+  const photo = allPhotosMap[player.name] ?? null;
+  const description = await getPlayerDescription(player.name);
+  const wikiUrl = await getPlayerWikiUrl(player.name);
 
   const { prev, next } = getAdjacentPlayers(player.name);
   const related = getRelatedPlayers(player.name, team.id, player.position);
@@ -82,10 +72,17 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
   const draws = performances.filter(p => p.isDraw).length;
   const winRate = totalMatches > 0 ? Math.round((wins / totalMatches) * 100) : 0;
   const lost = totalMatches - wins - draws;
+  const potmMatches = getPlayerPOTMMatches(player.name, team.id);
+  const potmCount = potmMatches.length;
+  const potmMatchIds = new Set(potmMatches.map(m => m.matchId));
 
   const theme = POSITION_THEME[player.position] || POSITION_THEME.FW;
   const PositionIcon = theme.icon;
   const attributes = await getPlayerAttributes(player.name, player.position, player.age, team.fifaRanking, team.confederation);
+  const isGk = isGkAttributes(attributes, player.position);
+  const attrLabels = isGk ? GK_ATTR_LABELS : OF_ATTR_LABELS;
+  const attrColors = isGk ? GK_ATTR_COLORS : OF_ATTR_COLORS;
+  const relatedPhotos = allPhotosMap;
 
   return (
     <div>
@@ -121,9 +118,12 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
             <div className={`absolute -inset-2 rounded-[2rem] bg-gradient-to-b ${theme.gradient} blur-2xl opacity-60`} />
             <div className={`absolute -inset-1 rounded-[1.5rem] ${theme.light} blur-xl`} />
             {photo ? (
-              <div className="relative w-28 h-28 md:w-44 md:h-44 rounded-[1.25rem] overflow-hidden ring-4 ring-background/80 shadow-2xl">
-                <img src={photo} alt={player.name} className="w-full h-full object-cover" />
-              </div>
+              <div
+                className="relative w-28 h-28 md:w-44 md:h-44 rounded-[1.25rem] bg-cover bg-center ring-4 ring-background/80 shadow-2xl"
+                style={{ backgroundImage: `url(${photo})` }}
+                role="img"
+                aria-label={player.name}
+              />
             ) : (
               <div className={`relative w-28 h-28 md:w-44 md:h-44 rounded-[1.25rem] bg-gradient-to-br ${theme.gradient} ring-4 ring-background/80 shadow-2xl flex items-center justify-center`}>
                 <span className="text-4xl md:text-6xl font-black text-white/80">{player.name.split(" ").map(n => n[0]).join("")}</span>
@@ -205,10 +205,10 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
               <p className="text-[9px] text-muted-foreground mt-0.5">Years old</p>
             </div>
             <div className="bg-card rounded-2xl border border-border p-4 text-center relative overflow-hidden group hover:ring-2 hover:ring-primary/30 transition-all">
-              <div className="absolute top-0 right-0 w-12 h-12 -mr-4 -mt-4 rounded-full bg-emerald-500/5" />
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Squad</p>
-              <p className="text-3xl font-black tabular-nums">{team.id === "france" || team.id === "argentina" || team.id === "brazil" ? 23 : 26}</p>
-              <p className="text-[9px] text-muted-foreground mt-0.5">Players</p>
+              <div className="absolute top-0 right-0 w-12 h-12 -mr-4 -mt-4 rounded-full bg-amber-500/5" />
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">POTM</p>
+              <p className="text-3xl font-black tabular-nums text-amber-500">{potmCount}</p>
+              <p className="text-[9px] text-muted-foreground mt-0.5">Player of the Match</p>
             </div>
           </div>
 
@@ -253,33 +253,39 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
-                {Object.entries(attributes).map(([key, val]) => {
-                  const color = ATTR_COLORS_UI[key] || "bg-primary";
-                  return (
-                    <div key={key} className="group">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{ATTR_LABELS_UI[key] || key}</span>
-                        <span className={`text-sm font-black tabular-nums ${val >= 80 ? theme.accent : val >= 60 ? "text-foreground" : "text-muted-foreground"}`}>
-                          {val}
-                        </span>
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                {/* Radar Chart */}
+                <div className="shrink-0">
+                  <RadarChart
+                    data={attributes as Record<string, number>}
+                    labels={attrLabels}
+                    color={posGradient(player.position)}
+                    size={220}
+                  />
+                </div>
+
+                {/* Stat Bars */}
+                <div className="flex-1 w-full space-y-3">
+                  {Object.entries(attributes).map(([key, val]) => {
+                    const color = attrColors[key] || "bg-primary";
+                    return (
+                      <div key={key} className="group">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{attrLabels[key] || key}</span>
+                          <span className={`text-sm font-black tabular-nums tabular-nums ${val >= 80 ? theme.accent : val >= 60 ? "text-foreground" : "text-muted-foreground"}`}>
+                            {val}
+                          </span>
+                        </div>
+                        <div className="relative h-2.5 bg-secondary rounded-full overflow-hidden">
+                          <div
+                            className={`absolute inset-y-0 left-0 rounded-full transition-all duration-1000 ease-out ${color}`}
+                            style={{ width: `${val}%` }}
+                          />
+                        </div>
                       </div>
-                      <div className="relative h-2 bg-secondary rounded-full overflow-hidden">
-                        <div
-                          className={`absolute inset-y-0 left-0 rounded-full transition-all duration-1000 ${color}`}
-                          style={{ width: `${val}%` }}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
-                      </div>
-                      {/* Threshold markers */}
-                      <div className="flex justify-between mt-0.5">
-                        <span className="text-[8px] text-muted-foreground/40">0</span>
-                        <span className="text-[8px] text-muted-foreground/40">50</span>
-                        <span className="text-[8px] text-muted-foreground/40">99</span>
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
 
               <div className="mt-4 pt-4 border-t border-border flex items-center gap-2 text-[10px] text-muted-foreground">
@@ -294,7 +300,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
             <StatCard icon={Goal} value={totalGoals.toString()} label="Goals" accent="text-rose-500" gradient="from-rose-500/20 to-rose-500/5" />
             <StatCard icon={Activity} value={totalMatches.toString()} label="Matches" accent="text-blue-500" gradient="from-blue-500/20 to-blue-500/5" />
             <StatCard icon={Award} value={`${winRate}%`} label="Win Rate" accent="text-amber-500" gradient="from-amber-500/20 to-amber-500/5" />
-            <StatCard icon={Trophy} value={wins.toString()} label="Wins" accent="text-emerald-500" gradient="from-emerald-500/20 to-emerald-500/5" />
+            <StatCard icon={Star} value={potmCount.toString()} label="POTM" accent="text-amber-500" gradient="from-amber-500/20 to-amber-500/5" />
           </div>
 
           {/* ===== BIOGRAPHY ===== */}
@@ -310,8 +316,8 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
                   <div className="h-px flex-1 bg-border" />
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
-                {wiki?.content_urls?.edit && (
-                  <a href={wiki.content_urls.wikipedia} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-3">
+                {wikiUrl && (
+                  <a href={wikiUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-3">
                     Read more on Wikipedia →
                   </a>
                 )}
@@ -367,6 +373,12 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
                           <span className={`text-[10px] font-medium ${p.isWin ? "text-emerald-600" : p.isDraw ? "text-amber-600" : "text-red-600"}`}>
                             {p.isWin ? "W" : p.isDraw ? "D" : "L"}
                           </span>
+                          {potmMatchIds.has(p.matchId) && (
+                            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-600 text-[9px] font-bold ring-1 ring-amber-500/20">
+                              <Star className="h-2.5 w-2.5 fill-amber-500" />
+                              POTM
+                            </span>
+                          )}
                         </div>
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Calendar className="h-3 w-3" />
@@ -424,6 +436,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
               position={player.position}
               age={player.age}
               teamId={team.id}
+              photoUrl={photo}
             />
           </div>
         </div>
@@ -451,7 +464,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
                   <div className={`absolute inset-0 bg-gradient-to-b ${pTheme.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
                   <div className="relative z-10">
                     <div className="relative inline-block mb-3">
-                      <PlayerAvatar name={p.name} size="sm" className="ring-2 ring-border group-hover:ring-primary/40 transition-all mx-auto" />
+                      <PlayerAvatar name={p.name} photoUrl={relatedPhotos[p.name]} size="sm" className="ring-2 ring-border group-hover:ring-primary/40 transition-all mx-auto" />
                       <span className={`absolute -bottom-1 -right-1 w-5 h-5 rounded-full ${pTheme.light} flex items-center justify-center ring-2 ring-background`}>
                         <span className={`text-[8px] font-bold ${pTheme.accent}`}>{p.position}</span>
                       </span>

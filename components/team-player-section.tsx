@@ -73,10 +73,11 @@ export default function TeamPlayerSection({ players, teamName, teamId }: TeamPla
             >
               <Link href={`/player/${slugify(player.name)}`} className="block">
                 {photoUrl ? (
-                  <img
-                    src={photoUrl}
-                    alt={player.name}
-                    className="w-14 h-14 rounded-full object-cover mx-auto mb-2 border-2 border-border hover:ring-2 hover:ring-primary transition-all"
+                  <div
+                    className="w-14 h-14 rounded-full bg-cover bg-center mx-auto mb-2 border-2 border-border hover:ring-2 hover:ring-primary transition-all"
+                    style={{ backgroundImage: `url(${photoUrl})` }}
+                    role="img"
+                    aria-label={player.name}
                   />
                 ) : (
                   <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mx-auto mb-2">
@@ -117,6 +118,7 @@ export default function TeamPlayerSection({ players, teamName, teamId }: TeamPla
           position={POSITION_LABELS[selected.position] || selected.position}
           age={selected.age}
           teamId={teamId}
+          photoUrl={photos[selected.name] || null}
           onClose={() => setSelected(null)}
         />
       )}

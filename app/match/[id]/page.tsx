@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Calendar, MapPin, Trophy, Clock, Goal as GoalIcon, Youtube, Users, Star, Medal, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PlayerAvatar from "@/components/player-avatar";
+import ShareButton from "@/components/share-button";
+import { resolvePlayerPhoto } from "@/lib/player-photos";
 
 function matchPassed(date: string) {
   return new Date(`2026 ${date}`) <= new Date();
@@ -43,15 +45,19 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
 
   const allGoals = [...scorers1, ...scorers2].sort((a, b) => a.minute - b.minute);
   const starOfMatch = getStarOfTheMatch(match.id);
+  const starPhoto = starOfMatch ? await resolvePlayerPhoto(starOfMatch.playerName) : null;
 
   return (
     <div className="max-w-3xl mx-auto">
-      <Button variant="outline" size="sm" asChild className="mb-6">
-        <Link href="/matches">
-          <ArrowLeft className="h-4 w-4 mr-1" />
-          All Matches
-        </Link>
-      </Button>
+      <div className="flex items-center justify-between mb-6">
+        <Button variant="outline" size="sm" asChild>
+          <Link href="/matches">
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            All Matches
+          </Link>
+        </Button>
+        <ShareButton title={`${t1.name} vs ${t2.name} — WorldCup 2026`} text={`${t1.name} ${played ? `${s1}-${s2}` : "vs"} ${t2.name} — Group ${match.group} · ${match.date}`} />
+      </div>
 
       {/* ===== MATCH HEADER ===== */}
       <div className="relative overflow-hidden rounded-2xl border border-border bg-card mb-6">
@@ -298,7 +304,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
             >
               <div className="relative shrink-0">
                 <div className="absolute -inset-1 rounded-full bg-gradient-to-b from-amber-500/30 to-transparent blur-lg" />
-                <PlayerAvatar name={starOfMatch.playerName} size="lg" className="ring-2 ring-amber-500/20 group-hover:ring-amber-500/50 transition-all" />
+                <PlayerAvatar name={starOfMatch.playerName} photoUrl={starPhoto} size="lg" className="ring-2 ring-amber-500/20 group-hover:ring-amber-500/50 transition-all" />
                 <div className="absolute -top-1 -right-1">
                   <div className="w-7 h-7 rounded-full bg-amber-500 flex items-center justify-center shadow-lg">
                     <Medal className="h-3.5 w-3.5 text-white" />
@@ -375,7 +381,6 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
                 )}&hl=en`}
                 title={`${t1.name} vs ${t2.name} highlights`}
                 className="w-full h-full"
-                allowFullScreen
                 allow="autoplay; fullscreen"
                 sandbox="allow-scripts allow-same-origin allow-presentation"
               />
@@ -412,6 +417,34 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
               FIFA Official Channel ↗
             </a>
           </div>
+        </div>
+      </div>
+
+
+      {/* ===== WATCH ON FIFA+ ===== */}
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.03] via-background to-background p-6 md:p-8 mb-6">
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+              <span className="text-lg">🌍</span>
+            </div>
+            <div>
+              <h3 className="font-bold">Watch Free on FIFA+</h3>
+              <p className="text-xs text-muted-foreground">Official free streaming platform — no subscription, no ads</p>
+            </div>
+          </div>
+          <a
+            href="https://www.fifa.com/fifaplus/en/tournaments/mens/worldcup/canadamexicousa2026"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 border border-primary/20 transition-all font-medium text-sm"
+          >
+            <span>⚽</span>
+            <div className="flex flex-col items-start">
+              <span>Watch on FIFA+</span>
+              <span className="text-[10px] text-muted-foreground font-normal">Free · Official · All matches</span>
+            </div>
+          </a>
         </div>
       </div>
 
