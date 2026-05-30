@@ -159,7 +159,7 @@ function RecentPOTMSection() {
 
 export default async function Home() {
   const totalTeams = TEAMS.length;
-  const totalMatches = MATCHES.length;
+  const totalMatches = MATCHES.length + 32; // 72 group stage + 32 knockout
   const totalVenues = getVenues().length;
   const totalPlayers = getAllPlayers().length;
   const topScorers = getTopScorers(5);
