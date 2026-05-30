@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getAllPlayers, getAllTeams, GROUPS } from "@/data/worldcup-2026";
+import { getAllPlayers, getAllTeams } from "@/data/worldcup-2026";
 import { slugify } from "@/data/worldcup-2026";
 
 export default function sitemap(): MetadataRoute.Sitemap {

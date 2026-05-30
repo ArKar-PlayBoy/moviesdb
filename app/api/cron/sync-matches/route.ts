@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { execSync } from "child_process";
+import { execSync, type ExecException } from "child_process";
 
 export const maxDuration = 120;
 
@@ -19,7 +19,9 @@ export async function GET(request: Request) {
     }).trim();
 
     return NextResponse.json({ ok: true, output });
-  } catch (err: any) {
-    return NextResponse.json({ ok: false, error: err.stderr || err.message || String(err) }, { status: 500 });
+  } catch (err: unknown) {
+    const execErr = err as ExecException;
+    const msg = execErr.stderr || execErr.message || String(err);
+    return NextResponse.json({ ok: false, error: msg }, { status: 500 });
   }
 }

@@ -216,7 +216,7 @@ export default function MatchesClient({ starPhotos }: { starPhotos: Record<strin
                           {star.minutes.length > 0 && (
                             <>
                               <span>·</span>
-                              <span>{star.minutes.join("' · ")}'</span>
+                              <span>{star.minutes.join("' · ")}&apos;</span>
                             </>
                           )}
                         </div>

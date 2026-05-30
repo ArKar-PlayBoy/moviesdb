@@ -46,7 +46,7 @@ const PlayersContent: FC<PlayersContentProps> = ({ initialPhotos, worldCupSelect
       .catch(() => {});
   }, []);
 
-  const safePlayers = allPlayers || [];
+  const safePlayers = useMemo(() => allPlayers || [], [allPlayers]);
 
   const selectionFiltered = useMemo(() => {
     if (showAll || !worldCupSelection) return safePlayers;
@@ -215,7 +215,7 @@ const PlayersContent: FC<PlayersContentProps> = ({ initialPhotos, worldCupSelect
           </Button>
           <div className="flex items-center gap-1">
             {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
-              let pageNum = totalPages <= 7
+              const pageNum = totalPages <= 7
                 ? i
                 : currentPage < 3
                   ? i

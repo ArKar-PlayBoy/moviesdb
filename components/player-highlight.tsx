@@ -24,7 +24,7 @@ const TABS: { key: HighlightTab; label: string; query: string; icon: typeof Play
   { key: "moments", label: "Best Moments", query: "best moments", icon: Star },
 ];
 
-export default function PlayerHighlight({ name, teamName, teamId, position, age, photoUrl, onClose = () => {} }: PlayerHighlightProps) {
+export default function PlayerHighlight({ name, teamName, position, age, photoUrl, onClose = () => {} }: PlayerHighlightProps) {
   const [activeTab, setActiveTab] = useState<HighlightTab>("highlights");
   const [playerActivated, setPlayerActivated] = useState(false);
   const [playerLoaded, setPlayerLoaded] = useState(false);

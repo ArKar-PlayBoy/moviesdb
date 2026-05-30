@@ -87,7 +87,6 @@ function overallMultiplier(fifaRanking: number, age: number, confederation: stri
 }
 
 function generateOutfieldAttributes(name: string, position: string, age: number, fifaRanking: number, confederation: string): OutfieldAttributes {
-  const seed = hashSeed(name);
   const base = outfieldPositionBase(position);
   const mult = overallMultiplier(fifaRanking, age, confederation);
 
@@ -115,7 +114,6 @@ function outfieldPositionBase(position: string): OutfieldAttributes {
 }
 
 function generateGkAttributes(name: string, age: number, fifaRanking: number, confederation: string): GkAttributes {
-  const seed = hashSeed(name);
   const base: GkAttributes = { diving: 82, handling: 78, kicking: 70, reflexes: 85, speed: 55, positioning: 80 };
   const mult = overallMultiplier(fifaRanking, age, confederation);
 

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Trophy, Users, MapPin, Calendar, ChevronRight, Goal, Clock, Activity, Award, Shirt, Star, Zap, Swords, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, Users, MapPin, Calendar, ChevronRight, Goal, Clock, Activity, Award, Shirt, Star, Zap, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { findPlayerByName, slugify, getAdjacentPlayers, getRelatedPlayers, getPlayerMatchPerformances, getPlayerPOTMMatches, getTeamById, getAllPlayers } from "@/data/worldcup-2026";
+import { findPlayerByName, slugify, getAdjacentPlayers, getRelatedPlayers, getPlayerMatchPerformances, getPlayerPOTMMatches, getAllPlayers } from "@/data/worldcup-2026";
 import PlayerHighlight from "@/components/player-highlight";
 import PlayerAvatar from "@/components/player-avatar";
 import RadarChart from "@/components/radar-chart";
@@ -69,9 +69,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
   const totalGoals = performances.reduce((s, p) => s + p.goals, 0);
   const totalMatches = performances.length;
   const wins = performances.filter(p => p.isWin).length;
-  const draws = performances.filter(p => p.isDraw).length;
   const winRate = totalMatches > 0 ? Math.round((wins / totalMatches) * 100) : 0;
-  const lost = totalMatches - wins - draws;
   const potmMatches = getPlayerPOTMMatches(player.name, team.id);
   const potmCount = potmMatches.length;
   const potmMatchIds = new Set(potmMatches.map(m => m.matchId));
@@ -88,12 +86,8 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
     <div>
       {/* ===== HERO SECTION ===== */}
       <div className="relative rounded-[2rem] overflow-hidden mb-10 min-h-[420px] md:min-h-[500px]">
-        {/* Backdrop */}
-        {photo ? (
-          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105" style={{ backgroundImage: `url(${photo})` }} />
-        ) : (
-          <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradient}`} />
-        )}
+        {/* Backdrop — gradient only, photo appears in avatar below */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradient}`} />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/20" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/40" />
         <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20" style={{ background: `radial-gradient(circle, ${posGradient(player.position)}, transparent 70%)` }} />
@@ -349,7 +343,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
               </div>
             ) : (
               <div className="space-y-3">
-                {performances.map((p, idx) => (
+                {performances.map((p) => (
                   <Link
                     key={p.matchId}
                     href={`/match/${p.matchId}`}

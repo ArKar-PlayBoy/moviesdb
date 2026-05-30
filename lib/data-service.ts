@@ -1,5 +1,37 @@
 import { getKnockoutBracket as getSimulatedBracket, type KnockoutMatch } from "@/data/worldcup-2026";
 
+interface SportSRCMatchRaw {
+  id?: string | number;
+  homeTeam?: { id?: string; name?: string };
+  awayTeam?: { id?: string; name?: string };
+  homeScore?: { current?: number };
+  awayScore?: { current?: number };
+  home_score?: number;
+  away_score?: number;
+  status?: string;
+  date?: string;
+  venue?: string;
+}
+
+interface SportSRCResponse {
+  data?: SportSRCMatchRaw[];
+}
+
+interface FIFALiveEvent {
+  PlayerName?: string;
+  TeamId?: number;
+  Minute?: number;
+  EventType?: string;
+}
+
+interface FIFAMatchResponse {
+  HomeTeam?: { Score?: number };
+  AwayTeam?: { Score?: number };
+  LiveEvents?: FIFALiveEvent[];
+  MatchStatus?: number;
+  Results?: unknown[];
+}
+
 export type DataSource = "simulated" | "sportsrc" | "fifa";
 
 export interface LiveMatchData {
@@ -86,30 +118,29 @@ export async function getMatchData(
   matchId: string,
   team1Id: string,
   team2Id: string,
-  date: string
 ): Promise<MatchDetail> {
   if (!isWcStarted()) {
     return { score: [0, 0], goals: [], status: "scheduled" };
   }
 
-  const sportsrc = await fetchSportSRC<any>(`type=detail&id=${matchId}`);
+  const sportsrc = await fetchSportSRC<SportSRCResponse>(`type=detail&id=${matchId}`);
   if (sportsrc?.data) {
-    const d = Array.isArray(sportsrc.data) ? sportsrc.data[0] : sportsrc.data;
-    const homeScore = d.homeScore?.current ?? d.home_score ?? 0;
-    const awayScore = d.awayScore?.current ?? d.away_score ?? 0;
-    const status = d.status === "inprogress" ? "live" : d.status === "finished" ? "finished" : "scheduled";
+    const d = sportsrc.data[0];
+    const homeScore = d?.homeScore?.current ?? d?.home_score ?? 0;
+    const awayScore = d?.awayScore?.current ?? d?.away_score ?? 0;
+    const status = d?.status === "inprogress" ? "live" : d?.status === "finished" ? "finished" : "scheduled";
     return {
       score: [homeScore, awayScore],
-      goals: [], // SportSRC doesn't provide goal details in basic tier
+      goals: [],
       status,
     };
   }
 
-  const fifa = await fetchFIFA<any>(`live/football/${matchId}`);
+  const fifa = await fetchFIFA<FIFAMatchResponse>(`live/football/${matchId}`);
   if (fifa) {
     const homeScore = fifa.HomeTeam?.Score ?? 0;
     const awayScore = fifa.AwayTeam?.Score ?? 0;
-    const goals: GoalEvent[] = (fifa.LiveEvents || []).map((e: any) => ({
+    const goals: GoalEvent[] = (fifa.LiveEvents || []).map((e) => ({
       playerName: e.PlayerName || "Unknown",
       teamId: e.TeamId === 1 ? team1Id : team2Id,
       minute: e.Minute || 0,
@@ -129,9 +160,9 @@ export async function getMatchData(
 export async function getLiveScores(): Promise<LiveMatchData[]> {
   if (!isWcStarted()) return [];
 
-  const sportsrc = await fetchSportSRC<any>("type=matches&sport=football&status=inprogress");
+  const sportsrc = await fetchSportSRC<SportSRCResponse>("type=matches&sport=football&status=inprogress");
   if (sportsrc?.data) {
-    return (sportsrc.data || []).map((m: any) => ({
+    return sportsrc.data.map((m) => ({
       id: String(m.id || ""),
       team1Id: m.homeTeam?.id || "",
       team2Id: m.awayTeam?.id || "",
@@ -147,10 +178,10 @@ export async function getLiveScores(): Promise<LiveMatchData[]> {
   return [];
 }
 
-export async function getStandings(group: string): Promise<any[] | null> {
+export async function getStandings(group: string): Promise<unknown[] | null> {
   if (!isWcStarted()) return null;
 
-  const fifa = await fetchFIFA<any>(`competitions/1/standings?group=${group}`);
+  const fifa = await fetchFIFA<FIFAMatchResponse>(`competitions/1/standings?group=${group}`);
   if (fifa?.Results) return fifa.Results;
 
   return null;
@@ -159,18 +190,21 @@ export async function getStandings(group: string): Promise<any[] | null> {
 export async function getTopScorersList(limit = 30): Promise<ScorerData[] | null> {
   if (!isWcStarted()) return null;
 
-  const fifa = await fetchFIFA<any>(`competitions/1/topscorers?limit=${limit}`);
+  const fifa = await fetchFIFA<FIFAMatchResponse>(`competitions/1/topscorers?limit=${limit}`);
   if (fifa?.Results) {
-    return fifa.Results.map((r: any) => ({
-      playerName: r.PlayerName || "",
-      teamId: r.TeamId || "",
-      teamName: r.TeamName || "",
-      teamFlag: "",
-      position: r.Position || "",
-      goals: r.Goals || 0,
-      matches: r.Matches || 0,
-      teamGroup: "",
-    }));
+    return fifa.Results.map((_r) => {
+      const r = _r as Record<string, unknown>;
+      return {
+        playerName: String(r.PlayerName || ""),
+        teamId: String(r.TeamId || ""),
+        teamName: String(r.TeamName || ""),
+        teamFlag: "",
+        position: String(r.Position || ""),
+        goals: Number(r.Goals || 0),
+        matches: Number(r.Matches || 0),
+        teamGroup: "",
+      };
+    });
   }
 
   return null;
@@ -179,7 +213,7 @@ export async function getTopScorersList(limit = 30): Promise<ScorerData[] | null
 export async function getWeeklyStar(): Promise<StarData | null> {
   if (!isWcStarted()) return null;
 
-  const sportsrc = await fetchSportSRC<any>("type=matches&sport=football&status=finished&days=7");
+  const sportsrc = await fetchSportSRC<SportSRCResponse>("type=matches&sport=football&status=finished&days=7");
   if (sportsrc?.data) {
     return {
       name: "TBD",

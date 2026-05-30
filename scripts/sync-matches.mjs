@@ -225,7 +225,7 @@ function merge(existing, incoming) {
   const merged = { ...existing };
   const teamNameMap = buildTeamNameMap();
 
-  for (const [sportsrcId, result] of Object.entries(incoming)) {
+  for (const [, result] of Object.entries(incoming)) {
     // Map SportSRC team names to our internal team IDs
     const team1Id = result.team1Id || (teamNameMap[Object.keys(teamNameMap).find(k => result._team1Name?.toLowerCase().includes(k))] || "");
     const team2Id = result.team2Id || (teamNameMap[Object.keys(teamNameMap).find(k => result._team2Name?.toLowerCase().includes(k))] || "");

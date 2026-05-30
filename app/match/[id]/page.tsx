@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { MATCHES, getTeamById, getMatchScore, getMatchGoalScorers, getTeamName, getTeamFlag, slugify, getStarOfTheMatch } from "@/data/worldcup-2026";
+import { MATCHES, getTeamById, getMatchScore, getMatchGoalScorers, getTeamName, slugify, getStarOfTheMatch } from "@/data/worldcup-2026";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Calendar, MapPin, Trophy, Clock, Goal as GoalIcon, Youtube, Users, Star, Medal, Sparkles } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Trophy, Clock, Goal as GoalIcon, Youtube, Users, Star, Medal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PlayerAvatar from "@/components/player-avatar";
 import ShareButton from "@/components/share-button";

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { MATCHES, GROUPS, getTeamFlag, getTeamName, getMatchScore, getStarOfTheMatch } from "@/data/worldcup-2026";
+import { MATCHES, getTeamFlag, getTeamName, getMatchScore, getStarOfTheMatch } from "@/data/worldcup-2026";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

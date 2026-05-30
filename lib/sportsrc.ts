@@ -1,10 +1,7 @@
 const BASE_URL = "https://api.sportsrc.org/v2";
 const API_KEY = process.env.SPORTSRC_KEY || "";
-const WC_KEYWORDS = ["world cup", "fifa", "worldcup", "world cup 2026", "fifa world cup", "international"];
 
-function isWorldCupMatch(name: string): boolean {
-  return WC_KEYWORDS.some(kw => name.toLowerCase().includes(kw));
-}
+
 
 function isWorldCupTeam(name: string): boolean {
   const wcTeams = [
@@ -56,7 +53,48 @@ async function fetchApi<T>(params: string): Promise<T | null> {
   }
 }
 
-function parseMatch(data: any): SportSRCMatch {
+interface SportSRCRawMatch {
+  id?: string | number;
+  match_id?: string | number;
+  homeTeam?: { name?: string };
+  home_name?: string;
+  awayTeam?: { name?: string };
+  away_name?: string;
+  homeScore?: { current?: number };
+  home_score?: number;
+  awayScore?: { current?: number };
+  away_score?: number;
+  status?: string;
+  state?: string;
+  date?: string;
+  has_stream?: boolean;
+}
+
+interface SportSRCResponse {
+  data?: unknown[];
+}
+
+interface SportSRCDetailRaw {
+  id?: string | number;
+  homeTeam?: { name?: string };
+  home_name?: string;
+  awayTeam?: { name?: string };
+  away_name?: string;
+  homeScore?: { current?: number };
+  home_score?: number;
+  awayScore?: { current?: number };
+  away_score?: number;
+  status?: string;
+  state?: string;
+  date?: string;
+  venue?: string | { name?: string };
+  streamUrl?: string;
+  stream?: { url?: string };
+  league?: { name?: string };
+  competition?: string;
+}
+
+function parseMatch(data: SportSRCRawMatch): SportSRCMatch {
   return {
     id: String(data.id || data.match_id || ""),
     homeTeam: data.homeTeam?.name || data.home_name || "TBD",
@@ -74,33 +112,31 @@ function filterWorldCup(matches: SportSRCMatch[]): SportSRCMatch[] {
 }
 
 export async function getLiveMatches(): Promise<SportSRCMatch[]> {
-  const res = await fetchApi<any>(`type=matches&sport=football&status=inprogress`);
+  const res = await fetchApi<SportSRCResponse>(`type=matches&sport=football&status=inprogress`);
   if (!res || !res.data) return [];
-  return filterWorldCup((res.data || []).map(parseMatch));
+  return filterWorldCup((res.data as SportSRCRawMatch[]).map(parseMatch));
 }
 
 export async function getUpcomingMatches(date?: string): Promise<SportSRCMatch[]> {
   const dateParam = date || new Date(Date.now() + 86400000).toISOString().split("T")[0];
-  const res = await fetchApi<any>(`type=matches&sport=football&status=upcoming&date=${dateParam}`);
+  const res = await fetchApi<SportSRCResponse>(`type=matches&sport=football&status=upcoming&date=${dateParam}`);
   if (!res || !res.data) return [];
-  return filterWorldCup((res.data || []).map(parseMatch));
+  return filterWorldCup((res.data as SportSRCRawMatch[]).map(parseMatch));
 }
 
 export async function getFinishedMatches(date?: string): Promise<SportSRCMatch[]> {
   const dateParam = date || new Date().toISOString().split("T")[0];
-  const res = await fetchApi<any>(`type=matches&sport=football&status=finished&date=${dateParam}`);
+  const res = await fetchApi<SportSRCResponse>(`type=matches&sport=football&status=finished&date=${dateParam}`);
   if (!res || !res.data) return [];
-  return filterWorldCup((res.data || []).map(parseMatch));
+  return filterWorldCup((res.data as SportSRCRawMatch[]).map(parseMatch));
 }
 
-function cleanHtml(text: string): string {
-  return text.replace(/<[^>]*>/g, "").replace(/&[^;]+;/g, " ").replace(/\s+/g, " ").trim();
-}
+
 
 export async function getMatchDetail(matchId: string): Promise<SportSRCDetail | null> {
-  const res = await fetchApi<any>(`type=detail&id=${matchId}`);
+  const res = await fetchApi<SportSRCResponse>(`type=detail&id=${matchId}`);
   if (!res || !res.data) return null;
-  const d = Array.isArray(res.data) ? res.data[0] : res.data;
+  const d = (Array.isArray(res.data) ? res.data[0] : res.data) as SportSRCDetailRaw;
   return {
     id: String(d.id || ""),
     homeTeam: d.homeTeam?.name || d.home_name || "TBD",
@@ -109,7 +145,7 @@ export async function getMatchDetail(matchId: string): Promise<SportSRCDetail | 
     awayScore: d.awayScore?.current ?? d.away_score,
     status: d.status || d.state || "unknown",
     date: d.date || "",
-    venue: d.venue?.name || d.venue || "",
+    venue: typeof d.venue === "object" ? d.venue?.name || "" : d.venue || "",
     streamUrl: d.streamUrl || d.stream?.url || "",
     league: d.league?.name || d.competition || "",
   };

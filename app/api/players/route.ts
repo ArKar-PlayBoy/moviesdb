@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllPlayers, slugify } from "@/data/worldcup-2026";
+import { getAllPlayers } from "@/data/worldcup-2026";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

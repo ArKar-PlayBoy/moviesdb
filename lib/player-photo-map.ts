@@ -16,8 +16,8 @@ interface WikiCache {
 }
 
 async function getCache(): Promise<WikiCache | null> {
-  const g = globalThis as any;
-  if (g[MEMO_KEY]) return g[MEMO_KEY];
+  const g = globalThis as unknown as { [key: string]: unknown };
+  if (g[MEMO_KEY]) return g[MEMO_KEY] as WikiCache;
   try {
     if (existsSync(CACHE_FILE)) {
       const data = JSON.parse(await readFile(CACHE_FILE, "utf-8"));
@@ -29,7 +29,7 @@ async function getCache(): Promise<WikiCache | null> {
 }
 
 async function persistCache(cache: WikiCache): Promise<void> {
-  const g = globalThis as any;
+  const g = globalThis as unknown as { [key: string]: unknown };
   g[MEMO_KEY] = cache;
   try {
     if (!existsSync(CACHE_DIR)) await mkdir(CACHE_DIR, { recursive: true });

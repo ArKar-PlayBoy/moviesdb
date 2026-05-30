@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import PlayerAvatar from "@/components/player-avatar";
-import { Trophy, Goal, Medal, ChevronLeft, ChevronRight, Users, Clock } from "lucide-react";
+import { Goal, Medal, ChevronLeft, ChevronRight, Users, Clock } from "lucide-react";
 
 const PER_PAGE = 12;
 

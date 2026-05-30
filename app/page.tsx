@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import TEAMS, { GROUPS, MATCHES, getTeamsByGroup, getTeamById, getGroupStandings, getStarOfTheWeek, getTopScorers, getVenues, getAllPlayers, slugify, getRecentPOTMs } from "@/data/worldcup-2026";
+import TEAMS, { GROUPS, MATCHES, getTeamById, getGroupStandings, getStarOfTheWeek, getTopScorers, getVenues, getAllPlayers, slugify, getRecentPOTMs } from "@/data/worldcup-2026";
 import { getAllPlayerPhotos } from "@/lib/player-photo-map";
 
 import PlayerAvatar from "@/components/player-avatar";
@@ -125,7 +125,7 @@ function RecentPOTMSection() {
         </div>
       ) : (
         <div className="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-2 -mx-1 px-1 scrollbar-none sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0">
-          {recent.map((potm, i) => (
+          {recent.map((potm) => (
             <Link
               key={`${potm.matchId}-${potm.playerName}`}
               href={`/player/${slugify(potm.playerName)}`}
@@ -360,7 +360,6 @@ export default async function Home() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {GROUPS.map(group => {
-            const teams = getTeamsByGroup(group);
             const standings = getGroupStandings(group);
             return (
               <div key={group} className="bg-card rounded-xl border border-border overflow-hidden">

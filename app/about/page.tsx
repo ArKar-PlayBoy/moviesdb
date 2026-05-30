@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import TEAMS, { GROUPS, MATCHES, getAllPlayers, getVenues } from "@/data/worldcup-2026";
-import { Trophy, Calendar, MapPin, Users, Shield, Globe, Star, Goal, ArrowRight, Timer, Flag } from "lucide-react";
+import { Trophy, Calendar, MapPin, Users, Shield, Globe, Star, Goal, Timer, Flag } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About — WorldCup 2026",
