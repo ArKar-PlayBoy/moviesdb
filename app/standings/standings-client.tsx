@@ -73,7 +73,7 @@ export default function StandingsClient() {
         ))}
       </div>
 
-      <div className="bg-card rounded-xl border border-border overflow-hidden animate-in animate-in-delay-2">
+      <div className="bg-card rounded-xl border border-border overflow-x-auto animate-in animate-in-delay-2">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/50">
@@ -119,7 +119,7 @@ export default function StandingsClient() {
                         {i === standings.length - 1 && standings.length > 2 && <TrendingDown className="h-3.5 w-3.5 text-red-500" />}
                       </div>
                     </Link>
-                    <div className="flex items-center gap-2 mt-1.5">
+                    <div className="hidden sm:flex items-center gap-2 mt-1.5">
                       <div className="flex-1 h-1.5 rounded-full bg-green-500/10 overflow-hidden">
                         <div className="h-full rounded-full bg-green-500/60 transition-all duration-500" style={{ width: `${gfPercent}%` }} />
                       </div>
@@ -127,7 +127,7 @@ export default function StandingsClient() {
                         <div className="h-full rounded-full bg-red-500/60 transition-all duration-500" style={{ width: `${gaPercent}%` }} />
                       </div>
                     </div>
-                    <div className="flex items-center justify-between text-[9px] text-muted-foreground/60 mt-0.5">
+                    <div className="hidden sm:flex items-center justify-between text-[9px] text-muted-foreground/60 mt-0.5">
                       <span>GF {s.goalsFor}</span>
                       <span>GA {s.goalsAgainst}</span>
                     </div>
