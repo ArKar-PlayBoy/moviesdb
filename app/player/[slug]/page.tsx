@@ -85,7 +85,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
   return (
     <div>
       {/* ===== HERO SECTION ===== */}
-      <div className="relative rounded-[2rem] overflow-hidden mb-10 min-h-[420px] md:min-h-[500px]">
+      <div className="relative rounded-[2rem] overflow-hidden mb-10 min-h-[320px] md:min-h-[500px]">
         {/* Backdrop — gradient only, photo appears in avatar below */}
         <div className={`absolute inset-0 bg-gradient-to-br ${theme.gradient}`} />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/20" />
@@ -266,7 +266,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
                       <div key={key} className="group">
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">{attrLabels[key] || key}</span>
-                          <span className={`text-sm font-black tabular-nums tabular-nums ${val >= 80 ? theme.accent : val >= 60 ? "text-foreground" : "text-muted-foreground"}`}>
+                          <span className={`text-sm font-black tabular-nums ${val >= 80 ? theme.accent : val >= 60 ? "text-foreground" : "text-muted-foreground"}`}>
                             {val}
                           </span>
                         </div>

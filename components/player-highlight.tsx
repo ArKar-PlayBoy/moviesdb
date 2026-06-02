@@ -83,7 +83,7 @@ export default function PlayerHighlight({ name, teamName, position, age, photoUr
               title={`${name} - ${tab.label}`}
               className="w-full h-full"
               allow="autoplay; fullscreen"
-              sandbox="allow-scripts allow-same-origin allow-presentation"
+              sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"
               onLoad={() => setPlayerLoaded(true)}
             />
           </div>

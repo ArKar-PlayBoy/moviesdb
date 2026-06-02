@@ -48,7 +48,7 @@ async function fetchPlayerData(name: string): Promise<{ photo: string | null; de
     return {
       photo: data?.thumbnail?.source || null,
       description: data?.extract || null,
-      wikipediaUrl: data?.content_urls?.wikipedia || null,
+      wikipediaUrl: data?.content_urls?.desktop?.page || null,
     };
   } catch {
     return { photo: null, description: null, wikipediaUrl: null };

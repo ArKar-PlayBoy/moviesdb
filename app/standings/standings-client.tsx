@@ -42,6 +42,7 @@ export default function StandingsClient() {
   const group = GROUPS[groupIdx];
 
   const topGF = Math.max(...standings.map(s => s.goalsFor), 1);
+  const maxGA = Math.max(...standings.map(s => s.goalsAgainst), 1);
 
   return (
     <div>
@@ -94,7 +95,7 @@ export default function StandingsClient() {
             {standings.map((s, i) => {
               const qualified = i < 2;
               const gfPercent = Math.min(100, (s.goalsFor / topGF) * 100);
-              const gaPercent = Math.min(100, (s.goalsAgainst / Math.max(...standings.map(x => x.goalsAgainst), 1)) * 100);
+              const gaPercent = Math.min(100, (s.goalsAgainst / maxGA) * 100);
               return (
                 <tr key={s.teamId} className={`border-b border-border last:border-0 transition-all duration-200 hover:bg-secondary/20 ${
                   qualified ? "bg-primary/[0.015]" : ""

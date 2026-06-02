@@ -70,7 +70,7 @@ export default function TopScorersClient({ scorerPhotos }: { scorerPhotos: Recor
           </p>
           <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-muted-foreground">
             <Clock className="h-3 w-3" />
-            <span>Tournament starts in 15 days</span>
+            <span>Tournament starts June 11, 2026</span>
           </div>
         </div>
       ) : (

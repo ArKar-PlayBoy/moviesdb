@@ -46,7 +46,7 @@ const PlayersContent: FC<PlayersContentProps> = ({ initialPhotos, worldCupSelect
       .catch(() => {});
   }, []);
 
-  const safePlayers = useMemo(() => allPlayers || [], [allPlayers]);
+  const safePlayers = allPlayers;
 
   const selectionFiltered = useMemo(() => {
     if (showAll || !worldCupSelection) return safePlayers;

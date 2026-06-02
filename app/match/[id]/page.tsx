@@ -382,7 +382,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
                 title={`${t1.name} vs ${t2.name} highlights`}
                 className="w-full h-full"
                 allow="autoplay; fullscreen"
-                sandbox="allow-scripts allow-same-origin allow-presentation"
+                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"
               />
             </div>
           ) : (
