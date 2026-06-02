@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeftRight, Search, X } from "lucide-react";
+import { ArrowLeftRight, Search, X, TrendingUp, Swords } from "lucide-react";
 
 interface CompareTeam {
   id: string; name: string; flag: string; fifaRanking: number;
@@ -15,9 +16,23 @@ interface StandingEntry {
   drawn: number; lost: number; goalsFor: number; goalsAgainst: number; points: number;
 }
 
+interface MatchResult {
+  id: string; date: string; venue: string; stage: string;
+  team1: string; team2: string; team1Name: string; team2Name: string;
+  team1Flag: string; team2Flag: string; score1: number; score2: number;
+  liveStatus: string;
+}
+
+function useDebounce(value: string, ms: number) {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => { const id = setTimeout(() => setDebounced(value), ms); return () => clearTimeout(id); }, [value, ms]);
+  return debounced;
+}
+
 export default function ComparePage() {
   const [teams, setTeams] = useState<CompareTeam[]>([]);
   const [standings, setStandings] = useState<Record<string, StandingEntry[]>>({});
+  const [allMatches, setAllMatches] = useState<MatchResult[]>([]);
   const [team1, setTeam1] = useState("");
   const [team2, setTeam2] = useState("");
   const [search1, setSearch1] = useState("");
@@ -26,22 +41,44 @@ export default function ComparePage() {
   const [open2, setOpen2] = useState(false);
 
   useEffect(() => {
-    fetch("/api/teams")
-      .then((r) => r.json())
-      .then(setTeams)
-      .catch(() => {});
-    fetch("/api/teams/standings")
-      .then((r) => r.json())
-      .then(setStandings)
-      .catch(() => {});
+    fetch("/api/teams").then((r) => r.json()).then(setTeams).catch(() => {});
+    fetch("/api/teams/standings").then((r) => r.json()).then(setStandings).catch(() => {});
+    fetch("/api/matches?limit=200").then((r) => r.json()).then(setAllMatches).catch(() => {});
   }, []);
 
   const safeTeams = teams || [];
-  const filtered1 = safeTeams.filter((t) => t.name.toLowerCase().includes(search1.toLowerCase()));
-  const filtered2 = safeTeams.filter((t) => t.name.toLowerCase().includes(search2.toLowerCase()));
+  const debounced1 = useDebounce(search1, 150);
+  const debounced2 = useDebounce(search2, 150);
+  const filtered1 = safeTeams.filter((t) => t.name.toLowerCase().includes(debounced1.toLowerCase()));
+  const filtered2 = safeTeams.filter((t) => t.name.toLowerCase().includes(debounced2.toLowerCase()));
 
   const t1 = safeTeams.find((t) => t.id === team1);
   const t2 = safeTeams.find((t) => t.id === team2);
+
+  const h2h = useMemo(() => {
+    if (!t1 || !t2) return null;
+    const matches = allMatches.filter(
+      (m) => (m.team1 === t1.id && m.team2 === t2.id) || (m.team1 === t2.id && m.team2 === t1.id)
+    ).filter(m => m.liveStatus === "finished");
+    const t1Wins = matches.filter(m => (m.team1 === t1.id && m.score1 > m.score2) || (m.team2 === t1.id && m.score2 > m.score1)).length;
+    const t2Wins = matches.filter(m => (m.team1 === t2.id && m.score1 > m.score2) || (m.team2 === t2.id && m.score2 > m.score1)).length;
+    const draws = matches.length - t1Wins - t2Wins;
+    return { matches, t1Wins, t2Wins, draws };
+  }, [t1, t2, allMatches]);
+
+  const form1 = useMemo(() => {
+    if (!t1) return [];
+    return allMatches.filter(m => (m.team1 === t1.id || m.team2 === t1.id) && m.liveStatus === "finished")
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 5);
+  }, [t1, allMatches]);
+
+  const form2 = useMemo(() => {
+    if (!t2) return [];
+    return allMatches.filter(m => (m.team1 === t2.id || m.team2 === t2.id) && m.liveStatus === "finished")
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 5);
+  }, [t2, allMatches]);
 
   return (
     <div>
@@ -59,7 +96,7 @@ export default function ComparePage() {
           filtered={filtered1}
           open={open1}
           setOpen={setOpen1}
-          onSelect={(id) => { setTeam1(id); setOpen1(false); }}
+          onSelect={(id) => { setTeam1(id); setOpen1(false); setSearch1(""); }}
         />
         <div className="flex items-center justify-center py-4">
           <ArrowLeftRight className="h-6 w-6 text-muted-foreground" />
@@ -72,7 +109,7 @@ export default function ComparePage() {
           filtered={filtered2}
           open={open2}
           setOpen={setOpen2}
-          onSelect={(id) => { setTeam2(id); setOpen2(false); }}
+          onSelect={(id) => { setTeam2(id); setOpen2(false); setSearch2(""); }}
         />
       </div>
 
@@ -98,14 +135,66 @@ export default function ComparePage() {
             </div>
           </div>
 
-          <div className="bg-card rounded-xl border border-border p-6 text-center">
-            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">Head to Head</h3>
-            <p className="text-muted-foreground">
-              {t1.flag} {t1.name} {t1.group === t2.group ? `(Group ${t1.group})` : "(different groups)"}
-              <span className="mx-3 text-primary font-bold">vs</span>
-              {t2.flag} {t2.name}
-            </p>
-            {t1.group === t2.group && <p className="text-sm text-muted-foreground mt-2">These teams are in the same group and will face each other in the group stage.</p>}
+          <div className="bg-card rounded-xl border border-border p-6">
+            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">
+              <Swords className="h-4 w-4 inline mr-1.5" />
+              Head to Head
+            </h3>
+            {h2h && h2h.matches.length > 0 ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-center gap-6 sm:gap-10 text-center">
+                  <div>
+                    <p className="text-2xl font-black text-green-600">{h2h.t1Wins}</p>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t1.name} wins</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-black text-muted-foreground">{h2h.draws}</p>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Draws</p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-black text-red-600">{h2h.t2Wins}</p>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t2.name} wins</p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {h2h.matches.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((m) => (
+                    <Link key={m.id} href={`/match/${m.id}`} className="flex items-center justify-between bg-secondary/30 rounded-lg px-4 py-2 hover:bg-secondary/50 transition-colors text-sm">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-base">{m.team1Flag}</span>
+                        <span className="font-medium truncate">{m.team1Name}</span>
+                      </div>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className={`font-bold tabular-nums ${m.score1 > m.score2 ? "text-green-600" : m.score1 === m.score2 ? "text-muted-foreground" : "text-red-600"}`}>{m.score1}</span>
+                        <span className="text-muted-foreground">-</span>
+                        <span className={`font-bold tabular-nums ${m.score2 > m.score1 ? "text-green-600" : m.score2 === m.score1 ? "text-muted-foreground" : "text-red-600"}`}>{m.score2}</span>
+                      </div>
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="font-medium truncate">{m.team2Name}</span>
+                        <span className="text-base">{m.team2Flag}</span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="text-center">
+                <p className="text-muted-foreground">
+                  {t1.flag} {t1.name} {t1.group === t2.group ? `(Group ${t1.group})` : "(different groups)"}
+                  <span className="mx-3 text-primary font-bold">vs</span>
+                  {t2.flag} {t2.name}
+                </p>
+                {t1.group === t2.group ? (
+                  <p className="text-sm text-muted-foreground mt-2">These teams are in the same group and will face each other in the group stage.</p>
+                ) : (
+                  <p className="text-sm text-muted-foreground mt-2">No past meetings between these teams.</p>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <FormCard teamName={t1.name} teamFlag={t1.flag} matches={form1} />
+            <FormCard teamName={t2.name} teamFlag={t2.flag} matches={form2} />
           </div>
         </div>
       )}
@@ -124,6 +213,69 @@ function getTeamEntry(standings: Record<string, StandingEntry[]>, teamId: string
     if (entry) return entry;
   }
   return undefined;
+}
+
+function resultColor(match: MatchResult, teamId: string) {
+  const isTeam1 = match.team1 === teamId;
+  const teamScore = isTeam1 ? match.score1 : match.score2;
+  const oppScore = isTeam1 ? match.score2 : match.score1;
+  if (teamScore > oppScore) return "bg-green-500/20 text-green-600 border-green-500/30";
+  if (teamScore < oppScore) return "bg-red-500/20 text-red-600 border-red-500/30";
+  return "bg-amber-500/20 text-amber-600 border-amber-500/30";
+}
+
+function resultLabel(match: MatchResult, teamId: string) {
+  const isTeam1 = match.team1 === teamId;
+  const teamScore = isTeam1 ? match.score1 : match.score2;
+  const oppScore = isTeam1 ? match.score2 : match.score1;
+  if (teamScore > oppScore) return "W";
+  if (teamScore < oppScore) return "L";
+  return "D";
+}
+
+function FormCard({ teamName, teamFlag, matches }: { teamName: string; teamFlag: string; matches: MatchResult[] }) {
+  return (
+    <div className="bg-card rounded-xl border border-border p-6">
+      <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">
+        <TrendingUp className="h-4 w-4 inline mr-1.5" />
+        {teamFlag} {teamName} — Form
+      </h3>
+      {matches.length > 0 ? (
+        <div className="space-y-2">
+          <div className="flex gap-2 mb-3">
+            {matches.slice(0, 5).map((m, i) => {
+              const isTeam1 = m.team1Name === teamName || m.team1Flag === teamFlag;
+              const tid = isTeam1 ? m.team1 : m.team2;
+              const label = resultLabel(m, tid);
+              const color = resultColor(m, tid);
+              return (
+                <span key={i} className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold border ${color}`}>
+                  {label}
+                </span>
+              );
+            })}
+          </div>
+          {matches.slice(0, 3).map((m) => {
+            const isTeam1 = m.team1Name === teamName || m.team1Flag === teamFlag;
+            const opponent = isTeam1 ? m.team2Name : m.team1Name;
+            const oppFlag = isTeam1 ? m.team2Flag : m.team1Flag;
+            const teamScore = isTeam1 ? m.score1 : m.score2;
+            const oppScore = isTeam1 ? m.score2 : m.score1;
+            const w = teamScore > oppScore ? "W" : teamScore < oppScore ? "L" : "D";
+            return (
+              <div key={m.id} className="flex items-center justify-between text-xs text-muted-foreground bg-secondary/20 rounded-lg px-3 py-1.5">
+                <span className="truncate">{oppFlag} {opponent}</span>
+                <span className="tabular-nums font-medium">{teamScore}-{oppScore}</span>
+                <span className={`font-bold ${w === "W" ? "text-green-600" : w === "L" ? "text-red-600" : "text-amber-600"}`}>{w}</span>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <p className="text-sm text-muted-foreground">No recent matches.</p>
+      )}
+    </div>
+  );
 }
 
 function TeamSelector({ label, team, search, setSearch, filtered, open, setOpen, onSelect }: {

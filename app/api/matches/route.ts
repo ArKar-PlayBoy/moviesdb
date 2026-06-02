@@ -6,6 +6,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const teamId = searchParams.get("teamId");
   const stage = searchParams.get("stage");
+  const limitParam = searchParams.get("limit");
 
   let matches = MATCHES;
 
@@ -14,6 +15,9 @@ export async function GET(request: Request) {
   }
   if (stage) {
     matches = matches.filter((m) => m.stage === stage);
+  }
+  if (limitParam) {
+    matches = matches.slice(0, parseInt(limitParam, 10));
   }
 
   const enriched = await Promise.all(matches.map(async (m) => {

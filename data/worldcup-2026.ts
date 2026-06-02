@@ -852,6 +852,29 @@ export interface ScorerEntry {
   teamGroup: string;
 }
 
+export interface AssistEntry {
+  playerName: string;
+  teamId: string;
+  teamName: string;
+  teamFlag: string;
+  position: string;
+  assists: number;
+  matches: number;
+  teamGroup: string;
+}
+
+export interface CardEntry {
+  playerName: string;
+  teamId: string;
+  teamName: string;
+  teamFlag: string;
+  position: string;
+  yellowCards: number;
+  redCards: number;
+  matches: number;
+  teamGroup: string;
+}
+
 export interface MatchGoalScorer {
   playerName: string;
   teamId: string;
@@ -918,6 +941,80 @@ export function getTopScorers(limit = 30): ScorerEntry[] {
     for (const sc of gs.scorers2) { const k = `${sc.teamId}-${sc.playerName}`; if (map[k]) map[k].goals++; }
   }
   return Object.values(map).filter(s => s.goals > 0).sort((a, b) => b.goals - a.goals || b.matches - a.matches).slice(0, limit);
+}
+
+export function getTopAssists(limit = 30): AssistEntry[] {
+  const all = getAllPlayers();
+  const map: Record<string, AssistEntry> = {};
+  for (const p of all) {
+    const k = `${p.teamId}-${p.name}`;
+    map[k] = { playerName: p.name, teamId: p.teamId, teamName: p.teamName, teamFlag: p.teamFlag, position: p.position, assists: 0, matches: 0, teamGroup: getTeamById(p.teamId)?.group || "" };
+  }
+  for (const m of MATCHES) {
+    const t1 = getTeamById(m.team1);
+    const t2 = getTeamById(m.team2);
+    if (!t1 || !t2) continue;
+    if (!isMatchDatePassed(m.date)) continue;
+    for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    const gs = getMatchGoalScorers(m.id, m.team1, m.team2, m.date);
+    const allScorers = [...gs.scorers1, ...gs.scorers2];
+    const seed = seededRandom(`assists-${m.id}`);
+    for (const sc of allScorers) {
+      if (seed > 0.35) {
+        const teamPlayers = sc.teamId === m.team1 ? t1.players : t2.players;
+        const assistCandidates = teamPlayers.filter(p => p.name !== sc.playerName);
+        if (assistCandidates.length > 0) {
+          const idx = Math.floor(seededRandom(`${m.id}-${sc.playerName}`) * assistCandidates.length);
+          const k = `${sc.teamId}-${assistCandidates[idx].name}`;
+          if (map[k]) map[k].assists++;
+        }
+      }
+    }
+  }
+  return Object.values(map).filter(s => s.assists > 0).sort((a, b) => b.assists - a.assists || b.matches - a.matches).slice(0, limit);
+}
+
+export function getTopCards(limit = 30): CardEntry[] {
+  const posWeight: Record<string, number> = { DF: 0.35, MF: 0.30, FW: 0.20, GK: 0.05 };
+  const all = getAllPlayers();
+  const map: Record<string, CardEntry> = {};
+  for (const p of all) {
+    const k = `${p.teamId}-${p.name}`;
+    map[k] = { playerName: p.name, teamId: p.teamId, teamName: p.teamName, teamFlag: p.teamFlag, position: p.position, yellowCards: 0, redCards: 0, matches: 0, teamGroup: getTeamById(p.teamId)?.group || "" };
+  }
+  for (const m of MATCHES) {
+    const t1 = getTeamById(m.team1);
+    const t2 = getTeamById(m.team2);
+    if (!t1 || !t2) continue;
+    if (!isMatchDatePassed(m.date)) continue;
+    for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    const seed = seededRandom(`cards-${m.id}`);
+    const cardCount = Math.round(seed * 6);
+    for (let c = 0; c < cardCount; c++) {
+      const isRed = seededRandom(`${m.id}-card-${c}`) > 0.85;
+      const team = seededRandom(`${m.id}-card-team-${c}`) > 0.5 ? t1 : t2;
+      const weights = team.players.map(p => posWeight[p.position] || 0.10);
+      const total = weights.reduce((a, b) => a + b, 0);
+      const r = seededRandom(`${m.id}-card-player-${c}`) * total;
+      let cum = 0;
+      for (let i = 0; i < team.players.length; i++) {
+        cum += weights[i];
+        if (r < cum) {
+          const k = `${team.id}-${team.players[i].name}`;
+          if (map[k]) {
+            if (isRed) map[k].redCards++;
+            else map[k].yellowCards++;
+          }
+          break;
+        }
+      }
+    }
+  }
+  return Object.values(map).filter(s => s.yellowCards > 0 || s.redCards > 0)
+    .sort((a, b) => (b.yellowCards + b.redCards * 2) - (a.yellowCards + a.redCards * 2) || b.matches - a.matches)
+    .slice(0, limit);
 }
 
 export interface PlayerMatchPerformance {

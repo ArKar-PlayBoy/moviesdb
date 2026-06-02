@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import Link from "next/link";
-import { Trophy, Home, Calendar, Users, MapPin, Grid3X3, ArrowLeftRight, Goal, ListOrdered, Shield, Info } from "lucide-react";
+import { Trophy, Home, Calendar, Users, MapPin, Grid3X3, ArrowLeftRight, BarChart3, ListOrdered, Shield, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -11,6 +11,7 @@ import SearchButton from "@/components/search-button";
 import MobileNav from "@/components/mobile-nav";
 import Footer from "@/components/footer";
 import BackToTop from "@/components/back-to-top";
+import ServiceWorkerRegister from "@/components/service-worker-register";
 
 export const metadata: Metadata = {
   title: { default: "WorldCup 2026", template: "%s — WorldCup 2026" },
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
   keywords: ["World Cup 2026", "FIFA", "football", "soccer", "USA 2026", "Canada", "Mexico"],
   authors: [{ name: "WorldCup 2026" }],
   icons: { icon: "/icon.svg" },
+  themeColor: "#059669",
   openGraph: {
     title: "WorldCup 2026",
     description: "FIFA World Cup 2026 — Teams, matches, highlights, and schedules.",
@@ -42,6 +44,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <div className="min-h-screen flex flex-col">
+            <ServiceWorkerRegister />
             <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="container flex h-16 items-center justify-between px-3 md:px-4">
                 <div className="flex items-center gap-2 md:gap-6">
@@ -100,9 +103,9 @@ export default async function RootLayout({
                       </Link>
                     </Button>
                     <Button variant="ghost" size="sm" asChild>
-                      <Link href="/top-scorers">
-                        <Goal className="h-4 w-4 mr-2" />
-                        Top Scorers
+                      <Link href="/stats">
+                        <BarChart3 className="h-4 w-4 mr-2" />
+                        Stats
                       </Link>
                     </Button>
                     <Button variant="ghost" size="sm" asChild>

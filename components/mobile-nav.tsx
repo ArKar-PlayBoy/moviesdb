@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Home, Calendar, Users, MapPin, Grid3X3, Info, ArrowLeftRight, Shield, Goal, Trophy, ListOrdered } from "lucide-react";
+import { Menu, Home, Calendar, Users, MapPin, Grid3X3, Info, ArrowLeftRight, Shield, BarChart3, Trophy, ListOrdered } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
@@ -12,7 +12,7 @@ const LINKS = [
   { href: "/standings", label: "Standings", icon: ListOrdered },
   { href: "/teams", label: "Teams", icon: Shield },
   { href: "/players", label: "Players", icon: Users },
-  { href: "/top-scorers", label: "Top Scorers", icon: Goal },
+  { href: "/stats", label: "Stats", icon: BarChart3 },
   { href: "/venues", label: "Venues", icon: MapPin },
   { href: "/bracket", label: "Bracket", icon: Grid3X3 },
   { href: "/compare", label: "Compare", icon: ArrowLeftRight },
