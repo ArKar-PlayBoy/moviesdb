@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Play, Goal, Star, ExternalLink, X, Loader2 } from "lucide-react";
+import { Play, Goal, Star, ExternalLink, X, Loader2, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PlayerAvatar from "@/components/player-avatar";
 import { getYouTubeEmbedUrl, getYouTubeSearchUrl } from "@/lib/youtube";
@@ -24,14 +24,33 @@ const TABS: { key: HighlightTab; label: string; query: string; icon: typeof Play
   { key: "moments", label: "Best Moments", query: "best moments", icon: Star },
 ];
 
+const WC_START = new Date("2026-06-11T00:00:00");
+
+function isWcStarted(): boolean {
+  return new Date() >= WC_START;
+}
+
 export default function PlayerHighlight({ name, teamName, position, age, photoUrl, onClose = () => {} }: PlayerHighlightProps) {
   const [activeTab, setActiveTab] = useState<HighlightTab>("highlights");
   const [playerActivated, setPlayerActivated] = useState(false);
   const [playerLoaded, setPlayerLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [started] = useState(isWcStarted);
 
   const tab = TABS.find((t) => t.key === activeTab)!;
   const embedUrl = getYouTubeEmbedUrl(name, teamName, tab.query);
   const searchUrl = getYouTubeSearchUrl(name, teamName, tab.query);
+
+  function handleActivate() {
+    if (playerActivated) {
+      setPlayerActivated(false);
+      return;
+    }
+    setPlayerActivated(true);
+    setHasError(false);
+    setPlayerLoaded(false);
+  }
+
   return (
     <div className="bg-card rounded-xl border border-border p-6 mb-8">
       <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
@@ -42,7 +61,7 @@ export default function PlayerHighlight({ name, teamName, position, age, photoUr
         </div>
         <div className="flex items-center gap-2">
           <Button
-            onClick={() => setPlayerActivated(!playerActivated)}
+            onClick={handleActivate}
             className="gap-2"
           >
             <Play className="h-4 w-4 fill-current" />
@@ -54,7 +73,22 @@ export default function PlayerHighlight({ name, teamName, position, age, photoUr
         </div>
       </div>
 
-      {playerActivated && (
+      {playerActivated && !started && (
+        <div className="bg-muted/30 rounded-lg border border-border p-8 text-center">
+          <Calendar className="h-10 w-10 text-muted-foreground/40 mx-auto mb-3" />
+          <h4 className="font-bold text-lg mb-1">Highlights Coming Soon</h4>
+          <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+            Match highlights will be available once the World Cup begins on <strong>June 11, 2026</strong>.
+          </p>
+          <p className="text-xs text-muted-foreground/60 mt-3">
+            <a href={searchUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors inline-flex items-center gap-1">
+              Search on YouTube <ExternalLink className="h-3 w-3" />
+            </a>
+          </p>
+        </div>
+      )}
+
+      {playerActivated && started && (
         <>
           <div className="flex flex-wrap gap-2 mb-4">
             {TABS.map((t) => (
@@ -62,7 +96,7 @@ export default function PlayerHighlight({ name, teamName, position, age, photoUr
                 key={t.key}
                 variant={activeTab === t.key ? "default" : "outline"}
                 size="sm"
-                onClick={() => { setActiveTab(t.key); setPlayerLoaded(false); }}
+                onClick={() => { setActiveTab(t.key); setPlayerLoaded(false); setHasError(false); }}
                 className="flex items-center gap-1.5"
               >
                 <t.icon className={`h-3.5 w-3.5 ${t.key === "goals" ? "fill-current" : ""}`} />
@@ -72,20 +106,34 @@ export default function PlayerHighlight({ name, teamName, position, age, photoUr
           </div>
 
           <div className="relative w-full aspect-video bg-black rounded-lg overflow-hidden">
-            {!playerLoaded && (
+            {!playerLoaded && !hasError && (
               <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
             )}
-            <iframe
-              key={`${name}-${activeTab}`}
-              src={embedUrl}
-              title={`${name} - ${tab.label}`}
-              className="w-full h-full"
-              allow="autoplay; fullscreen"
-              sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"
-              onLoad={() => setPlayerLoaded(true)}
-            />
+            {hasError ? (
+              <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
+                <div className="text-center p-6">
+                  <p className="text-sm text-muted-foreground mb-2">Could not load video</p>
+                  <a href={searchUrl} target="_blank" rel="noopener noreferrer">
+                    <Button variant="outline" size="sm">
+                      Search on YouTube <ExternalLink className="h-3 w-3 ml-1" />
+                    </Button>
+                  </a>
+                </div>
+              </div>
+            ) : (
+              <iframe
+                key={`${name}-${activeTab}`}
+                src={embedUrl}
+                title={`${name} - ${tab.label}`}
+                className="w-full h-full"
+                allow="autoplay; fullscreen"
+                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"
+                onLoad={() => setPlayerLoaded(true)}
+                onError={() => setHasError(true)}
+              />
+            )}
           </div>
 
           <p className="text-xs text-muted-foreground mt-2 text-center">
