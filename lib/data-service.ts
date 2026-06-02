@@ -1,4 +1,5 @@
 import { getKnockoutBracket as getSimulatedBracket, type KnockoutMatch } from "@/data/worldcup-2026";
+import { getMatchResult } from "@/lib/storage";
 
 interface SportSRCMatchRaw {
   id?: string | number;
@@ -121,6 +122,11 @@ export async function getMatchData(
 ): Promise<MatchDetail> {
   if (!isWcStarted()) {
     return { score: [0, 0], goals: [], status: "scheduled" };
+  }
+
+  const cached = await getMatchResult(matchId);
+  if (cached) {
+    return { score: cached.score, goals: cached.goals, status: cached.status };
   }
 
   const sportsrc = await fetchSportSRC<SportSRCResponse>(`type=detail&id=${matchId}`);

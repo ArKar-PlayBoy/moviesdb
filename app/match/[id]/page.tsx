@@ -28,6 +28,8 @@ export function generateStaticParams() {
   return MATCHES.map((m) => ({ id: m.id }));
 }
 
+export const revalidate = 60;
+
 export default async function MatchDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const match = MATCHES.find(m => m.id === id);

@@ -1,9 +1,18 @@
 import { NextResponse } from "next/server";
 import TEAMS, { getGroupStandings, type TeamData } from "@/data/worldcup-2026";
+import { getStandings } from "@/lib/data-service";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const group = searchParams.get("group") || "";
+
+  const tryLive = !group ? await getStandings("A") : await getStandings(group.toUpperCase());
+
+  if (tryLive) {
+    return NextResponse.json(tryLive, {
+      headers: { "Cache-Control": "public, s-maxage=30, stale-while-revalidate=120" },
+    });
+  }
 
   let body: Record<string, unknown>;
 

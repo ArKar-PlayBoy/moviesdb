@@ -20,6 +20,8 @@ export function generateStaticParams() {
   return getAllTeams().map((t) => ({ id: t.id }));
 }
 
+export const revalidate = 120;
+
 export default async function TeamPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const team = getTeamById(id);

@@ -20,13 +20,11 @@ const iconSizeMap = {
 };
 
 export default function PlayerAvatar({ name, photoUrl, size = "md", className = "" }: PlayerAvatarProps) {
-  const photo = photoUrl === undefined ? null : photoUrl;
-
-  if (photo) {
+  if (photoUrl) {
     return (
       <div
         className={`${sizeMap[size]} rounded-full ring-2 ring-border shrink-0 bg-cover bg-center ${className}`}
-        style={{ backgroundImage: `url(${photo})` }}
+        style={{ backgroundImage: `url(${photoUrl})` }}
         role="img"
         aria-label={name}
       />

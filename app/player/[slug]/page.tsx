@@ -9,7 +9,7 @@ import PlayerAvatar from "@/components/player-avatar";
 import RadarChart from "@/components/radar-chart";
 import ShareButton from "@/components/share-button";
 import { getPlayerAttributes, isGkAttributes, OF_ATTR_LABELS, OF_ATTR_COLORS, GK_ATTR_LABELS, GK_ATTR_COLORS } from "@/lib/player-attributes";
-import { getAllPlayerPhotos, getPlayerDescription, getPlayerWikiUrl } from "@/lib/player-photo-map";
+import { getPlayerData, getPlayerPhotoSet } from "@/lib/player-photo-map";
 
 function titleCase(name: string): string {
   return name.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
@@ -57,13 +57,11 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
   if (!result) notFound();
 
   const { player, team } = result;
-  const allPhotosMap = await getAllPlayerPhotos();
-  const photo = allPhotosMap[player.name] ?? null;
-  const description = await getPlayerDescription(player.name);
-  const wikiUrl = await getPlayerWikiUrl(player.name);
+  const { photo, description, wikipediaUrl } = await getPlayerData(player.name);
 
   const { prev, next } = getAdjacentPlayers(player.name);
   const related = getRelatedPlayers(player.name, team.id, player.position);
+  const relatedPhotos = related.length > 0 ? await getPlayerPhotoSet(related.map(p => p.name)) : {};
 
   const performances = getPlayerMatchPerformances(player.name, team.id);
   const totalGoals = performances.reduce((s, p) => s + p.goals, 0);
@@ -80,7 +78,6 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
   const isGk = isGkAttributes(attributes, player.position);
   const attrLabels = isGk ? GK_ATTR_LABELS : OF_ATTR_LABELS;
   const attrColors = isGk ? GK_ATTR_COLORS : OF_ATTR_COLORS;
-  const relatedPhotos = allPhotosMap;
 
   return (
     <div>
@@ -310,8 +307,8 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
                   <div className="h-px flex-1 bg-border" />
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
-                {wikiUrl && (
-                  <a href={wikiUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-3">
+                {wikipediaUrl && (
+                  <a href={wikipediaUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-primary hover:underline mt-3">
                     Read more on Wikipedia →
                   </a>
                 )}

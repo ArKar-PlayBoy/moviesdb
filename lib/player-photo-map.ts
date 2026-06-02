@@ -55,12 +55,11 @@ async function fetchPlayerData(name: string): Promise<{ photo: string | null; de
   }
 }
 
-export async function getAllPlayerPhotos(): Promise<Record<string, string | null>> {
+async function ensureCached(): Promise<WikiCache | null> {
   const cached = await getCache();
-  if (cached) return cached.photos;
+  if (cached) return cached;
 
   const players = getAllPlayers();
-
   const photos: Record<string, string | null> = {};
   const descriptions: Record<string, string | null> = {};
   const wikiUrls: Record<string, string | null> = {};
@@ -78,21 +77,54 @@ export async function getAllPlayerPhotos(): Promise<Record<string, string | null
 
   const cache: WikiCache = { photos, descriptions, wikiUrls };
   await persistCache(cache);
+  return cache;
+}
+
+export async function getPlayerData(name: string): Promise<{ photo: string | null; description: string | null; wikipediaUrl: string | null }> {
+  const cache = await ensureCached();
+  if (!cache) return { photo: null, description: null, wikipediaUrl: null };
+  return {
+    photo: cache.photos[name] ?? null,
+    description: cache.descriptions[name] ?? null,
+    wikipediaUrl: cache.wikiUrls[name] ?? null,
+  };
+}
+
+export async function getAllPlayerPhotos(): Promise<Record<string, string | null>> {
+  const cache = await ensureCached();
+  return cache?.photos ?? {};
+}
+
+export async function getPlayerPhotoSet(names: string[]): Promise<Record<string, string | null>> {
+  const photos: Record<string, string | null> = {};
+  const missing: string[] = [];
+  let existingCache = await getCache();
+
+  if (existingCache) {
+    for (const name of names) {
+      if (name in existingCache.photos) {
+        photos[name] = existingCache.photos[name];
+      } else {
+        missing.push(name);
+      }
+    }
+  } else {
+    missing.push(...names);
+  }
+
+  if (missing.length > 0) {
+    const entries = await Promise.all(missing.map(fetchPlayerData));
+    for (let i = 0; i < missing.length; i++) {
+      photos[missing[i]] = entries[i].photo;
+    }
+    if (!existingCache) {
+      existingCache = { photos: {}, descriptions: {}, wikiUrls: {} };
+    }
+    for (const name of missing) {
+      existingCache.photos[name] = photos[name];
+    }
+    await persistCache(existingCache);
+  }
+
   return photos;
-}
-
-export async function getPlayerDescription(name: string): Promise<string | null> {
-  const cached = await getCache();
-  if (cached) return cached.descriptions[name] ?? null;
-  await getAllPlayerPhotos();
-  const refilled = await getCache();
-  return refilled?.descriptions[name] ?? null;
-}
-
-export async function getPlayerWikiUrl(name: string): Promise<string | null> {
-  const cached = await getCache();
-  if (cached) return cached.wikiUrls[name] ?? null;
-  await getAllPlayerPhotos();
-  const refilled = await getCache();
-  return refilled?.wikiUrls[name] ?? null;
 }

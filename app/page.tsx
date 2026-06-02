@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import TEAMS, { GROUPS, MATCHES, getTeamById, getGroupStandings, getStarOfTheWeek, getTopScorers, getVenues, getAllPlayers, slugify, getRecentPOTMs } from "@/data/worldcup-2026";
 import { getAllPlayerPhotos } from "@/lib/player-photo-map";
+import { getLiveScores } from "@/lib/data-service";
 
 import PlayerAvatar from "@/components/player-avatar";
 import Countdown from "@/components/countdown";
@@ -163,6 +164,7 @@ export default async function Home() {
   const totalVenues = getVenues().length;
   const totalPlayers = getAllPlayers().length;
   const topScorers = getTopScorers(5);
+  const liveMatches = await getLiveScores();
 
   return (
     <div className="space-y-10 md:space-y-14">
@@ -348,6 +350,24 @@ export default async function Home() {
         </div>
       </section>
 
+      {liveMatches.length > 0 && (
+        <section className="bg-gradient-to-r from-red-500/10 via-red-500/5 to-transparent rounded-2xl border border-red-500/20 p-5 animate-pulse">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
+            <h2 className="text-lg font-bold">Live Now</h2>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+          <div className="space-y-2">
+            {liveMatches.map((m) => (
+              <div key={m.id} className="flex items-center justify-between bg-card/50 rounded-lg p-3">
+                <span className="font-medium">{m.team1Score} - {m.team2Score}</span>
+                <span className="text-xs text-muted-foreground">{m.venue}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* ===== GROUPS AT A GLANCE ===== */}
       <section>
         <div className="flex items-center gap-3 mb-4 md:mb-6">
@@ -398,6 +418,8 @@ export default async function Home() {
     </div>
   );
 }
+
+export const revalidate = 120;
 
 function StatCard({ icon: Icon, value, label, sub }: { icon: typeof Trophy; value: string; label: string; sub?: string }) {
   return (

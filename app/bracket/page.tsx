@@ -3,6 +3,8 @@ import { getBracketData } from "@/lib/data-service";
 import { getTeamName, getTeamFlag } from "@/data/worldcup-2026";
 import { Trophy } from "lucide-react";
 
+export const revalidate = 120;
+
 export const metadata: Metadata = {
   title: "Knockout Bracket — WorldCup 2026",
   description: "Predicted knockout bracket for the FIFA World Cup 2026 based on group stage simulations.",

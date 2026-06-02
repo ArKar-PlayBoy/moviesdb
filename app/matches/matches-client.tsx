@@ -127,9 +127,9 @@ export default function MatchesClient({ starPhotos }: { starPhotos: Record<strin
                 <div className="flex items-center gap-2 mb-2">
                   {/* Team 1 */}
                   <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <button type="button" onClick={e => { e.stopPropagation(); e.preventDefault(); router.push(`/team/${match.team1}`); }} className="shrink-0 cursor-pointer">
+                    <span onClick={e => { e.stopPropagation(); router.push(`/team/${match.team1}`); }} className="shrink-0 cursor-pointer">
                       <span className="text-3xl hover:scale-125 transition-transform inline-block drop-shadow-sm">{match.team1Flag}</span>
-                    </button>
+                    </span>
                     <span className={`text-sm font-semibold truncate ${played ? (t1Won ? "text-foreground" : "text-muted-foreground") : "text-foreground"}`}>
                       {match.team1Name}
                     </span>
@@ -158,9 +158,9 @@ export default function MatchesClient({ starPhotos }: { starPhotos: Record<strin
 
                 {/* Team 2 */}
                 <div className="flex items-center gap-2 mb-3">
-                  <button type="button" onClick={e => { e.stopPropagation(); e.preventDefault(); router.push(`/team/${match.team2}`); }} className="shrink-0 cursor-pointer">
-                    <span className="text-3xl hover:scale-125 transition-transform inline-block drop-shadow-sm">{match.team2Flag}</span>
-                  </button>
+                    <span onClick={e => { e.stopPropagation(); router.push(`/team/${match.team2}`); }} className="shrink-0 cursor-pointer">
+                      <span className="text-3xl hover:scale-125 transition-transform inline-block drop-shadow-sm">{match.team2Flag}</span>
+                    </span>
                   <span className={`text-sm font-semibold truncate ${played ? (!t1Won ? "text-foreground" : "text-muted-foreground") : "text-foreground"}`}>
                     {match.team2Name}
                   </span>
@@ -177,16 +177,16 @@ export default function MatchesClient({ starPhotos }: { starPhotos: Record<strin
                     <span className="truncate">{match.venue}</span>
                   </span>
                   {!played && (
-                    <a
-                      href="https://www.fifa.com/fifaplus/en/tournaments/mens/worldcup/canadamexicousa2026"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={e => e.stopPropagation()}
-                      className="ml-auto inline-flex items-center gap-1 font-medium text-green-600 bg-green-500/10 hover:bg-green-500/20 px-2 py-0.5 rounded-md transition-colors"
+                    <span
+                      onClick={e => {
+                        e.stopPropagation();
+                        window.open("https://www.fifa.com/fifaplus/en/tournaments/mens/worldcup/canadamexicousa2026", "_blank", "noopener,noreferrer");
+                      }}
+                      className="ml-auto inline-flex items-center gap-1 font-medium text-green-600 bg-green-500/10 hover:bg-green-500/20 px-2 py-0.5 rounded-md transition-colors cursor-pointer"
                     >
                       <Tv className="h-3 w-3" />
                       Watch
-                    </a>
+                    </span>
                   )}
                 </div>
 
