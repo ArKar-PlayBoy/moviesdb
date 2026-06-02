@@ -108,7 +108,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
         {/* Hero content */}
         <div className="relative z-10 px-6 md:px-8 pb-6 md:pb-8 flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-10 absolute bottom-0 left-0 right-0">
           {/* Avatar */}
-          <div className="relative shrink-0 -mb-16 md:-mb-20">
+          <div className="relative shrink-0 md:-mb-20">
             <div className={`absolute -inset-2 rounded-[2rem] bg-gradient-to-b ${theme.gradient} blur-2xl opacity-60`} />
             <div className={`absolute -inset-1 rounded-[1.5rem] ${theme.light} blur-xl`} />
             {photo ? (
