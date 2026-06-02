@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Users, Trophy } from "lucide-react";
 import {
   CommandDialog,
@@ -20,6 +20,7 @@ interface SearchResult {
 }
 
 export default function SearchPalette() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -60,21 +61,27 @@ export default function SearchPalette() {
         {results.length > 0 && (
           <CommandGroup heading="Results">
             {results.map((r) => (
-              <CommandItem key={`${r.type}-${r.label}`} value={`${r.type}-${r.label}`} asChild>
-                <Link href={r.href} onClick={() => setOpen(false)} className="flex items-center gap-3">
-                  <span className="shrink-0 w-7 h-7 rounded-full bg-secondary flex items-center justify-center">
-                    {r.type === "player" ? (
-                      <Users className="h-3.5 w-3.5" />
-                    ) : (
-                      <Trophy className="h-3.5 w-3.5" />
-                    )}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-medium truncate">{r.label}</p>
-                    <p className="text-xs text-muted-foreground truncate">{r.subtitle}</p>
-                  </div>
-                  <span className="text-[10px] uppercase text-muted-foreground font-medium">{r.type}</span>
-                </Link>
+              <CommandItem
+                key={`${r.type}-${r.label}`}
+                value={`${r.type}-${r.label}`}
+                onSelect={() => {
+                  setOpen(false);
+                  router.push(r.href);
+                }}
+                className="flex items-center gap-3"
+              >
+                <span className="shrink-0 w-7 h-7 rounded-full bg-secondary flex items-center justify-center">
+                  {r.type === "player" ? (
+                    <Users className="h-3.5 w-3.5" />
+                  ) : (
+                    <Trophy className="h-3.5 w-3.5" />
+                  )}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium truncate">{r.label}</p>
+                  <p className="text-xs text-muted-foreground truncate">{r.subtitle}</p>
+                </div>
+                <span className="text-[10px] uppercase text-muted-foreground font-medium">{r.type}</span>
               </CommandItem>
             ))}
           </CommandGroup>
