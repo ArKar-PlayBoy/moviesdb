@@ -420,7 +420,7 @@ export default async function Home() {
   );
 }
 
-export const revalidate = 120;
+export const revalidate = 0;
 
 function StatCard({ icon: Icon, value, label, sub }: { icon: typeof Trophy; value: string; label: string; sub?: string }) {
   return (
