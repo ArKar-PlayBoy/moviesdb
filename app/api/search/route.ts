@@ -1,7 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllPlayers, getAllTeams, slugify } from "@/data/worldcup-2026";
+import { getAllPlayers, getAllTeams } from "@/data/worldcup-2026";
+import { slugify } from "@/lib/utils";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function GET(req: NextRequest) {
+  // Get IP for rate limiting (fallback to anonymous if not present)
+  const ip = req.headers.get("x-forwarded-for") || "anonymous";
+  
+  // Strict burst limit for search: 20 requests per 10 seconds
+  const rateLimitResult = await rateLimit(`search:${ip}`, 20, 10);
+  
+  if (!rateLimitResult.success) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   const q = req.nextUrl.searchParams.get("q") || "";
   if (!q.trim()) return NextResponse.json({ results: [] });
 

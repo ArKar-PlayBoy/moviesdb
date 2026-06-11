@@ -1,5 +1,6 @@
 import { Suspense } from "react";
-import TEAMS, { GROUPS, MATCHES, getTeamById, getGroupStandings, getStarOfTheWeek, getTopScorers, getVenues, getAllPlayers, slugify, getRecentPOTMs } from "@/data/worldcup-2026";
+import TEAMS, { GROUPS, MATCHES, getTeamById, getGroupStandings, getStarOfTheWeek, getTopScorers, getVenues, getAllPlayers, getRecentPOTMs } from "@/data/worldcup-2026";
+import { slugify } from "@/lib/utils";
 import { getAllPlayerPhotos } from "@/lib/player-photo-map";
 import { getLiveScores } from "@/lib/data-service";
 

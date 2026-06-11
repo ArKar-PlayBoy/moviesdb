@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import PlayerAvatar from "@/components/player-avatar";
 import { Goal, Medal, ChevronLeft, ChevronRight, Users, Clock } from "lucide-react";
+import { slugify } from "@/lib/utils";
+
 
 const PER_PAGE = 12;
 
@@ -19,9 +21,7 @@ const podiumColors = ["text-yellow-500", "text-gray-400", "text-amber-700"];
 const podiumBg = ["bg-yellow-500", "bg-gray-400", "bg-amber-700"];
 const podiumRings = ["rgba(234,179,8,0.2)", "rgba(156,163,175,0.2)", "rgba(180,83,9,0.2)"];
 
-function slugify(name: string) {
-  return name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
+
 
 export default function TopScorersClient({ scorerPhotos }: { scorerPhotos: Record<string, string | null> }) {
   const [allScorers, setAllScorers] = useState<{

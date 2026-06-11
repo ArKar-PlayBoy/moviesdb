@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import PlayerAvatar from "@/components/player-avatar";
 import { Goal, Medal, ChevronLeft, ChevronRight, Users, Clock, ShieldAlert, Handshake } from "lucide-react";
+import { slugify } from "@/lib/utils";
 
 const PER_PAGE = 12;
 
@@ -34,9 +35,7 @@ interface PlayerStat {
   redCards?: number;
 }
 
-function slugify(name: string) {
-  return name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-}
+
 
 export default function StatsClient({
   scorerPhotos,

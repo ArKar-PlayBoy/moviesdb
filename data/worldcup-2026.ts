@@ -766,68 +766,69 @@ export function getKnockoutBracket(): KnockoutMatch[] {
     const w = groupWinners[i];
     const r = groupRunnersUp[groupRunnersUp.length - 1 - i];
     if (w && r) {
-      const s1 = seededRandom(`ko-r32-${i}-1`);
-      const s2 = seededRandom(`ko-r32-${i}-2`);
+      const matchId = `r32-${i}`;
+      const live = LIVE_RESULTS[matchId];
       matches.push({
-        id: `r32-${i}`,
+        id: matchId,
         round: "Round of 32",
         team1: w.team.id,
         team2: r.team.id,
-        score1: Math.round(1 + s1 * 3),
-        score2: Math.round(s2 * 2),
+        score1: live?.score1,
+        score2: live?.score2,
       });
     }
   }
 
   const r16: KnockoutMatch[] = [];
   for (let i = 0; i < Math.floor(matches.length / 2); i++) {
-    const s1 = seededRandom(`ko-r16-${i}-1`);
-    const s2 = seededRandom(`ko-r16-${i}-2`);
+    const matchId = `r16-${i}`;
+    const live = LIVE_RESULTS[matchId];
     r16.push({
-      id: `r16-${i}`,
+      id: matchId,
       round: "Round of 16",
       team1: null,
       team2: null,
-      score1: Math.round(1 + s1 * 2),
-      score2: Math.round(s2 * 2),
+      score1: live?.score1,
+      score2: live?.score2,
     });
   }
 
   const qf: KnockoutMatch[] = [];
   for (let i = 0; i < 4; i++) {
-    const s1 = seededRandom(`ko-qf-${i}-1`);
-    const s2 = seededRandom(`ko-qf-${i}-2`);
+    const matchId = `qf-${i}`;
+    const live = LIVE_RESULTS[matchId];
     qf.push({
-      id: `qf-${i}`,
+      id: matchId,
       round: "Quarter-final",
       team1: null,
       team2: null,
-      score1: Math.round(1 + s1 * 2),
-      score2: Math.round(s2 * 1.5),
+      score1: live?.score1,
+      score2: live?.score2,
     });
   }
 
   const sf: KnockoutMatch[] = [];
   for (let i = 0; i < 2; i++) {
-    const s1 = seededRandom(`ko-sf-${i}-1`);
-    const s2 = seededRandom(`ko-sf-${i}-2`);
+    const matchId = `sf-${i}`;
+    const live = LIVE_RESULTS[matchId];
     sf.push({
-      id: `sf-${i}`,
+      id: matchId,
       round: "Semi-final",
       team1: null,
       team2: null,
-      score1: Math.round(1 + s1 * 2),
-      score2: Math.round(s2 * 1.5),
+      score1: live?.score1,
+      score2: live?.score2,
     });
   }
 
+  const finalLive = LIVE_RESULTS["final"];
   const final: KnockoutMatch[] = [{
     id: "final",
     round: "Final",
     team1: null,
     team2: null,
-    score1: Math.round(1 + seededRandom("ko-final-1") * 2),
-    score2: Math.round(seededRandom("ko-final-2") * 1.5),
+    score1: finalLive?.score1,
+    score2: finalLive?.score2,
   }];
 
   return [...matches, ...r16, ...qf, ...sf, ...final];
@@ -911,29 +912,7 @@ export function getTopAssists(limit = 30): AssistEntry[] {
     const k = `${p.teamId}-${p.name}`;
     map[k] = { playerName: p.name, teamId: p.teamId, teamName: p.teamName, teamFlag: p.teamFlag, position: p.position, assists: 0, matches: 0, teamGroup: getTeamById(p.teamId)?.group || "" };
   }
-  for (const m of MATCHES) {
-    const t1 = getTeamById(m.team1);
-    const t2 = getTeamById(m.team2);
-    if (!t1 || !t2) continue;
-    if (!hasMatchResult(m.id)) continue;
-    for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
-    for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
-    const gs = getMatchGoalScorers(m.id, m.team1, m.team2, m.date);
-    const allScorers = [...gs.scorers1, ...gs.scorers2];
-    const seed = seededRandom(`assists-${m.id}`);
-    for (const sc of allScorers) {
-      if (seed > 0.35) {
-        const teamPlayers = sc.teamId === m.team1 ? t1.players : t2.players;
-        const assistCandidates = teamPlayers.filter(p => p.name !== sc.playerName);
-        if (assistCandidates.length > 0) {
-          const idx = Math.floor(seededRandom(`${m.id}-${sc.playerName}`) * assistCandidates.length);
-          const k = `${sc.teamId}-${assistCandidates[idx].name}`;
-          if (map[k]) map[k].assists++;
-        }
-      }
-    }
-  }
-  return Object.values(map).filter(s => s.assists > 0).sort((a, b) => b.assists - a.assists || b.matches - a.matches).slice(0, limit);
+  return []; // Mock data removed
 }
 
 export function getTopCards(limit = 30): CardEntry[] {
@@ -944,38 +923,7 @@ export function getTopCards(limit = 30): CardEntry[] {
     const k = `${p.teamId}-${p.name}`;
     map[k] = { playerName: p.name, teamId: p.teamId, teamName: p.teamName, teamFlag: p.teamFlag, position: p.position, yellowCards: 0, redCards: 0, matches: 0, teamGroup: getTeamById(p.teamId)?.group || "" };
   }
-  for (const m of MATCHES) {
-    const t1 = getTeamById(m.team1);
-    const t2 = getTeamById(m.team2);
-    if (!t1 || !t2) continue;
-    if (!hasMatchResult(m.id)) continue;
-    for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
-    for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
-    const seed = seededRandom(`cards-${m.id}`);
-    const cardCount = Math.round(seed * 6);
-    for (let c = 0; c < cardCount; c++) {
-      const isRed = seededRandom(`${m.id}-card-${c}`) > 0.85;
-      const team = seededRandom(`${m.id}-card-team-${c}`) > 0.5 ? t1 : t2;
-      const weights = team.players.map(p => posWeight[p.position] || 0.10);
-      const total = weights.reduce((a, b) => a + b, 0);
-      const r = seededRandom(`${m.id}-card-player-${c}`) * total;
-      let cum = 0;
-      for (let i = 0; i < team.players.length; i++) {
-        cum += weights[i];
-        if (r < cum) {
-          const k = `${team.id}-${team.players[i].name}`;
-          if (map[k]) {
-            if (isRed) map[k].redCards++;
-            else map[k].yellowCards++;
-          }
-          break;
-        }
-      }
-    }
-  }
-  return Object.values(map).filter(s => s.yellowCards > 0 || s.redCards > 0)
-    .sort((a, b) => (b.yellowCards + b.redCards * 2) - (a.yellowCards + a.redCards * 2) || b.matches - a.matches)
-    .slice(0, limit);
+  return []; // Mock data removed
 }
 
 export interface PlayerMatchPerformance {

@@ -9,7 +9,7 @@ export interface StoredMatchResult {
 
 let client: ReturnType<typeof createClient> | null = null;
 
-async function getClient() {
+export async function getClient() {
   if (client?.isOpen) return client;
   if (!process.env.REDIS_URL) return null;
   try {
@@ -21,7 +21,12 @@ async function getClient() {
   }
 }
 
+function isValidMatchId(id: string): boolean {
+  return /^[a-zA-Z0-9-]+$/.test(id) && id.length <= 50;
+}
+
 export async function setMatchResult(matchId: string, data: StoredMatchResult): Promise<boolean> {
+  if (!isValidMatchId(matchId)) return false;
   const c = await getClient();
   if (!c) return false;
   try {
@@ -34,6 +39,7 @@ export async function setMatchResult(matchId: string, data: StoredMatchResult): 
 }
 
 export async function getMatchResult(matchId: string): Promise<StoredMatchResult | null> {
+  if (!isValidMatchId(matchId)) return null;
   const c = await getClient();
   if (!c) return null;
   try {

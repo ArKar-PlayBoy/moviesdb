@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { slugify } from "@/data/worldcup-2026";
+import { slugify } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import PlayerAvatar from "@/components/player-avatar";

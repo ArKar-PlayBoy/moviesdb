@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import crypto from "crypto";
 import { MATCHES } from "@/data/worldcup-2026";
 import { getMatchData } from "@/lib/data-service";
 import { setMatchResult } from "@/lib/storage";
@@ -7,9 +8,17 @@ export const maxDuration = 120;
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const key = searchParams.get("key");
+  const key = searchParams.get("key") || "";
+  const secret = process.env.CRON_SECRET || "";
 
-  if (key !== process.env.CRON_SECRET) {
+  let isAuthorized = false;
+  try {
+    if (key.length > 0 && key.length === secret.length) {
+      isAuthorized = crypto.timingSafeEqual(Buffer.from(key), Buffer.from(secret));
+    }
+  } catch {}
+
+  if (!isAuthorized) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
 

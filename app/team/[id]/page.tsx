@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, MapPin, Calendar, Trophy, Users, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getPlayerPhotoSet } from "@/lib/player-photo-map";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -28,6 +29,15 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
   if (!team) notFound();
 
   const matches = getMatchesForTeam(id);
+
+  // Pre-fetch all player photos on the server in a single batched request
+  // This eliminates the N+1 waterfall of individual client-side /api/player-image calls
+  const playerNames = team.players.map((p) => p.name);
+  const photos = await getPlayerPhotoSet(playerNames);
+  const photosRecord: Record<string, string | null> = {};
+  for (const name of playerNames) {
+    photosRecord[name] = photos[name] ?? null;
+  }
 
   return (
     <div>
@@ -64,7 +74,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
         </div>
       </div>
 
-      <TeamPlayerSection players={team.players} teamName={team.name} teamId={team.id} />
+      <TeamPlayerSection players={team.players} teamName={team.name} teamId={team.id} photos={photosRecord} />
 
       <div className="mb-8">
         <h2 className="text-xl font-bold mb-4 border-l-4 border-primary pl-3">Match Schedule</h2>

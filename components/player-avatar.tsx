@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface PlayerAvatarProps {
   name: string;
   photoUrl?: string | null;
@@ -22,12 +24,16 @@ const iconSizeMap = {
 export default function PlayerAvatar({ name, photoUrl, size = "md", className = "" }: PlayerAvatarProps) {
   if (photoUrl) {
     return (
-      <div
-        className={`${sizeMap[size]} rounded-full ring-2 ring-border shrink-0 bg-cover bg-center ${className}`}
-        style={{ backgroundImage: `url(${photoUrl})` }}
-        role="img"
-        aria-label={name}
-      />
+      <div className={`${sizeMap[size]} relative rounded-full ring-2 ring-border shrink-0 overflow-hidden bg-muted ${className}`}>
+        <Image
+          src={photoUrl}
+          alt={name}
+          fill
+          unoptimized
+          className="object-cover"
+          sizes="(max-width: 768px) 112px, 112px"
+        />
+      </div>
     );
   }
 

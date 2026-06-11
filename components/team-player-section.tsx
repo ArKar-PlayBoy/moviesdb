@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PlayerHighlight from "@/components/player-highlight";
-import { slugify } from "@/data/worldcup-2026";
+import { slugify } from "@/lib/utils";
 
 interface Player {
   name: string;
@@ -17,6 +18,8 @@ interface TeamPlayerSectionProps {
   players: Player[];
   teamName: string;
   teamId: string;
+  /** Pre-fetched photo map from the server — eliminates N+1 client-side API calls */
+  photos: Record<string, string | null>;
 }
 
 const POSITION_LABELS: Record<string, string> = {
@@ -33,26 +36,8 @@ const POSITION_COLORS: Record<string, string> = {
   GK: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
 };
 
-export default function TeamPlayerSection({ players, teamName, teamId }: TeamPlayerSectionProps) {
+export default function TeamPlayerSection({ players, teamName, teamId, photos }: TeamPlayerSectionProps) {
   const [selected, setSelected] = useState<Player | null>(null);
-  const [photos, setPhotos] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    Promise.all(
-      players.map((p) =>
-        fetch(`/api/player-image?name=${encodeURIComponent(p.name)}`)
-          .then((r) => r.json())
-          .then((data) => ({ name: p.name, url: data?.image?.source || "" }))
-          .catch(() => ({ name: p.name, url: "" }))
-      )
-    ).then((results) => {
-      const map: Record<string, string> = {};
-      results.forEach((r) => {
-        if (r.url) map[r.name] = r.url;
-      });
-      setPhotos(map);
-    });
-  }, [players]);
 
   return (
     <div className="mb-8">
@@ -61,7 +46,7 @@ export default function TeamPlayerSection({ players, teamName, teamId }: TeamPla
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-6">
         {players.map((player) => {
           const isActive = selected?.name === player.name;
-          const photoUrl = photos[player.name];
+          const photoUrl = photos[player.name] ?? null;
           return (
             <div
               key={player.name}
@@ -73,12 +58,16 @@ export default function TeamPlayerSection({ players, teamName, teamId }: TeamPla
             >
               <Link href={`/player/${slugify(player.name)}`} className="block">
                 {photoUrl ? (
-                  <div
-                    className="w-14 h-14 rounded-full bg-cover bg-center mx-auto mb-2 border-2 border-border hover:ring-2 hover:ring-primary transition-all"
-                    style={{ backgroundImage: `url(${photoUrl})` }}
-                    role="img"
-                    aria-label={player.name}
-                  />
+                  <div className="relative w-14 h-14 rounded-full overflow-hidden mx-auto mb-2 ring-2 ring-border hover:ring-primary transition-all">
+                    <Image
+                      src={photoUrl}
+                      alt={player.name}
+                      fill
+                      unoptimized
+                      className="object-cover"
+                      sizes="56px"
+                    />
+                  </div>
                 ) : (
                   <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mx-auto mb-2">
                     <span className="text-lg font-bold text-primary">
@@ -118,7 +107,7 @@ export default function TeamPlayerSection({ players, teamName, teamId }: TeamPla
           position={POSITION_LABELS[selected.position] || selected.position}
           age={selected.age}
           teamId={teamId}
-          photoUrl={photos[selected.name] || null}
+          photoUrl={photos[selected.name] ?? null}
           onClose={() => setSelected(null)}
         />
       )}

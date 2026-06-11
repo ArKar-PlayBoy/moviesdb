@@ -13,13 +13,16 @@ import Footer from "@/components/footer";
 import BackToTop from "@/components/back-to-top";
 import ServiceWorkerRegister from "@/components/service-worker-register";
 
+export const viewport = {
+  themeColor: "#059669",
+};
+
 export const metadata: Metadata = {
   title: { default: "WorldCup 2026", template: "%s — WorldCup 2026" },
   description: "FIFA World Cup 2026 — Teams, matches, highlights, and schedules for the USA, Canada, Mexico tournament.",
   keywords: ["World Cup 2026", "FIFA", "football", "soccer", "USA 2026", "Canada", "Mexico"],
   authors: [{ name: "WorldCup 2026" }],
   icons: { icon: "/icon.svg" },
-  themeColor: "#059669",
   openGraph: {
     title: "WorldCup 2026",
     description: "FIFA World Cup 2026 — Teams, matches, highlights, and schedules.",

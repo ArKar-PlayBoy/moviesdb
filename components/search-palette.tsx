@@ -41,12 +41,28 @@ export default function SearchPalette() {
     };
   }, []);
 
-  const doSearch = useCallback(async (q: string) => {
+  const [isSearching, setIsSearching] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      if (!query.trim()) { setResults([]); setIsSearching(false); return; }
+      setIsSearching(true);
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const data = await res.json();
+        setResults(data.results || []);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 300); // 300ms debounce
+    
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  const onSearchChange = useCallback((q: string) => {
     setQuery(q);
-    if (!q.trim()) { setResults([]); return; }
-    const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
-    const data = await res.json();
-    setResults(data.results || []);
   }, []);
 
   return (
@@ -54,7 +70,7 @@ export default function SearchPalette() {
       <CommandInput
         placeholder="Search players and teams..."
         value={query}
-        onValueChange={doSearch}
+        onValueChange={onSearchChange}
       />
       <CommandList>
         <CommandEmpty>No results for &ldquo;{query}&rdquo;</CommandEmpty>

@@ -37,13 +37,19 @@ self.addEventListener("fetch", (event) => {
 
   event.respondWith(
     caches.match(request).then((cached) => {
-      const fetched = fetch(request).then((res) => {
-        if (res.ok) {
-          const clone = res.clone();
-          caches.open(CACHE).then((cache) => cache.put(request, clone));
-        }
-        return res;
-      });
+      const fetched = fetch(request)
+        .then((res) => {
+          if (res.ok) {
+            const clone = res.clone();
+            caches.open(CACHE).then((cache) => cache.put(request, clone));
+          }
+          return res;
+        })
+        .catch((err) => {
+          // If fetch fails (e.g., offline) and we don't have it in cache, return the cached version or a fallback
+          if (cached) return cached;
+          throw err;
+        });
       return cached || fetched;
     })
   );

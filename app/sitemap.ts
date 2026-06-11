@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllPlayers, getAllTeams } from "@/data/worldcup-2026";
-import { slugify } from "@/data/worldcup-2026";
+import { slugify } from "@/lib/utils";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://worldcup2026.vercel.app";

@@ -1,8 +1,19 @@
 import { NextResponse } from "next/server";
 import { MATCHES, getTeamFlag, getTeamName, getMatchScore, getStarOfTheMatch } from "@/data/worldcup-2026";
 import { getMatchData } from "@/lib/data-service";
+import { rateLimit } from "@/lib/rate-limit";
 
 export async function GET(request: Request) {
+  // Get IP for rate limiting (fallback to anonymous if not present)
+  const ip = request.headers.get("x-forwarded-for") || "anonymous";
+  
+  // Standard limit: 60 requests per 60 seconds
+  const rateLimitResult = await rateLimit(`api:${ip}`, 60, 60);
+  
+  if (!rateLimitResult.success) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   const { searchParams } = new URL(request.url);
   const teamId = searchParams.get("teamId");
   const stage = searchParams.get("stage");

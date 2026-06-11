@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, type FC, useRef } from "react";
 import Link from "next/link";
-import { slugify } from "@/data/worldcup-2026";
+import { slugify } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import PlayerAvatar from "@/components/player-avatar";
