@@ -620,10 +620,13 @@ export interface Standing {
   form: ("W" | "D" | "L")[];
 }
 
-const RANDOM_SEED: Record<string, number> = {};
 function seededRandom(key: string): number {
-  if (!RANDOM_SEED[key]) RANDOM_SEED[key] = key.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
-  const x = Math.sin(RANDOM_SEED[key]++ * 9301 + 49297) * 49297;
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash = ((hash << 5) - hash) + key.charCodeAt(i);
+    hash |= 0;
+  }
+  const x = Math.sin(hash * 9301 + 49297) * 49297;
   return x - Math.floor(x);
 }
 
@@ -656,7 +659,7 @@ export function getGroupStandings(group: string): Standing[] {
     const t1 = teams.find((t) => t.id === match.team1);
     const t2 = teams.find((t) => t.id === match.team2);
     if (!t1 || !t2) continue;
-    if (!isMatchDatePassed(match.date)) continue;
+    if (!hasMatchResult(match.id)) continue;
 
     const [goals1, goals2] = getMatchScore(match.id, match.team1, match.team2, match.date);
 
@@ -724,25 +727,14 @@ function parseMatchDate(dateStr: string): Date {
   return new Date(`2026 ${dateStr}`);
 }
 
-function isMatchDatePassed(dateStr: string): boolean {
-  return parseMatchDate(dateStr) <= new Date();
+export function hasMatchResult(matchId: string): boolean {
+  return !!LIVE_RESULTS[matchId];
 }
 
 export function getMatchScore(matchId: string, team1Id: string, team2Id: string, date?: string): [number, number] {
-  if (!isMatchDatePassed(date || "")) return [0, 0];
+  if (!hasMatchResult(matchId)) return [0, 0];
   const live = LIVE_RESULTS[matchId];
-  if (live) return [live.score1, live.score2];
-  const t1 = TEAMS.find((t) => t.id === team1Id);
-  const t2 = TEAMS.find((t) => t.id === team2Id);
-  if (!t1 || !t2) return [0, 0];
-  const s1 = seededRandom(`${matchId}-score-1`);
-  const s2 = seededRandom(`${matchId}-score-2`);
-  const strength1 = 1 / t1.fifaRanking;
-  const strength2 = 1 / t2.fifaRanking;
-  const total = strength1 + strength2;
-  const g1 = Math.round((strength1 / total) * (2 + s1 * 3));
-  const g2 = Math.round((strength2 / total) * (2 + s2 * 3));
-  return [g1, g2];
+  return [live.score1, live.score2];
 }
 
 export interface KnockoutMatch {
@@ -888,38 +880,7 @@ export function getMatchGoalScorers(matchId: string, team1Id: string, team2Id: s
     const scorers2 = live.goalScorers.filter(g => g.teamId === team2Id).map(g => ({ playerName: g.playerName, teamId: g.teamId, minute: g.minute }));
     return { scorers1, scorers2 };
   }
-  const t1 = getTeamById(team1Id);
-  const t2 = getTeamById(team2Id);
-  if (!t1 || !t2) return { scorers1: [], scorers2: [] };
-  if (!isMatchDatePassed(date || "")) return { scorers1: [], scorers2: [] };
-  const [s1, s2] = getMatchScore(matchId, team1Id, team2Id, date);
-  const pw: Record<string, number> = { FW: 0.60, MF: 0.30, DF: 0.08, GK: 0.02 };
-
-  function dist(players: PlayerData[], goals: number, tid: string, seed: string): MatchGoalScorer[] {
-    if (goals === 0) return [];
-    const ws = players.map(p => pw[p.position] || 0.10);
-    const total = ws.reduce((a, b) => a + b, 0);
-    const norm = ws.map(w => w / total);
-    const res: MatchGoalScorer[] = [];
-    for (let g = 0; g < goals; g++) {
-      const r = seededRandom(`${seed}-${g}`);
-      let cum = 0;
-      for (let i = 0; i < players.length; i++) {
-        cum += norm[i];
-        if (r < cum) {
-          const minute = Math.round(10 + seededRandom(`${seed}-${g}-min`) * 75);
-          res.push({ playerName: players[i].name, teamId: tid, minute });
-          break;
-        }
-      }
-    }
-    return res.sort((a, b) => a.minute - b.minute);
-  }
-
-  return {
-    scorers1: dist(t1.players, s1, team1Id, `${matchId}-t1`),
-    scorers2: dist(t2.players, s2, team2Id, `${matchId}-t2`),
-  };
+  return { scorers1: [], scorers2: [] };
 }
 
 export function getTopScorers(limit = 30): ScorerEntry[] {
@@ -933,7 +894,7 @@ export function getTopScorers(limit = 30): ScorerEntry[] {
     const t1 = getTeamById(m.team1);
     const t2 = getTeamById(m.team2);
     if (!t1 || !t2) continue;
-    if (!isMatchDatePassed(m.date)) continue;
+    if (!hasMatchResult(m.id)) continue;
     for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
     for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
     const gs = getMatchGoalScorers(m.id, m.team1, m.team2, m.date);
@@ -954,7 +915,7 @@ export function getTopAssists(limit = 30): AssistEntry[] {
     const t1 = getTeamById(m.team1);
     const t2 = getTeamById(m.team2);
     if (!t1 || !t2) continue;
-    if (!isMatchDatePassed(m.date)) continue;
+    if (!hasMatchResult(m.id)) continue;
     for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
     for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
     const gs = getMatchGoalScorers(m.id, m.team1, m.team2, m.date);
@@ -987,7 +948,7 @@ export function getTopCards(limit = 30): CardEntry[] {
     const t1 = getTeamById(m.team1);
     const t2 = getTeamById(m.team2);
     if (!t1 || !t2) continue;
-    if (!isMatchDatePassed(m.date)) continue;
+    if (!hasMatchResult(m.id)) continue;
     for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
     for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
     const seed = seededRandom(`cards-${m.id}`);
@@ -1036,7 +997,7 @@ export function getPlayerMatchPerformances(playerName: string, teamId: string): 
   const teamMatches = MATCHES.filter(m => m.team1 === teamId || m.team2 === teamId);
   const result: PlayerMatchPerformance[] = [];
   for (const m of teamMatches) {
-    if (!isMatchDatePassed(m.date)) continue;
+    if (!hasMatchResult(m.id)) continue;
     const isTeam1 = m.team1 === teamId;
     const opponentId = isTeam1 ? m.team2 : m.team1;
     const opponentTeam = getTeamById(opponentId);
@@ -1085,7 +1046,7 @@ export function getStarOfTheMatch(matchId: string): StarOfMatch | null {
   const team2 = getTeamById(match.team2);
   if (!team1 || !team2) return null;
 
-  if (!isMatchDatePassed(match.date)) return null;
+  if (!hasMatchResult(match.id)) return null;
 
   const { scorers1, scorers2 } = getMatchGoalScorers(match.id, match.team1, match.team2, match.date);
   const all = [...scorers1, ...scorers2];
@@ -1146,7 +1107,7 @@ export interface PlayerPOTMEntry extends StarOfMatch {
 export function getPlayerPOTMMatches(playerName: string, teamId: string): PlayerPOTMEntry[] {
   const result: PlayerPOTMEntry[] = [];
   for (const match of MATCHES) {
-    if (!isMatchDatePassed(match.date)) continue;
+    if (!hasMatchResult(match.id)) continue;
     if (match.team1 !== teamId && match.team2 !== teamId) continue;
     const star = getStarOfTheMatch(match.id);
     if (star && star.playerName === playerName) {
@@ -1158,7 +1119,7 @@ export function getPlayerPOTMMatches(playerName: string, teamId: string): Player
 
 export function getRecentPOTMs(count = 5): (StarOfMatch & { matchId: string; matchDate: string; stage: string })[] {
   const passed = MATCHES
-    .filter(m => isMatchDatePassed(m.date))
+    .filter(m => hasMatchResult(m.id))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const result: (StarOfMatch & { matchId: string; matchDate: string; stage: string })[] = [];

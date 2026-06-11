@@ -123,16 +123,13 @@ export default function PlayerHighlight({ name, teamName, position, age, photoUr
                 </div>
               </div>
             ) : (
-              <iframe
-                key={`${name}-${activeTab}`}
-                src={embedUrl}
-                title={`${name} - ${tab.label}`}
-                className="w-full h-full"
-                allow="autoplay; fullscreen"
-                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"
-                onLoad={() => setPlayerLoaded(true)}
-                onError={() => setHasError(true)}
-              />
+            <a href={searchUrl} target="_blank" rel="noopener noreferrer" className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950 hover:bg-zinc-900 transition-colors group z-20">
+              <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-red-500 transition-all shadow-lg">
+                <Play className="h-8 w-8 text-white ml-1 fill-current" />
+              </div>
+              <p className="text-white font-medium mb-1">Watch {tab.label} on YouTube</p>
+              <p className="text-zinc-400 text-xs flex items-center gap-1">Opens in a new tab <ExternalLink className="h-3 w-3" /></p>
+            </a>
             )}
           </div>
 

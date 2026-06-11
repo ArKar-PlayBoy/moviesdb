@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import { MATCHES, getTeamById, getMatchScore, getMatchGoalScorers, getTeamName, slugify, getStarOfTheMatch } from "@/data/worldcup-2026";
+import { MATCHES, getTeamById, getMatchScore, getMatchGoalScorers, getTeamName, slugify, getStarOfTheMatch, hasMatchResult } from "@/data/worldcup-2026";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Calendar, MapPin, Trophy, Clock, Goal as GoalIcon, Youtube, Users, Star, Medal } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, Trophy, Clock, Goal as GoalIcon, Youtube, Users, Star, Medal, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PlayerAvatar from "@/components/player-avatar";
 import ShareButton from "@/components/share-button";
 import { resolvePlayerPhoto } from "@/lib/player-photos";
 
-function matchPassed(date: string) {
-  return new Date(`2026 ${date}`) <= new Date();
-}
+
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -39,7 +37,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
   const t2 = getTeamById(match.team2);
   if (!t1 || !t2) notFound();
 
-  const played = matchPassed(match.date);
+  const played = hasMatchResult(match.id);
   const [s1, s2] = played ? getMatchScore(match.id, match.team1, match.team2, match.date) : [0, 0];
   const { scorers1, scorers2 } = played ? getMatchGoalScorers(match.id, match.team1, match.team2, match.date) : { scorers1: [], scorers2: [] };
   const isDraw = played && s1 === s2;
@@ -376,16 +374,15 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
 
           {played ? (
             <div className="relative w-full aspect-video bg-black rounded-xl overflow-hidden mb-3">
-              <iframe
-                key={match.id}
-                src={`https://www.youtube.com/embed?listType=search&q=${encodeURIComponent(
-                  `fifa world cup 2026 ${t1.name} vs ${t2.name} official highlights`
-                )}&hl=en`}
-                title={`${t1.name} vs ${t2.name} highlights`}
-                className="w-full h-full"
-                allow="autoplay; fullscreen"
-                sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-forms"
-              />
+              <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(
+                `fifa world cup 2026 ${t1.name} vs ${t2.name} official highlights`
+              )}`} target="_blank" rel="noopener noreferrer" className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950 hover:bg-zinc-900 transition-colors group z-20">
+                <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-red-500 transition-all shadow-lg">
+                  <Youtube className="h-8 w-8 text-white" />
+                </div>
+                <p className="text-white font-medium mb-1">Watch Highlights on YouTube</p>
+                <p className="text-zinc-400 text-xs flex items-center gap-1">Opens in a new tab <ExternalLink className="h-3 w-3" /></p>
+              </a>
             </div>
           ) : (
             <div className="w-full aspect-video bg-muted/30 rounded-xl flex flex-col items-center justify-center gap-3">
