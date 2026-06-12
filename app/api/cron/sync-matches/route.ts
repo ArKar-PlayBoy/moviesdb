@@ -7,8 +7,18 @@ import { getMatchResult, setMatchResult } from "@/lib/storage";
 
 export const maxDuration = 120;
 
+const TEAM_NAME_ALIASES: Record<string, string> = {
+  "korearepublic": "southkorea",
+  "czechia": "czechrepublic",
+  "unitedstates": "usa",
+  "bosniaherzegovina": "bosnia",
+  "ivorycoast": "côtedivoire",
+  "iran": "irán",
+};
+
 function normName(name: string): string {
-  return name.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const normalized = name.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return TEAM_NAME_ALIASES[normalized] || normalized;
 }
 
 export async function GET(request: Request) {

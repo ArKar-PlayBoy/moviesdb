@@ -116,8 +116,18 @@ async function fetchFIFA<T>(path: string): Promise<T | null> {
 }
 
 function normalizeTeamName(name: string): string {
-  return name.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const normalized = name.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return TEAM_NAME_ALIASES[normalized] || normalized;
 }
+
+const TEAM_NAME_ALIASES: Record<string, string> = {
+  "korearepublic": "southkorea",
+  "czechia": "czechrepublic",
+  "unitedstates": "usa",
+  "bosniaherzegovina": "bosnia",
+  "ivorycoast": "côtedivoire",
+  "iran": "irán",
+};
 
 function doTeamsMatch(sportsrcHome: string | undefined, sportsrcAway: string | undefined, team1Id: string, team2Id: string): boolean {
   const home = normalizeTeamName(sportsrcHome || "");
