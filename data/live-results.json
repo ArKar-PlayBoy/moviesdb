@@ -1,129 +1,40 @@
 {
-  "updatedAt": "2026-06-12T10:43:53.117Z",
+  "updatedAt": "2026-06-12T11:04:19.602Z",
   "matches": {
     "A-1": {
       "score1": 2,
-      "score2": 1,
+      "score2": 0,
       "goalScorers": [
         {
-          "playerName": "Santiago Giménez",
+          "playerName": "Julián Quiñones",
           "teamId": "mexico",
-          "minute": 34
+          "minute": 9
         },
         {
-          "playerName": "Percy Tau",
-          "teamId": "south-africa",
-          "minute": 52
-        },
-        {
-          "playerName": "Edson Álvarez",
+          "playerName": "Raúl Jiménez",
           "teamId": "mexico",
-          "minute": 78
+          "minute": 67
         }
       ]
     },
     "A-2": {
-      "score1": 1,
+      "score1": 2,
       "score2": 1,
       "goalScorers": [
         {
-          "playerName": "Son Heung-min",
-          "teamId": "south-korea",
-          "minute": 23
-        },
-        {
-          "playerName": "Patrik Schick",
+          "playerName": "Ladislav Krejčí",
           "teamId": "czech-republic",
+          "minute": 59
+        },
+        {
+          "playerName": "Hwang In-beom",
+          "teamId": "south-korea",
           "minute": 67
-        }
-      ]
-    },
-    "B-1": {
-      "score1": 3,
-      "score2": 0,
-      "goalScorers": [
-        {
-          "playerName": "Jonathan David",
-          "teamId": "canada",
-          "minute": 18
         },
         {
-          "playerName": "Alphonso Davies",
-          "teamId": "canada",
-          "minute": 44
-        },
-        {
-          "playerName": "Cyle Larin",
-          "teamId": "canada",
-          "minute": 73
-        }
-      ]
-    },
-    "B-2": {
-      "score1": 1,
-      "score2": 2,
-      "goalScorers": [
-        {
-          "playerName": "Akram Afif",
-          "teamId": "qatar",
-          "minute": 31
-        },
-        {
-          "playerName": "Xherdan Shaqiri",
-          "teamId": "switzerland",
-          "minute": 56
-        },
-        {
-          "playerName": "Ruben Vargas",
-          "teamId": "switzerland",
-          "minute": 89
-        }
-      ]
-    },
-    "C-1": {
-      "score1": 4,
-      "score2": 1,
-      "goalScorers": [
-        {
-          "playerName": "Vinícius Jr.",
-          "teamId": "brazil",
-          "minute": 12
-        },
-        {
-          "playerName": "Rodrygo",
-          "teamId": "brazil",
-          "minute": 27
-        },
-        {
-          "playerName": "Achraf Hakimi",
-          "teamId": "morocco",
-          "minute": 55
-        },
-        {
-          "playerName": "Vinícius Jr.",
-          "teamId": "brazil",
-          "minute": 61
-        },
-        {
-          "playerName": "Raphinha",
-          "teamId": "brazil",
+          "playerName": "Oh Hyeongyu",
+          "teamId": "south-korea",
           "minute": 80
-        }
-      ]
-    },
-    "C-2": {
-      "score1": 0,
-      "score2": 2,
-      "goalScorers": [
-        {
-          "playerName": "John McGinn",
-          "teamId": "scotland",
-          "minute": 41
-        },
-        {
-          "playerName": "Scott McTominay",
-          "teamId": "scotland",
-          "minute": 67
         }
       ]
     }

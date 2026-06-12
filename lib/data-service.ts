@@ -529,6 +529,34 @@ export function computeStandingsFromResults(
     .sort((a, b) => b.points - a.points || b.goalDiff - a.goalDiff || b.goalsFor - a.goalsFor);
 }
 
+function normalizePlayerName(name: string): string {
+  return name.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Z0-9\s-]/g, "").trim();
+}
+
+function getOrCreateEntry<T extends { playerName: string; teamId: string; teamName: string; teamFlag: string; position: string }>(
+  map: Record<string, T>,
+  teamId: string,
+  playerName: string,
+  factory: () => T,
+): T {
+  const exact = `${teamId}-${playerName}`;
+  if (map[exact]) return map[exact];
+  const normalized = normalizePlayerName(playerName);
+  for (const k of Object.keys(map)) {
+    if (k.startsWith(`${teamId}-`) && normalizePlayerName(k.slice(teamId.length + 1)) === normalized) {
+      return map[k];
+    }
+  }
+  const entry = factory();
+  map[exact] = entry;
+  return entry;
+}
+
+function teamInfo(teamId: string): { teamName: string; teamFlag: string; teamGroup: string } {
+  const t = getTeamById(teamId);
+  return { teamName: t?.name || teamId, teamFlag: t?.flag || "", teamGroup: t?.group || "" };
+}
+
 export function computeTopScorersFromResults(
   results: Record<string, StoredMatchResult>,
   limit = 30,
@@ -538,14 +566,8 @@ export function computeTopScorersFromResults(
   for (const p of all) {
     const k = `${p.teamId}-${p.name}`;
     map[k] = {
-      playerName: p.name,
-      teamId: p.teamId,
-      teamName: p.teamName,
-      teamFlag: p.teamFlag,
-      position: p.position,
-      goals: 0,
-      matches: 0,
-      teamGroup: getTeamById(p.teamId)?.group || "",
+      playerName: p.name, teamId: p.teamId, teamName: p.teamName, teamFlag: p.teamFlag,
+      position: p.position, goals: 0, matches: 0, teamGroup: getTeamById(p.teamId)?.group || "",
     };
   }
 
@@ -560,8 +582,11 @@ export function computeTopScorersFromResults(
     for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
 
     for (const g of result.goals) {
-      const k = `${g.teamId}-${g.playerName}`;
-      if (map[k]) map[k].goals++;
+      const entry = getOrCreateEntry(map, g.teamId, g.playerName, () => ({
+        playerName: g.playerName, teamId: g.teamId, ...teamInfo(g.teamId),
+        position: "", goals: 0, matches: 0,
+      }));
+      entry.goals++;
     }
   }
 
@@ -603,14 +628,8 @@ export function computeTopAssistsFromResults(
   for (const p of all) {
     const k = `${p.teamId}-${p.name}`;
     map[k] = {
-      playerName: p.name,
-      teamId: p.teamId,
-      teamName: p.teamName,
-      teamFlag: p.teamFlag,
-      position: p.position,
-      assists: 0,
-      matches: 0,
-      teamGroup: getTeamById(p.teamId)?.group || "",
+      playerName: p.name, teamId: p.teamId, teamName: p.teamName, teamFlag: p.teamFlag,
+      position: p.position, assists: 0, matches: 0, teamGroup: getTeamById(p.teamId)?.group || "",
     };
   }
 
@@ -625,8 +644,11 @@ export function computeTopAssistsFromResults(
     for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
 
     for (const a of (result.assists || [])) {
-      const k = `${a.teamId}-${a.playerName}`;
-      if (map[k]) map[k].assists++;
+      const entry = getOrCreateEntry(map, a.teamId, a.playerName, () => ({
+        playerName: a.playerName, teamId: a.teamId, ...teamInfo(a.teamId),
+        position: "", assists: 0, matches: 0,
+      }));
+      entry.assists++;
     }
   }
 
@@ -645,15 +667,8 @@ export function computeTopCardsFromResults(
   for (const p of all) {
     const k = `${p.teamId}-${p.name}`;
     map[k] = {
-      playerName: p.name,
-      teamId: p.teamId,
-      teamName: p.teamName,
-      teamFlag: p.teamFlag,
-      position: p.position,
-      yellowCards: 0,
-      redCards: 0,
-      matches: 0,
-      teamGroup: getTeamById(p.teamId)?.group || "",
+      playerName: p.name, teamId: p.teamId, teamName: p.teamName, teamFlag: p.teamFlag,
+      position: p.position, yellowCards: 0, redCards: 0, matches: 0, teamGroup: getTeamById(p.teamId)?.group || "",
     };
   }
 
@@ -668,11 +683,12 @@ export function computeTopCardsFromResults(
     for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
 
     for (const c of (result.cards || [])) {
-      const k = `${c.teamId}-${c.playerName}`;
-      if (map[k]) {
-        if (c.card === 2) map[k].redCards++;
-        else map[k].yellowCards++;
-      }
+      const entry = getOrCreateEntry(map, c.teamId, c.playerName, () => ({
+        playerName: c.playerName, teamId: c.teamId, ...teamInfo(c.teamId),
+        position: "", yellowCards: 0, redCards: 0, matches: 0,
+      }));
+      if (c.card === 2) entry.redCards++;
+      else entry.yellowCards++;
     }
   }
 
