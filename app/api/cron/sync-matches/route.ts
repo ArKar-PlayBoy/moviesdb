@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import crypto from "crypto";
 import { MATCHES, getTeamName } from "@/data/worldcup-2026";
 import { getFIFAIdMatch, fetchFIFA } from "@/lib/data-service";
-import { getMatchResult, setMatchResult } from "@/lib/storage";
+import { getMatchResult, setMatchResult, clearAllMatchResults } from "@/lib/storage";
 
 export const maxDuration = 120;
 
@@ -79,6 +79,9 @@ export async function GET(request: Request) {
   if (!isAuthorized) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
+
+  // Clear all stale data from previous runs — start fresh every time
+  await clearAllMatchResults();
 
   try {
     // Pre-fetch SportSRC matches once as a fallback for scores when FIFA is unavailable

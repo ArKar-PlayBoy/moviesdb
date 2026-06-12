@@ -29,6 +29,22 @@ export function clearSSRCache(): void {
   ssrCache = null;
 }
 
+export function clearMemoryStore(): void {
+  memoryStore.clear();
+  memoryMatchIds.clear();
+  clearSSRCache();
+}
+
+export async function clearAllMatchResults(): Promise<void> {
+  clearMemoryStore();
+  const c = await getClient();
+  if (!c) return;
+  try {
+    await c.del("matches");
+    await c.del("match_ids");
+  } catch {}
+}
+
 export async function getClient() {
   if (!process.env.REDIS_URL) return null;
   if (client) {
