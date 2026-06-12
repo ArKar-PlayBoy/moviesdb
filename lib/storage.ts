@@ -109,11 +109,25 @@ function simpleHash(str: string): number {
   return Math.abs(hash);
 }
 
+function isDateBeforeToday(dateStr: string): boolean {
+  const matchDate = new Date(`2026 ${dateStr}`);
+  const today = new Date();
+  matchDate.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+  return matchDate < today;
+}
+
 export function generateFallbackResult(
   matchId: string,
   team1Id: string,
   team2Id: string,
+  matchDate?: string,
 ): { score: [number, number]; goals: StoredMatchResult["goals"]; status: "scheduled" | "live" | "finished" } {
+  // Only generate results for matches scheduled on or before today
+  if (matchDate && !isDateBeforeToday(matchDate)) {
+    return { score: [0, 0], goals: [], status: "scheduled" };
+  }
+
   const t1 = getTeamById(team1Id);
   const t2 = getTeamById(team2Id);
   if (!t1 || !t2) return { score: [0, 0], goals: [], status: "scheduled" };
@@ -167,7 +181,7 @@ function pickScorer(players: { name: string; position: string }[], rng: (max: nu
 function generateAllFallbackResults(): Record<string, StoredMatchResult> {
   const results: Record<string, StoredMatchResult> = {};
   for (const m of MATCHES) {
-    const r = generateFallbackResult(m.id, m.team1, m.team2);
+    const r = generateFallbackResult(m.id, m.team1, m.team2, m.date);
     if (r.status !== "scheduled") {
       results[m.id] = {
         score: r.score,

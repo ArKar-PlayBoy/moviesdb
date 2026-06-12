@@ -136,8 +136,8 @@ export async function GET(request: Request) {
             };
           }
 
-          // 3) Deterministic fallback: generate result from team ranking + player roster
-          const fb = generateFallbackResult(m.id, m.team1, m.team2);
+          // 3) Deterministic fallback: only for matches already past their scheduled date
+          const fb = generateFallbackResult(m.id, m.team1, m.team2, m.date);
           return { matchId: m.id, score: fb.score, goals: fb.goals as GoalEntry[], status: fb.status };
         })
       );

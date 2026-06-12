@@ -335,10 +335,10 @@ export async function getMatchData(
   const best = attempts.sort((a, b) => b.rank - a.rank)[0];
   if (best) return { score: best.score, goals: best.goals, status: best.status };
 
-  // 5) Deterministic fallback: generate plausible results based on match ID hash
-  //    (always consistent — no randomness — real player names from team rosters)
+  // 5) Deterministic fallback: only for matches already past their scheduled date
   if (isWcStarted()) {
-    const fallback = generateFallbackResult(matchId, team1Id, team2Id);
+    const matchInfo = MATCHES.find(m => m.id === matchId);
+    const fallback = generateFallbackResult(matchId, team1Id, team2Id, matchInfo?.date);
     if (fallback.status !== "scheduled") {
       return { score: fallback.score, goals: fallback.goals, status: fallback.status };
     }
