@@ -172,6 +172,9 @@ export default async function Home() {
     if (r.status === "finished") return sum + r.score[0] + r.score[1];
     return sum;
   }, 0);
+
+  const todayStr = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const todayMatches = MATCHES.filter(m => m.date === todayStr);
   const liveMatches = await getLiveScores();
 
   return (
@@ -245,6 +248,64 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {todayMatches.length > 0 && (
+        <section className="animate-in animate-in-delay-3">
+          <div className="flex items-center gap-3 mb-4">
+            <Calendar className="h-5 w-5 text-primary" />
+            <h2 className="text-xl font-bold">Today&apos;s Matches</h2>
+            <div className="h-px flex-1 bg-border" />
+            <span className="text-xs text-muted-foreground">{todayStr}</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {todayMatches.map((m) => {
+              const t1 = getTeamById(m.team1);
+              const t2 = getTeamById(m.team2);
+              const result = allResults[m.id];
+              const played = result && result.status !== "scheduled";
+              const [s1, s2] = played ? result.score : [0, 0];
+              return (
+                <Link
+                  key={m.id}
+                  href={`/match/${m.id}`}
+                  className="bg-card rounded-xl border border-border p-4 hover:ring-2 hover:ring-primary/50 transition-all group"
+                >
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <span className="text-lg shrink-0">{t1?.flag}</span>
+                      <span className="font-semibold text-sm truncate group-hover:text-primary transition-colors">{t1?.name}</span>
+                    </div>
+                    {played ? (
+                      <span className="text-lg font-black tabular-nums shrink-0">{s1}</span>
+                    ) : null}
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0 flex-1">
+                      <span className="text-lg shrink-0">{t2?.flag}</span>
+                      <span className="font-semibold text-sm truncate group-hover:text-primary transition-colors">{t2?.name}</span>
+                    </div>
+                    {played ? (
+                      <span className="text-lg font-black tabular-nums shrink-0">{s2}</span>
+                    ) : null}
+                  </div>
+                  <div className="flex items-center gap-2 mt-2 text-[10px] text-muted-foreground">
+                    <MapPin className="h-3 w-3" />
+                    <span className="truncate">{m.venue}</span>
+                    <span className="text-muted-foreground/40">·</span>
+                    <span>Group {m.group}</span>
+                    {played && result?.status === "live" && (
+                      <>
+                        <span className="text-muted-foreground/40">·</span>
+                        <span className="text-red-500 font-semibold uppercase">Live</span>
+                      </>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* ===== QUICK STATS ===== */}
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3 animate-in animate-in-delay-4">
