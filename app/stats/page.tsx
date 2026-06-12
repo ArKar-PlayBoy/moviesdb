@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import StatsClient from "./stats-client";
 import { getAllPlayerPhotos } from "@/lib/player-photo-map";
 import { getTopScorers, getTopAssists, getTopCards } from "@/data/worldcup-2026";
+import { computeTopScorersFromResults } from "@/lib/data-service";
+import { getAllMatchResults } from "@/lib/storage";
 
 export const metadata: Metadata = {
   title: "Stats — FIFA World Cup 2026",
@@ -9,12 +11,15 @@ export const metadata: Metadata = {
 };
 
 export default async function StatsPage() {
-  const [scorerPhotos, scorers, assists, cards] = await Promise.all([
+  const [scorerPhotos, assists, cards] = await Promise.all([
     getAllPlayerPhotos(),
-    getTopScorers(200),
     getTopAssists(200),
     getTopCards(200),
   ]);
+
+  const allResults = await getAllMatchResults();
+  const hasResults = Object.keys(allResults).length > 0;
+  const scorers = hasResults ? computeTopScorersFromResults(allResults, 200) : getTopScorers(200);
 
   return <StatsClient scorerPhotos={scorerPhotos} scorers={scorers} assists={assists} cards={cards} />;
 }

@@ -2,7 +2,8 @@ import { Suspense } from "react";
 import TEAMS, { GROUPS, MATCHES, getTeamById, getGroupStandings, getStarOfTheWeek, getTopScorers, getVenues, getAllPlayers, getRecentPOTMs } from "@/data/worldcup-2026";
 import { slugify } from "@/lib/utils";
 import { getAllPlayerPhotos } from "@/lib/player-photo-map";
-import { getLiveScores } from "@/lib/data-service";
+import { getLiveScores, computeStandingsFromResults, computeTopScorersFromResults } from "@/lib/data-service";
+import { getAllMatchResults } from "@/lib/storage";
 
 import PlayerAvatar from "@/components/player-avatar";
 import Countdown from "@/components/countdown";
@@ -164,7 +165,9 @@ export default async function Home() {
   const totalMatches = MATCHES.length + 32; // 72 group stage + 32 knockout
   const totalVenues = getVenues().length;
   const totalPlayers = getAllPlayers().length;
-  const topScorers = getTopScorers(5);
+  const allResults = await getAllMatchResults();
+  const hasResults = Object.keys(allResults).length > 0;
+  const topScorers = hasResults ? computeTopScorersFromResults(allResults, 5) : getTopScorers(5);
   const liveMatches = await getLiveScores();
 
   return (
@@ -381,7 +384,7 @@ export default async function Home() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {GROUPS.map(group => {
-            const standings = getGroupStandings(group);
+            const standings = hasResults ? computeStandingsFromResults(group, allResults) : getGroupStandings(group);
             return (
               <div key={group} className="bg-card rounded-xl border border-border overflow-hidden">
                 <div className="bg-primary/5 border-b border-border px-4 py-2.5 flex items-center justify-between">

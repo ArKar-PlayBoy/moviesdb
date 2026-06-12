@@ -1,7 +1,20 @@
 import { NextResponse } from "next/server";
 import { MATCHES, getTeamFlag, getTeamName, getMatchScore, getStarOfTheMatch } from "@/data/worldcup-2026";
-import { getMatchData } from "@/lib/data-service";
+import { getMatchData, type GoalEvent } from "@/lib/data-service";
 import { rateLimit } from "@/lib/rate-limit";
+
+function computePOTMFromGoals(goals: GoalEvent[]): { playerName: string; teamId: string; goals: number; minutes: number[] } | null {
+  if (goals.length === 0) return null;
+  const counts: Record<string, { count: number; minutes: number[]; teamId: string }> = {};
+  for (const g of goals) {
+    if (!counts[g.playerName]) counts[g.playerName] = { count: 0, minutes: [], teamId: g.teamId };
+    counts[g.playerName].count++;
+    counts[g.playerName].minutes.push(g.minute);
+  }
+  const sorted = Object.entries(counts).sort((a, b) => b[1].count - a[1].count);
+  if (sorted.length === 0) return null;
+  return { playerName: sorted[0][0], teamId: sorted[0][1].teamId, goals: sorted[0][1].count, minutes: sorted[0][1].minutes };
+}
 
 export async function GET(request: Request) {
   // Get IP for rate limiting (fallback to anonymous if not present)
@@ -34,7 +47,7 @@ export async function GET(request: Request) {
   const enriched = await Promise.all(matches.map(async (m) => {
     const live = await getMatchData(m.id, m.team1, m.team2);
     const [score1, score2] = live.status !== "scheduled" ? live.score : getMatchScore(m.id, m.team1, m.team2, m.date);
-    const star = getStarOfTheMatch(m.id);
+    const star = live.goals.length > 0 ? computePOTMFromGoals(live.goals) : getStarOfTheMatch(m.id);
     return {
       ...m,
       team1Name: getTeamName(m.team1),

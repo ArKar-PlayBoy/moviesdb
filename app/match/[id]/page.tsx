@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { MATCHES, getTeamById, getMatchScore, getMatchGoalScorers, getTeamName, getStarOfTheMatch, hasMatchResult } from "@/data/worldcup-2026";
+import { MATCHES, getTeamById, getTeamName, getAllPlayers, type StarOfMatch } from "@/data/worldcup-2026";
+import { getMatchData, type GoalEvent } from "@/lib/data-service";
 import { slugify } from "@/lib/utils";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -27,6 +28,47 @@ export function generateStaticParams() {
   return MATCHES.map((m) => ({ id: m.id }));
 }
 
+function computeStarOfMatch(
+  goals: GoalEvent[],
+  team1Id: string,
+  team2Id: string,
+  t1Name: string,
+  t2Name: string,
+  t1Flag: string,
+  t2Flag: string,
+  score: [number, number],
+): StarOfMatch | null {
+  if (goals.length === 0) return null;
+  const counts: Record<string, { count: number; minutes: number[]; teamId: string }> = {};
+  for (const g of goals) {
+    if (!counts[g.playerName]) counts[g.playerName] = { count: 0, minutes: [], teamId: g.teamId };
+    counts[g.playerName].count++;
+    counts[g.playerName].minutes.push(g.minute);
+  }
+  const sorted = Object.entries(counts).sort((a, b) => b[1].count - a[1].count);
+  const top = sorted[0];
+  const isTeam1 = top[1].teamId === team1Id;
+  const [s1, s2] = score;
+  const teamScore = isTeam1 ? s1 : s2;
+  const oppScore = isTeam1 ? s2 : s1;
+
+  const allPlayers = getAllPlayers();
+  const playerData = allPlayers.find(p => p.name === top[0] && p.teamId === top[1].teamId);
+
+  return {
+    playerName: top[0],
+    teamId: top[1].teamId,
+    teamName: isTeam1 ? t1Name : t2Name,
+    teamFlag: isTeam1 ? t1Flag : t2Flag,
+    position: playerData?.position || "",
+    goals: top[1].count,
+    minutes: top[1].minutes.sort((a, b) => a - b),
+    teamScore,
+    opponentScore: oppScore,
+    isWinningTeam: teamScore > oppScore,
+  };
+}
+
 export const revalidate = 60;
 
 export default async function MatchDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -38,14 +80,16 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
   const t2 = getTeamById(match.team2);
   if (!t1 || !t2) notFound();
 
-  const played = hasMatchResult(match.id);
-  const [s1, s2] = played ? getMatchScore(match.id, match.team1, match.team2, match.date) : [0, 0];
-  const { scorers1, scorers2 } = played ? getMatchGoalScorers(match.id, match.team1, match.team2, match.date) : { scorers1: [], scorers2: [] };
+  const liveData = await getMatchData(match.id, match.team1, match.team2);
+  const played = liveData.status !== "scheduled";
+  const [s1, s2] = played ? liveData.score : [0, 0];
+  const scorers1 = liveData.goals.filter((g: GoalEvent) => g.teamId === match.team1);
+  const scorers2 = liveData.goals.filter((g: GoalEvent) => g.teamId === match.team2);
   const isDraw = played && s1 === s2;
   const t1Won = played && s1 > s2;
 
   const allGoals = [...scorers1, ...scorers2].sort((a, b) => a.minute - b.minute);
-  const starOfMatch = getStarOfTheMatch(match.id);
+  const starOfMatch = computeStarOfMatch(liveData.goals, match.team1, match.team2, t1.name, t2.name, t1.flag, t2.flag, [s1, s2]);
   const starPhoto = starOfMatch ? await resolvePlayerPhoto(starOfMatch.playerName) : null;
 
   return (
