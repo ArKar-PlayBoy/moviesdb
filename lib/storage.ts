@@ -9,6 +9,7 @@ export interface StoredMatchResult {
 
 const TTL_SECONDS = 604800; // 7 days — refreshed every 30min by cron
 const SSR_CACHE_TTL = 30_000; // 30 seconds in-memory cache for SSR pages
+const DATA_VERSION = 2; // Increment to invalidate all cached data on deploy
 
 let client: ReturnType<typeof createClient> | null = null;
 
@@ -71,8 +72,10 @@ function isValidMatchId(id: string): boolean {
 export async function setMatchResult(matchId: string, data: StoredMatchResult): Promise<boolean> {
   if (!isValidMatchId(matchId)) return false;
 
+  const payload = JSON.stringify({ ...data, _v: DATA_VERSION });
+
   if (shouldUseMemoryFallback()) {
-    memoryStore.set(matchId, JSON.stringify(data));
+    memoryStore.set(matchId, payload);
     memoryMatchIds.add(matchId);
     clearSSRCache();
     return true;
@@ -81,7 +84,7 @@ export async function setMatchResult(matchId: string, data: StoredMatchResult): 
   const c = await getClient();
   if (!c) return false;
   try {
-    await c.hSet("matches", matchId, JSON.stringify(data));
+    await c.hSet("matches", matchId, payload);
     await c.expire("matches", TTL_SECONDS);
     await c.sAdd("match_ids", matchId);
     await c.expire("match_ids", TTL_SECONDS);
@@ -92,23 +95,28 @@ export async function setMatchResult(matchId: string, data: StoredMatchResult): 
   }
 }
 
+function parseStoredResult(raw: string): StoredMatchResult | null {
+  const parsed = JSON.parse(raw);
+  if (parsed._v !== DATA_VERSION) return null;
+  return parsed as StoredMatchResult;
+}
+
 export async function getMatchResult(matchId: string): Promise<StoredMatchResult | null> {
   if (!isValidMatchId(matchId)) return null;
 
   if (shouldUseMemoryFallback()) {
     const raw = memoryStore.get(matchId);
-    return raw ? JSON.parse(raw) : null;
+    return raw ? parseStoredResult(raw) : null;
   }
 
   const c = await getClient();
   if (!c) {
-    // Client unavailable but REDIS_URL is set — try memory as last resort
     const raw = memoryStore.get(matchId);
-    return raw ? JSON.parse(raw) : null;
+    return raw ? parseStoredResult(raw) : null;
   }
   try {
     const raw = await c.hGet("matches", matchId);
-    return raw ? JSON.parse(raw) : null;
+    return raw ? parseStoredResult(raw) : null;
   } catch {
     return null;
   }
