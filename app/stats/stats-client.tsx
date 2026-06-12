@@ -42,11 +42,15 @@ export default function StatsClient({
   scorers,
   assists,
   cards,
+  totalGoals = 0,
+  totalMatchesPlayed = 0,
 }: {
   scorerPhotos: Record<string, string | null>;
   scorers: PlayerStat[];
   assists: PlayerStat[];
   cards: PlayerStat[];
+  totalGoals?: number;
+  totalMatchesPlayed?: number;
 }) {
   const [tab, setTab] = useState<Tab>("goals");
   const [page, setPage] = useState(0);
@@ -100,19 +104,35 @@ export default function StatsClient({
       </div>
 
       {isEmpty ? (
-        <div className="text-center py-20">
-          <div className="w-16 h-16 rounded-2xl bg-secondary mx-auto flex items-center justify-center mb-4">
-            <Goal className="h-8 w-8 text-muted-foreground" />
+        totalGoals > 0 ? (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 rounded-2xl bg-secondary mx-auto flex items-center justify-center mb-4">
+              <Goal className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <h2 className="text-xl font-bold mb-2">{totalGoals} goal{totalGoals !== 1 ? "s" : ""} scored</h2>
+            <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+              Across {totalMatchesPlayed} match{totalMatchesPlayed !== 1 ? "es" : ""} — individual scorer details are pending
+            </p>
+            <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-muted-foreground">
+              <Clock className="h-3 w-3" />
+              <span>Stats will update once scorer data becomes available</span>
+            </div>
           </div>
-          <h2 className="text-xl font-bold mb-2">No data yet</h2>
-          <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-            Stats will appear here once the tournament begins on June 11, 2026
-          </p>
-          <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-muted-foreground">
-            <Clock className="h-3 w-3" />
-            <span>Tournament starts June 11, 2026</span>
+        ) : (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 rounded-2xl bg-secondary mx-auto flex items-center justify-center mb-4">
+              <Goal className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <h2 className="text-xl font-bold mb-2">No data yet</h2>
+            <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+              Stats will appear here once the tournament begins on June 11, 2026
+            </p>
+            <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-muted-foreground">
+              <Clock className="h-3 w-3" />
+              <span>Tournament starts June 11, 2026</span>
+            </div>
           </div>
-        </div>
+        )
       ) : (
         <>
           {tab === "goals" && page === 0 && data.length >= 3 && (

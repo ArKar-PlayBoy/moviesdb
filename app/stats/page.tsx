@@ -21,5 +21,11 @@ export default async function StatsPage() {
   const hasResults = Object.keys(allResults).length > 0;
   const scorers = hasResults ? computeTopScorersFromResults(allResults, 200) : getTopScorers(200);
 
-  return <StatsClient scorerPhotos={scorerPhotos} scorers={scorers} assists={assists} cards={cards} />;
+  const totalGoals = Object.values(allResults).reduce((sum, r) => {
+    if (r.status === "finished") return sum + r.score[0] + r.score[1];
+    return sum;
+  }, 0);
+  const totalMatchesPlayed = Object.values(allResults).filter(r => r.status === "finished" || r.status === "live").length;
+
+  return <StatsClient scorerPhotos={scorerPhotos} scorers={scorers} assists={assists} cards={cards} totalGoals={totalGoals} totalMatchesPlayed={totalMatchesPlayed} />;
 }

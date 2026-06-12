@@ -89,6 +89,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
   const t1Won = played && s1 > s2;
 
   const allGoals = [...scorers1, ...scorers2].sort((a, b) => a.minute - b.minute);
+  const hasGoalsWithoutData = played && s1 + s2 > 0 && allGoals.length === 0;
   const starOfMatch = computeStarOfMatch(liveData.goals, match.team1, match.team2, t1.name, t2.name, t1.flag, t2.flag, [s1, s2]);
   const starPhoto = starOfMatch ? await resolvePlayerPhoto(starOfMatch.playerName) : null;
 
@@ -191,13 +192,23 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
           </div>
 
           {allGoals.length === 0 ? (
-            <div className="text-center py-8">
-              <div className="w-12 h-12 rounded-full bg-secondary mx-auto flex items-center justify-center mb-3">
-                <GoalIcon className="h-5 w-5 text-muted-foreground" />
+            hasGoalsWithoutData ? (
+              <div className="text-center py-8">
+                <div className="w-12 h-12 rounded-full bg-secondary mx-auto flex items-center justify-center mb-3">
+                  <GoalIcon className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <p className="text-sm text-muted-foreground">Goal details unavailable</p>
+                <p className="text-xs text-muted-foreground mt-1">Scorer information will be added once available</p>
               </div>
-              <p className="text-sm text-muted-foreground">No goals scored in this match</p>
-              <p className="text-xs text-muted-foreground mt-1">A defensive stalemate</p>
-            </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className="w-12 h-12 rounded-full bg-secondary mx-auto flex items-center justify-center mb-3">
+                  <GoalIcon className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <p className="text-sm text-muted-foreground">No goals scored in this match</p>
+                <p className="text-xs text-muted-foreground mt-1">A defensive stalemate</p>
+              </div>
+            )
           ) : (
             <div className="relative">
               <div className="absolute left-[17px] top-0 bottom-0 w-0.5 bg-border" />
@@ -285,10 +296,16 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
                   <span className="text-[10px] font-bold text-green-600 bg-green-500/10 px-1.5 py-0.5 rounded tabular-nums">{sc.minute}&apos;</span>
                 </Link>
               ))}
-              {scorers1.length === 0 && (
+              {scorers1.length === 0 && s1 === 0 && (
                 <div className="text-center py-6">
                   <Users className="h-6 w-6 mx-auto text-muted-foreground mb-2" />
                   <p className="text-xs text-muted-foreground">No goal scorers</p>
+                </div>
+              )}
+              {scorers1.length === 0 && s1 > 0 && (
+                <div className="text-center py-6">
+                  <GoalIcon className="h-6 w-6 mx-auto text-muted-foreground mb-2" />
+                  <p className="text-xs text-muted-foreground">Scorers TBD</p>
                 </div>
               )}
             </div>
@@ -315,10 +332,16 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
                   <span className="text-[10px] font-bold text-blue-600 bg-blue-500/10 px-1.5 py-0.5 rounded tabular-nums">{sc.minute}&apos;</span>
                 </Link>
               ))}
-              {scorers2.length === 0 && (
+              {scorers2.length === 0 && s2 === 0 && (
                 <div className="text-center py-6">
                   <Users className="h-6 w-6 mx-auto text-muted-foreground mb-2" />
                   <p className="text-xs text-muted-foreground">No goal scorers</p>
+                </div>
+              )}
+              {scorers2.length === 0 && s2 > 0 && (
+                <div className="text-center py-6">
+                  <GoalIcon className="h-6 w-6 mx-auto text-muted-foreground mb-2" />
+                  <p className="text-xs text-muted-foreground">Scorers TBD</p>
                 </div>
               )}
             </div>

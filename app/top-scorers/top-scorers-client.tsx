@@ -23,7 +23,7 @@ const podiumRings = ["rgba(234,179,8,0.2)", "rgba(156,163,175,0.2)", "rgba(180,8
 
 
 
-export default function TopScorersClient({ scorerPhotos }: { scorerPhotos: Record<string, string | null> }) {
+export default function TopScorersClient({ scorerPhotos, totalGoals = 0, totalMatchesPlayed = 0 }: { scorerPhotos: Record<string, string | null>; totalGoals?: number; totalMatchesPlayed?: number }) {
   const [allScorers, setAllScorers] = useState<{
     playerName: string; teamId: string; teamName: string; teamFlag: string;
     teamGroup: string; goals: number; matches: number; position: string; age: number;
@@ -60,19 +60,35 @@ export default function TopScorersClient({ scorerPhotos }: { scorerPhotos: Recor
       </div>
 
       {safeScorers.length === 0 ? (
-        <div className="text-center py-20">
-          <div className="w-16 h-16 rounded-2xl bg-secondary mx-auto flex items-center justify-center mb-4">
-            <Goal className="h-8 w-8 text-muted-foreground" />
+        totalGoals > 0 ? (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 rounded-2xl bg-secondary mx-auto flex items-center justify-center mb-4">
+              <Goal className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <h2 className="text-xl font-bold mb-2">{totalGoals} goal{totalGoals !== 1 ? "s" : ""} scored</h2>
+            <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+              Across {totalMatchesPlayed} match{totalMatchesPlayed !== 1 ? "es" : ""} — individual scorer details are pending
+            </p>
+            <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-muted-foreground">
+              <Clock className="h-3 w-3" />
+              <span>Scorer data will appear once available</span>
+            </div>
           </div>
-          <h2 className="text-xl font-bold mb-2">No goals scored yet</h2>
-          <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-            Goal scoring data will appear here once the tournament begins on June 11, 2026
-          </p>
-          <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-muted-foreground">
-            <Clock className="h-3 w-3" />
-            <span>Tournament starts June 11, 2026</span>
+        ) : (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 rounded-2xl bg-secondary mx-auto flex items-center justify-center mb-4">
+              <Goal className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <h2 className="text-xl font-bold mb-2">No goals scored yet</h2>
+            <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+              Goal scoring data will appear here once the tournament begins on June 11, 2026
+            </p>
+            <div className="flex items-center justify-center gap-1.5 mt-3 text-xs text-muted-foreground">
+              <Clock className="h-3 w-3" />
+              <span>Tournament starts June 11, 2026</span>
+            </div>
           </div>
-        </div>
+        )
       ) : (
         <>
           {page === 0 && safeScorers.length >= 3 && (

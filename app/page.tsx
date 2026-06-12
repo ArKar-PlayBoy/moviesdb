@@ -168,6 +168,10 @@ export default async function Home() {
   const allResults = await getAllMatchResults();
   const hasResults = Object.keys(allResults).length > 0;
   const topScorers = hasResults ? computeTopScorersFromResults(allResults, 5) : getTopScorers(5);
+  const totalGoalsHome = Object.values(allResults).reduce((sum, r) => {
+    if (r.status === "finished") return sum + r.score[0] + r.score[1];
+    return sum;
+  }, 0);
   const liveMatches = await getLiveScores();
 
   return (
@@ -290,7 +294,7 @@ export default async function Home() {
           </Link>
         </div>
         <div className="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-2 -mx-1 px-1 scrollbar-none sm:grid sm:grid-cols-3 md:grid-cols-5 sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0">
-          {topScorers.map((s, i) => (
+          {topScorers.length > 0 ? topScorers.map((s, i) => (
             <Link
               key={`${s.teamId}-${s.playerName}`}
               href={`/player/${slugify(s.playerName)}`}
@@ -314,7 +318,19 @@ export default async function Home() {
               </div>
               <p className="mt-2 text-lg font-black text-primary tabular-nums">{s.goals} <span className="text-xs font-normal text-muted-foreground">goals</span></p>
             </Link>
-          ))}
+          )) : totalGoalsHome > 0 ? (
+            <div className="col-span-full bg-card rounded-xl border border-border p-6 text-center">
+              <Goal className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
+              <p className="font-semibold text-muted-foreground">{totalGoalsHome} goal{totalGoalsHome !== 1 ? "s" : ""} scored so far</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">Scorer details pending — check back soon</p>
+            </div>
+          ) : (
+            <div className="col-span-full bg-card rounded-xl border border-border p-6 text-center">
+              <Goal className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
+              <p className="font-semibold text-muted-foreground">No goals scored yet</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">Tournament starts June 11, 2026</p>
+            </div>
+          )}
         </div>
       </section>
 
