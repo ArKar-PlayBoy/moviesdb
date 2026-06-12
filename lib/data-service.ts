@@ -1,5 +1,5 @@
 import { getKnockoutBracket as getSimulatedBracket, getTeamName, getTeamsByGroup, getAllPlayers, getTeamById, MATCHES, type KnockoutMatch, type Standing, type ScorerEntry } from "@/data/worldcup-2026";
-import { getMatchResult, generateFallbackResult, type StoredMatchResult } from "@/lib/storage";
+import { getMatchResult, type StoredMatchResult } from "@/lib/storage";
 
 interface SportSRCMatchRaw {
   id?: string | number;
@@ -335,12 +335,17 @@ export async function getMatchData(
   const best = attempts.sort((a, b) => b.rank - a.rank)[0];
   if (best) return { score: best.score, goals: best.goals, status: best.status };
 
-  // 5) Deterministic fallback: only for matches already past their scheduled date
+  // 5) Past matches with no live data: show as finished with no details available
   if (isWcStarted()) {
     const matchInfo = MATCHES.find(m => m.id === matchId);
-    const fallback = generateFallbackResult(matchId, team1Id, team2Id, matchInfo?.date);
-    if (fallback.status !== "scheduled") {
-      return { score: fallback.score, goals: fallback.goals, status: fallback.status };
+    if (matchInfo) {
+      const matchDate = new Date(`2026 ${matchInfo.date}`);
+      const today = new Date();
+      matchDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+      if (matchDate < today) {
+        return { score: [0, 0], goals: [], status: "finished" };
+      }
     }
   }
 

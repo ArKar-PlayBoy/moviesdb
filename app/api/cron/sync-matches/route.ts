@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import crypto from "crypto";
 import { MATCHES, getTeamName } from "@/data/worldcup-2026";
-import { generateFallbackResult } from "@/lib/storage";
 import { getFIFAIdMatch, fetchFIFA } from "@/lib/data-service";
 import { getMatchResult, setMatchResult } from "@/lib/storage";
 
@@ -136,9 +135,15 @@ export async function GET(request: Request) {
             };
           }
 
-          // 3) Deterministic fallback: only for matches already past their scheduled date
-          const fb = generateFallbackResult(m.id, m.team1, m.team2, m.date);
-          return { matchId: m.id, score: fb.score, goals: fb.goals as GoalEntry[], status: fb.status };
+          // 3) Past matches: store as finished with no data (allows future live data to override)
+          const matchDate = new Date(`2026 ${m.date}`);
+          const today = new Date();
+          matchDate.setHours(0, 0, 0, 0);
+          today.setHours(0, 0, 0, 0);
+          if (matchDate < today) {
+            return { matchId: m.id, score: [0, 0] as [number, number], goals: [] as GoalEntry[], status: "finished" as const };
+          }
+          return { matchId: m.id, score: [0, 0] as [number, number], goals: [] as GoalEntry[], status: "scheduled" as const };
         })
       );
 
