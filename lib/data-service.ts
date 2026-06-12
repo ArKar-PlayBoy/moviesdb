@@ -123,10 +123,9 @@ function normalizeTeamName(name: string): string {
 const TEAM_NAME_ALIASES: Record<string, string> = {
   "korearepublic": "southkorea",
   "czechia": "czechrepublic",
+  "bosniaandherzegovina": "bosniaherzegovina",
   "unitedstates": "usa",
-  "bosniaherzegovina": "bosnia",
-  "ivorycoast": "côtedivoire",
-  "iran": "irán",
+  "turkey": "turkiye",
 };
 
 function doTeamsMatch(sportsrcHome: string | undefined, sportsrcAway: string | undefined, team1Id: string, team2Id: string): boolean {
