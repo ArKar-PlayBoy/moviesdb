@@ -29,8 +29,68 @@ interface FIFAMatchResponse {
   HomeTeam?: { Score?: number };
   AwayTeam?: { Score?: number };
   LiveEvents?: FIFALiveEvent[];
+  Goals?: { PlayerName?: string; TeamId?: number; Minute?: number; Type?: number }[];
   MatchStatus?: number;
   Results?: unknown[];
+}
+
+interface FIFACalendarMatch {
+  IdMatch?: number;
+  Date?: string;
+  Home?: { TeamName?: { Description?: string }[]; Score?: number };
+  Away?: { TeamName?: { Description?: string }[]; Score?: number };
+  MatchStatus?: number;
+}
+
+interface FIFACalendarResponse {
+  Results?: FIFACalendarMatch[];
+}
+
+let idMatchCache: { map: Map<string, number>; ts: number } | null = null;
+const ID_MATCH_CACHE_TTL = 120_000;
+
+async function buildFIFAIdMatchMap(): Promise<Map<string, number>> {
+  if (idMatchCache && Date.now() - idMatchCache.ts < ID_MATCH_CACHE_TTL) {
+    return idMatchCache.map;
+  }
+  try {
+    const calRes = await fetch(
+      `https://api.fifa.com/api/v3/calendar/matches?from=2026-06-10&to=2026-07-20&competition=17&count=104`,
+      {
+        headers: { "User-Agent": "WorldCup2026/1.0" },
+        next: { revalidate: 120 },
+      }
+    );
+    if (!calRes.ok) {
+      idMatchCache = { map: new Map(), ts: Date.now() };
+      return idMatchCache.map;
+    }
+    const calData = await calRes.json() as FIFACalendarResponse;
+    const map = new Map<string, number>();
+    for (const match of calData.Results || []) {
+      const home = normalizeTeamName(match.Home?.TeamName?.[0]?.Description || "");
+      const away = normalizeTeamName(match.Away?.TeamName?.[0]?.Description || "");
+      if (home && away && match.IdMatch) {
+        const key1 = `${home}-${away}`;
+        const key2 = `${away}-${home}`;
+        if (!map.has(key1) && !map.has(key2)) {
+          map.set(key1, match.IdMatch);
+        }
+      }
+    }
+    idMatchCache = { map, ts: Date.now() };
+    return map;
+  } catch {
+    idMatchCache = { map: new Map(), ts: Date.now() };
+    return idMatchCache.map;
+  }
+}
+
+async function getFIFAIdMatch(team1Id: string, team2Id: string): Promise<number | null> {
+  const map = await buildFIFAIdMatchMap();
+  const t1 = normalizeTeamName(getTeamName(team1Id));
+  const t2 = normalizeTeamName(getTeamName(team2Id));
+  return map.get(`${t1}-${t2}`) ?? map.get(`${t2}-${t1}`) ?? null;
 }
 
 export type DataSource = "simulated" | "sportsrc" | "fifa";
@@ -188,22 +248,43 @@ export async function getMatchData(
     return { score: [homeScore, awayScore], goals: [], status };
   }
 
-  const fifa = await fetchFIFA<FIFAMatchResponse>(`live/football/${matchId}`);
-  if (fifa) {
-    const homeScore = fifa.HomeTeam?.Score ?? 0;
-    const awayScore = fifa.AwayTeam?.Score ?? 0;
-    const goals: GoalEvent[] = (fifa.LiveEvents || []).map((e) => ({
-      playerName: e.PlayerName || "Unknown",
-      teamId: e.TeamId === 1 ? team1Id : team2Id,
-      minute: e.Minute || 0,
-      isPenalty: e.EventType === "penalty",
-      isOwnGoal: e.EventType === "owngoal",
-    }));
-    return {
-      score: [homeScore, awayScore],
-      goals,
-      status: fifa.MatchStatus === 3 ? "finished" : fifa.MatchStatus === 2 ? "live" : "scheduled",
-    };
+  // Look up FIFA's numeric IdMatch via calendar, then call live/football for goal data
+  const fifaIdMatch = await getFIFAIdMatch(team1Id, team2Id);
+  if (fifaIdMatch) {
+    const fifa = await fetchFIFA<FIFAMatchResponse>(`live/football/${fifaIdMatch}`);
+    if (fifa) {
+      const homeScore = fifa.HomeTeam?.Score ?? 0;
+      const awayScore = fifa.AwayTeam?.Score ?? 0;
+      const goals: GoalEvent[] = [];
+      if (fifa.Goals && fifa.Goals.length > 0) {
+        for (const g of fifa.Goals) {
+          goals.push({
+            playerName: g.PlayerName || "Unknown",
+            teamId: g.TeamId === 1 ? team1Id : team2Id,
+            minute: g.Minute || 0,
+            isPenalty: g.Type === 2,
+            isOwnGoal: g.Type === 3,
+          });
+        }
+      } else if (fifa.LiveEvents) {
+        for (const e of fifa.LiveEvents) {
+          if (e.EventType === "goal" || e.EventType === "penalty") {
+            goals.push({
+              playerName: e.PlayerName || "Unknown",
+              teamId: e.TeamId === 1 ? team1Id : team2Id,
+              minute: e.Minute || 0,
+              isPenalty: e.EventType === "penalty",
+              isOwnGoal: false,
+            });
+          }
+        }
+      }
+      return {
+        score: [homeScore, awayScore],
+        goals,
+        status: fifa.MatchStatus === 3 ? "finished" : fifa.MatchStatus === 2 ? "live" : "scheduled",
+      };
+    }
   }
 
   // Fallback: fetch FIFA World Cup matches from calendar and match by teams
