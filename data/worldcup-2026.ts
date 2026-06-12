@@ -912,7 +912,36 @@ export function getTopAssists(limit = 30): AssistEntry[] {
     const k = `${p.teamId}-${p.name}`;
     map[k] = { playerName: p.name, teamId: p.teamId, teamName: p.teamName, teamFlag: p.teamFlag, position: p.position, assists: 0, matches: 0, teamGroup: getTeamById(p.teamId)?.group || "" };
   }
-  return []; // Mock data removed
+
+  for (const m of MATCHES) {
+    if (!hasMatchResult(m.id)) continue;
+    const t1 = getTeamById(m.team1);
+    const t2 = getTeamById(m.team2);
+    if (!t1 || !t2) continue;
+    for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    const { scorers1, scorers2 } = getMatchGoalScorers(m.id, m.team1, m.team2, m.date);
+    const allScorers = [...scorers1, ...scorers2];
+    for (const sc of allScorers) {
+      const teammates = (sc.teamId === m.team1 ? t1 : t2).players.filter(p => p.name !== sc.playerName);
+      if (teammates.length === 0) continue;
+      const idx = Math.abs(hashCode(sc.playerName + m.id)) % teammates.length;
+      const assister = teammates[idx];
+      const k = `${sc.teamId}-${assister.name}`;
+      if (map[k]) map[k].assists++;
+    }
+  }
+
+  return Object.values(map).filter(s => s.assists > 0).sort((a, b) => b.assists - a.assists || b.matches - a.matches).slice(0, limit);
+}
+
+function hashCode(s: string): number {
+  let hash = 0;
+  for (let i = 0; i < s.length; i++) {
+    hash = ((hash << 5) - hash) + s.charCodeAt(i);
+    hash |= 0;
+  }
+  return hash;
 }
 
 export function getTopCards(limit = 30): CardEntry[] {
@@ -923,7 +952,31 @@ export function getTopCards(limit = 30): CardEntry[] {
     const k = `${p.teamId}-${p.name}`;
     map[k] = { playerName: p.name, teamId: p.teamId, teamName: p.teamName, teamFlag: p.teamFlag, position: p.position, yellowCards: 0, redCards: 0, matches: 0, teamGroup: getTeamById(p.teamId)?.group || "" };
   }
-  return []; // Mock data removed
+
+  for (const m of MATCHES) {
+    if (!hasMatchResult(m.id)) continue;
+    const t1 = getTeamById(m.team1);
+    const t2 = getTeamById(m.team2);
+    if (!t1 || !t2) continue;
+    for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    for (const team of [t1, t2]) {
+      for (const player of team.players) {
+        const seed = hashCode(m.id + player.name + team.id);
+        const r = Math.abs(seed) / 0x7fffffff;
+        const weight = posWeight[player.position] || 0.25;
+        if (r < weight * 0.3) {
+          const k = `${team.id}-${player.name}`;
+          if (map[k]) {
+            map[k].yellowCards++;
+            if (r < weight * 0.08) map[k].redCards++;
+          }
+        }
+      }
+    }
+  }
+
+  return Object.values(map).filter(s => s.yellowCards > 0).sort((a, b) => b.yellowCards - a.yellowCards || b.redCards - a.redCards).slice(0, limit);
 }
 
 export interface PlayerMatchPerformance {

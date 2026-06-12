@@ -141,7 +141,10 @@ export async function getAllMatchResults(): Promise<Record<string, StoredMatchRe
   if (shouldUseMemoryFallback()) {
     for (const id of memoryMatchIds) {
       const raw = memoryStore.get(id);
-      if (raw) result[id] = JSON.parse(raw);
+      if (raw) {
+        const parsed = parseStoredResult(raw);
+        if (parsed) result[id] = parsed;
+      }
     }
   } else {
     const c = await getClient();

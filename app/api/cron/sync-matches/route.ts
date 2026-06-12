@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import crypto from "crypto";
 import { MATCHES, getTeamName } from "@/data/worldcup-2026";
 import { getFIFAIdMatch, fetchFIFA } from "@/lib/data-service";
-import { getMatchResult, setMatchResult, clearAllMatchResults } from "@/lib/storage";
+import { getMatchResult, setMatchResult } from "@/lib/storage";
 
 export const maxDuration = 120;
 
@@ -54,9 +54,14 @@ function parseFIFAGoals(fifa: FIFAMatchResponse, team1Id: string, team2Id: strin
 const TEAM_NAME_ALIASES: Record<string, string> = {
   "korearepublic": "southkorea",
   "czechia": "czechrepublic",
-  "bosniaandherzegovina": "bosniaherzegovina",
+  "bosniaandherzegovina": "bosniaherz",
+  "bosniaherzegovina": "bosniaherz",
   "unitedstates": "usa",
-  "turkey": "turkiye",
+  "turkiye": "turkey",
+  "ctedivoire": "ivorycoast",
+  "caboverde": "capeverde",
+  "congodr": "drcongo",
+  "iriran": "iran",
 };
 
 function normName(name: string): string {
@@ -67,12 +72,15 @@ function normName(name: string): string {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const key = searchParams.get("key") || "";
+  const authHeader = request.headers.get("authorization") || "";
   const secret = process.env.CRON_SECRET || "";
 
   let isAuthorized = false;
   try {
-    if (key.length > 0 && key.length === secret.length) {
-      isAuthorized = crypto.timingSafeEqual(Buffer.from(key), Buffer.from(secret));
+    const bearer = authHeader.replace(/^Bearer\s+/i, "").trim();
+    const input = key || bearer;
+    if (input.length > 0 && input.length === secret.length) {
+      isAuthorized = crypto.timingSafeEqual(Buffer.from(input), Buffer.from(secret));
     }
   } catch {}
 
@@ -81,9 +89,6 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Clear stale data only AFTER we're inside the try block — if fetch fails, old data survives
-    await clearAllMatchResults();
-
     // Pre-fetch SportSRC matches once as a fallback for scores when FIFA is unavailable
     const allSportSRCMatches: { homeTeam?: { name?: string }; awayTeam?: { name?: string }; homeScore?: { current?: number }; awayScore?: { current?: number }; home_score?: number; away_score?: number; status?: string }[] = [];
     const sportsrcKey = process.env.SPORTSRC_KEY || "";

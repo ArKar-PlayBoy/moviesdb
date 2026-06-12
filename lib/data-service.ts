@@ -55,7 +55,7 @@ async function buildFIFAIdMatchMap(): Promise<Map<string, number>> {
   }
   try {
     const calRes = await fetch(
-      `https://api.fifa.com/api/v3/calendar/matches?from=2026-06-10&to=2026-07-20&competition=17&count=104`,
+      `https://api.fifa.com/api/v3/calendar/matches?idCompetition=17&from=2026-06-10&to=2026-07-20&count=104`,
       {
         headers: { "User-Agent": "WorldCup2026/1.0" },
         next: { revalidate: 120 },
@@ -183,9 +183,14 @@ function normalizeTeamName(name: string): string {
 const TEAM_NAME_ALIASES: Record<string, string> = {
   "korearepublic": "southkorea",
   "czechia": "czechrepublic",
-  "bosniaandherzegovina": "bosniaherzegovina",
+  "bosniaandherzegovina": "bosniaherz",
+  "bosniaherzegovina": "bosniaherz",
   "unitedstates": "usa",
-  "turkey": "turkiye",
+  "turkiye": "turkey",
+  "ctedivoire": "ivorycoast",
+  "caboverde": "capeverde",
+  "congodr": "drcongo",
+  "iriran": "iran",
 };
 
 function doTeamsMatch(sportsrcHome: string | undefined, sportsrcAway: string | undefined, team1Id: string, team2Id: string): boolean {
@@ -301,7 +306,7 @@ export async function getMatchData(
 
   // 4) Fallback: FIFA calendar (scores only, no goals)
   try {
-    const calRes = await fetch(`https://api.fifa.com/api/v3/calendar/matches?from=2026-06-10&to=2026-07-20&competition=17&count=104`, {
+    const calRes = await fetch(`https://api.fifa.com/api/v3/calendar/matches?idCompetition=17&from=2026-06-10&to=2026-07-20&count=104`, {
       headers: { "User-Agent": "WorldCup2026/1.0" },
       next: { revalidate: 120 },
     });
