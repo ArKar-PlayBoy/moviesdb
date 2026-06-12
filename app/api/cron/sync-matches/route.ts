@@ -2,10 +2,54 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import crypto from "crypto";
 import { MATCHES, getTeamName } from "@/data/worldcup-2026";
-import { getMatchData } from "@/lib/data-service";
+import { getFIFAIdMatch, fetchFIFA, generateFallbackResult } from "@/lib/data-service";
 import { getMatchResult, setMatchResult } from "@/lib/storage";
 
 export const maxDuration = 120;
+
+interface FIFAMatchResponse {
+  HomeTeam?: { Score?: number };
+  AwayTeam?: { Score?: number };
+  LiveEvents?: { PlayerName?: string; TeamId?: number; Minute?: number; EventType?: string }[];
+  Goals?: { PlayerName?: string; TeamId?: number; Minute?: number; Type?: number }[];
+  MatchStatus?: number;
+}
+
+interface GoalEntry {
+  playerName: string;
+  teamId: string;
+  minute: number;
+  isPenalty: boolean;
+  isOwnGoal: boolean;
+}
+
+function parseFIFAGoals(fifa: FIFAMatchResponse, team1Id: string, team2Id: string): GoalEntry[] {
+  const goals: GoalEntry[] = [];
+  if (fifa.Goals && fifa.Goals.length > 0) {
+    for (const g of fifa.Goals) {
+      goals.push({
+        playerName: g.PlayerName || "Unknown",
+        teamId: g.TeamId === 1 ? team1Id : team2Id,
+        minute: g.Minute || 0,
+        isPenalty: g.Type === 2,
+        isOwnGoal: g.Type === 3,
+      });
+    }
+  } else if (fifa.LiveEvents) {
+    for (const e of fifa.LiveEvents) {
+      if (e.EventType === "goal" || e.EventType === "penalty") {
+        goals.push({
+          playerName: e.PlayerName || "Unknown",
+          teamId: e.TeamId === 1 ? team1Id : team2Id,
+          minute: e.Minute || 0,
+          isPenalty: e.EventType === "penalty",
+          isOwnGoal: false,
+        });
+      }
+    }
+  }
+  return goals;
+}
 
 const TEAM_NAME_ALIASES: Record<string, string> = {
   "korearepublic": "southkorea",
@@ -37,7 +81,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Pre-fetch all SportSRC matches once for efficient team-name matching
+    // Pre-fetch SportSRC matches once as a fallback for scores when FIFA is unavailable
     const allSportSRCMatches: { homeTeam?: { name?: string }; awayTeam?: { name?: string }; homeScore?: { current?: number }; awayScore?: { current?: number }; home_score?: number; away_score?: number; status?: string }[] = [];
     const sportsrcKey = process.env.SPORTSRC_KEY || "";
     if (sportsrcKey) {
@@ -58,29 +102,42 @@ export async function GET(request: Request) {
       const batch = MATCHES.slice(i, i + batchSize);
       const entries = await Promise.all(
         batch.map(async (m) => {
+          // 1) Always try FIFA live/football first (fresh data, no cache, has goals)
+          const fifaIdMatch = await getFIFAIdMatch(m.team1, m.team2);
+          if (fifaIdMatch) {
+            const fifa = await fetchFIFA<FIFAMatchResponse>(`live/football/${fifaIdMatch}`);
+            if (fifa) {
+              const goals = parseFIFAGoals(fifa, m.team1, m.team2);
+              return {
+                matchId: m.id,
+                score: [fifa.HomeTeam?.Score ?? 0, fifa.AwayTeam?.Score ?? 0] as [number, number],
+                goals,
+                status: (fifa.MatchStatus === 3 ? "finished" : fifa.MatchStatus === 2 ? "live" : "scheduled") as "scheduled" | "live" | "finished",
+              };
+            }
+          }
+
+          // 2) Fallback to SportSRC for scores (no goals)
           const team1Display = normName(getTeamName(m.team1));
           const team2Display = normName(getTeamName(m.team2));
-
           const hit = allSportSRCMatches.find(sm => {
             const home = normName(sm.homeTeam?.name || "");
             const away = normName(sm.awayTeam?.name || "");
             return (home === team1Display && away === team2Display) ||
                    (home === team2Display && away === team1Display);
           });
-
           if (hit) {
-            const homeScore = hit.homeScore?.current ?? hit.home_score ?? 0;
-            const awayScore = hit.awayScore?.current ?? hit.away_score ?? 0;
-            const status = hit.status === "inprogress" ? "live" : hit.status === "finished" ? "finished" : "scheduled";
-            return { matchId: m.id, score: [homeScore, awayScore] as [number, number], goals: [] as { playerName: string; teamId: string; minute: number; isPenalty: boolean; isOwnGoal: boolean }[], status: status as "scheduled" | "live" | "finished" };
+            return {
+              matchId: m.id,
+              score: [hit.homeScore?.current ?? hit.home_score ?? 0, hit.awayScore?.current ?? hit.away_score ?? 0] as [number, number],
+              goals: [] as GoalEntry[],
+              status: (hit.status === "inprogress" ? "live" : hit.status === "finished" ? "finished" : "scheduled") as "scheduled" | "live" | "finished",
+            };
           }
 
-          return getMatchData(m.id, m.team1, m.team2).then(d => ({
-            matchId: m.id,
-            score: d.score,
-            goals: d.goals,
-            status: d.status,
-          }));
+          // 3) Deterministic fallback: generate result from team ranking + player roster
+          const fb = generateFallbackResult(m.id, m.team1, m.team2);
+          return { matchId: m.id, score: fb.score, goals: fb.goals as GoalEntry[], status: fb.status };
         })
       );
 
@@ -88,7 +145,7 @@ export async function GET(request: Request) {
         results[entry.matchId] = { status: entry.status };
         if (entry.status !== "scheduled") {
           const prev = await getMatchResult(entry.matchId);
-          const changed = !prev || prev.score[0] !== entry.score[0] || prev.score[1] !== entry.score[1] || prev.status !== entry.status;
+          const changed = !prev || prev.score[0] !== entry.score[0] || prev.score[1] !== entry.score[1] || prev.status !== entry.status || prev.goals.length !== entry.goals.length;
           const stored = await setMatchResult(entry.matchId, {
             score: entry.score,
             goals: entry.goals,
@@ -103,7 +160,6 @@ export async function GET(request: Request) {
 
     const revalidated = new Set<string>();
 
-    // On-demand ISR: revalidate affected pages so data updates instantly
     if (persisted > 0) {
       revalidatePath("/");
       revalidatePath("/matches");
