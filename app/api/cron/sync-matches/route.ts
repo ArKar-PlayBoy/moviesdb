@@ -80,10 +80,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
   }
 
-  // Clear all stale data from previous runs — start fresh every time
-  await clearAllMatchResults();
-
   try {
+    // Clear stale data only AFTER we're inside the try block — if fetch fails, old data survives
+    await clearAllMatchResults();
+
     // Pre-fetch SportSRC matches once as a fallback for scores when FIFA is unavailable
     const allSportSRCMatches: { homeTeam?: { name?: string }; awayTeam?: { name?: string }; homeScore?: { current?: number }; awayScore?: { current?: number }; home_score?: number; away_score?: number; status?: string }[] = [];
     const sportsrcKey = process.env.SPORTSRC_KEY || "";
