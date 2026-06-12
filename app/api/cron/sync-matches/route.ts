@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import crypto from "crypto";
 import { MATCHES, getTeamName } from "@/data/worldcup-2026";
-import { getFIFAIdMatch, fetchFIFA, generateFallbackResult } from "@/lib/data-service";
+import { generateFallbackResult } from "@/lib/storage";
+import { getFIFAIdMatch, fetchFIFA } from "@/lib/data-service";
 import { getMatchResult, setMatchResult } from "@/lib/storage";
 
 export const maxDuration = 120;

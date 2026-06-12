@@ -1,5 +1,5 @@
 import { getKnockoutBracket as getSimulatedBracket, getTeamName, getTeamsByGroup, getAllPlayers, getTeamById, MATCHES, type KnockoutMatch, type Standing, type ScorerEntry } from "@/data/worldcup-2026";
-import { getMatchResult, type StoredMatchResult } from "@/lib/storage";
+import { getMatchResult, generateFallbackResult, type StoredMatchResult } from "@/lib/storage";
 
 interface SportSRCMatchRaw {
   id?: string | number;
@@ -347,72 +347,7 @@ export async function getMatchData(
   return { score: [0, 0], goals: [], status: "scheduled" };
 }
 
-export function simpleHash(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
-  }
-  return Math.abs(hash);
-}
 
-export function generateFallbackResult(
-  matchId: string,
-  team1Id: string,
-  team2Id: string,
-): { score: [number, number]; goals: GoalEvent[]; status: "scheduled" | "live" | "finished" } {
-  const t1 = getTeamById(team1Id);
-  const t2 = getTeamById(team2Id);
-  if (!t1 || !t2) return { score: [0, 0], goals: [], status: "scheduled" };
-
-  // Seeded PRNG — deterministic from matchId
-  let s = simpleHash(matchId);
-  const rng = (max: number): number => {
-    s = (s * 16807 + 1) % 2147483647;
-    return s % Math.max(1, max + 1);
-  };
-
-  const rankDiff = t2.fifaRanking - t1.fifaRanking;
-  const t1Base = rankDiff > 10 ? 1 : rankDiff > 0 ? 1 : 0;
-  const t2Base = rankDiff < -10 ? 1 : rankDiff < 0 ? 1 : 0;
-  const t1Goals = t1Base + rng(rankDiff > 10 ? 2 : rankDiff > 0 ? 1 : 0);
-  const t2Goals = t2Base + rng(rankDiff < -10 ? 2 : rankDiff < 0 ? 1 : 0);
-
-  if (t1Goals === 0 && t2Goals === 0) {
-    return { score: [0, 0], goals: [], status: "scheduled" };
-  }
-
-  const goals: GoalEvent[] = [];
-  const genMinute = (): number => { s = (s * 16807 + 1) % 2147483647; return 5 + (s % 85); };
-
-  for (let g = 0; g < t1Goals; g++) {
-    const pick = pickScorer(t1.players, rng);
-    if (pick) goals.push({ playerName: pick, teamId: team1Id, minute: genMinute(), isPenalty: false, isOwnGoal: false });
-  }
-  for (let g = 0; g < t2Goals; g++) {
-    const pick = pickScorer(t2.players, rng);
-    if (pick) goals.push({ playerName: pick, teamId: team2Id, minute: genMinute(), isPenalty: false, isOwnGoal: false });
-  }
-
-  goals.sort((a, b) => a.minute - b.minute);
-  return { score: [t1Goals, t2Goals], goals, status: "finished" };
-}
-
-function pickScorer(players: { name: string; position: string }[], rng: (max: number) => number): string | null {
-  if (players.length === 0) return null;
-  const weighted = players.map(p => ({
-    name: p.name,
-    weight: p.position === "FW" ? 3 : p.position === "MF" ? 2 : p.position === "DF" ? 1 : 0.2,
-  }));
-  const total = weighted.reduce((sum, w) => sum + w.weight, 0);
-  let roll = rng(Math.floor(total * 100));
-  for (const w of weighted) {
-    roll -= w.weight * 100;
-    if (roll <= 0) return w.name;
-  }
-  return weighted[0].name;
-}
 
 export async function getLiveScores(): Promise<LiveMatchData[]> {
   if (!isWcStarted()) return [];
