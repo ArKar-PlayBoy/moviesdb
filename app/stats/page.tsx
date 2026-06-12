@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import StatsClient from "./stats-client";
 import { getAllPlayerPhotos } from "@/lib/player-photo-map";
-import { getTopScorers, getTopAssists, getTopCards } from "@/data/worldcup-2026";
-import { computeTopScorersFromResults } from "@/lib/data-service";
+import { getTopScorers } from "@/data/worldcup-2026";
+import { computeTopScorersFromResults, computeTopAssistsFromResults, computeTopCardsFromResults } from "@/lib/data-service";
 import { getAllMatchResults } from "@/lib/storage";
 
 export const metadata: Metadata = {
@@ -11,15 +11,15 @@ export const metadata: Metadata = {
 };
 
 export default async function StatsPage() {
-  const [scorerPhotos, assists, cards] = await Promise.all([
+  const [scorerPhotos] = await Promise.all([
     getAllPlayerPhotos(),
-    getTopAssists(200),
-    getTopCards(200),
   ]);
 
   const allResults = await getAllMatchResults();
   const hasResults = Object.keys(allResults).length > 0;
   const scorers = hasResults ? computeTopScorersFromResults(allResults, 200) : getTopScorers(200);
+  const assists = hasResults ? computeTopAssistsFromResults(allResults, 200) : [];
+  const cards = hasResults ? computeTopCardsFromResults(allResults, 200) : [];
 
   const totalGoals = Object.values(allResults).reduce((sum, r) => {
     if (r.status === "finished") return sum + r.score[0] + r.score[1];

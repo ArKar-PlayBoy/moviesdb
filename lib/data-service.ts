@@ -18,19 +18,48 @@ interface SportSRCResponse {
   data?: SportSRCMatchRaw[];
 }
 
-interface FIFALiveEvent {
-  PlayerName?: string;
-  TeamId?: number;
-  Minute?: number;
-  EventType?: string;
+interface FIFAPlayer {
+  IdPlayer: string;
+  PlayerName?: { Locale?: string; Description?: string }[];
+  Position?: number;
+  ShirtNumber?: number;
+}
+
+interface FIFATeam {
+  Score?: number;
+  IdTeam?: string;
+  Players?: FIFAPlayer[];
+  Goals?: {
+    Type?: number;
+    IdPlayer?: string;
+    Minute?: string;
+    IdAssistPlayer?: string | null;
+    Period?: number;
+    IdTeam?: string;
+  }[];
+  Bookings?: {
+    Card?: number;
+    IdPlayer?: string;
+    Minute?: string;
+    IdTeam?: string;
+  }[];
+}
+
+interface FIFALiveResponse {
+  HomeTeam?: FIFATeam;
+  AwayTeam?: FIFATeam;
+  MatchStatus?: number;
+}
+
+function findFIFAPlayerName(players: FIFAPlayer[] | undefined, idPlayer: string): string {
+  if (!players) return "Unknown";
+  const p = players.find(p => p.IdPlayer === idPlayer);
+  if (!p?.PlayerName) return "Unknown";
+  const name = p.PlayerName.find(n => n.Locale?.startsWith("en"))?.Description;
+  return name || "Unknown";
 }
 
 interface FIFAMatchResponse {
-  HomeTeam?: { Score?: number };
-  AwayTeam?: { Score?: number };
-  LiveEvents?: FIFALiveEvent[];
-  Goals?: { PlayerName?: string; TeamId?: number; Minute?: number; Type?: number }[];
-  MatchStatus?: number;
   Results?: unknown[];
 }
 
@@ -266,39 +295,34 @@ export async function getMatchData(
     });
   }
 
-  // 3) Try FIFA live/football via calendar IdMatch (scores + goals)
+  // 3) Try FIFA live/football via calendar IdMatch (scores + goals + assists + cards)
   const fifaIdMatch = await getFIFAIdMatch(team1Id, team2Id);
   if (fifaIdMatch) {
-    const fifa = await fetchFIFA<FIFAMatchResponse>(`live/football/${fifaIdMatch}`);
+    const fifa = await fetchFIFA<FIFALiveResponse>(`live/football/${fifaIdMatch}`);
     if (fifa) {
       const goals: GoalEvent[] = [];
-      if (fifa.Goals && fifa.Goals.length > 0) {
-        for (const g of fifa.Goals) {
+      const teams = [
+        { data: fifa.HomeTeam, ourId: team1Id },
+        { data: fifa.AwayTeam, ourId: team2Id },
+      ];
+      for (const { data: team, ourId } of teams) {
+        if (!team?.Goals) continue;
+        for (const g of team.Goals) {
+          const playerName = findFIFAPlayerName(team.Players, g.IdPlayer || "");
+          const minuteNum = parseInt(g.Minute || "0", 10);
           goals.push({
-            playerName: g.PlayerName || "Unknown",
-            teamId: g.TeamId === 1 ? team1Id : team2Id,
-            minute: g.Minute || 0,
+            playerName,
+            teamId: ourId,
+            minute: isNaN(minuteNum) ? 0 : minuteNum,
             isPenalty: g.Type === 2,
             isOwnGoal: g.Type === 3,
           });
-        }
-      } else if (fifa.LiveEvents) {
-        for (const e of fifa.LiveEvents) {
-          if (e.EventType === "goal" || e.EventType === "penalty") {
-            goals.push({
-              playerName: e.PlayerName || "Unknown",
-              teamId: e.TeamId === 1 ? team1Id : team2Id,
-              minute: e.Minute || 0,
-              isPenalty: e.EventType === "penalty",
-              isOwnGoal: false,
-            });
-          }
         }
       }
       attempts.push({
         score: [fifa.HomeTeam?.Score ?? 0, fifa.AwayTeam?.Score ?? 0],
         goals,
-        status: fifa.MatchStatus === 3 ? "finished" : fifa.MatchStatus === 2 ? "live" : "scheduled",
+        status: fifa.MatchStatus === 0 ? "finished" : fifa.MatchStatus === 2 ? "live" : "scheduled",
         rank: 2,
       });
     }
@@ -544,6 +568,117 @@ export function computeTopScorersFromResults(
   return Object.values(map)
     .filter((s) => s.goals > 0)
     .sort((a, b) => b.goals - a.goals || b.matches - a.matches)
+    .slice(0, limit);
+}
+
+export interface AssistEntry {
+  playerName: string;
+  teamId: string;
+  teamName: string;
+  teamFlag: string;
+  position: string;
+  assists: number;
+  matches: number;
+  teamGroup: string;
+}
+
+export interface CardEntry {
+  playerName: string;
+  teamId: string;
+  teamName: string;
+  teamFlag: string;
+  position: string;
+  yellowCards: number;
+  redCards: number;
+  matches: number;
+  teamGroup: string;
+}
+
+export function computeTopAssistsFromResults(
+  results: Record<string, StoredMatchResult>,
+  limit = 30,
+): AssistEntry[] {
+  const all = getAllPlayers();
+  const map: Record<string, AssistEntry> = {};
+  for (const p of all) {
+    const k = `${p.teamId}-${p.name}`;
+    map[k] = {
+      playerName: p.name,
+      teamId: p.teamId,
+      teamName: p.teamName,
+      teamFlag: p.teamFlag,
+      position: p.position,
+      assists: 0,
+      matches: 0,
+      teamGroup: getTeamById(p.teamId)?.group || "",
+    };
+  }
+
+  for (const m of MATCHES) {
+    const t1 = getTeamById(m.team1);
+    const t2 = getTeamById(m.team2);
+    if (!t1 || !t2) continue;
+    const result = results[m.id];
+    if (!result || result.status === "scheduled") continue;
+
+    for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+
+    for (const a of (result.assists || [])) {
+      const k = `${a.teamId}-${a.playerName}`;
+      if (map[k]) map[k].assists++;
+    }
+  }
+
+  return Object.values(map)
+    .filter((s) => s.assists > 0)
+    .sort((a, b) => b.assists - a.assists || b.matches - a.matches)
+    .slice(0, limit);
+}
+
+export function computeTopCardsFromResults(
+  results: Record<string, StoredMatchResult>,
+  limit = 30,
+): CardEntry[] {
+  const all = getAllPlayers();
+  const map: Record<string, CardEntry> = {};
+  for (const p of all) {
+    const k = `${p.teamId}-${p.name}`;
+    map[k] = {
+      playerName: p.name,
+      teamId: p.teamId,
+      teamName: p.teamName,
+      teamFlag: p.teamFlag,
+      position: p.position,
+      yellowCards: 0,
+      redCards: 0,
+      matches: 0,
+      teamGroup: getTeamById(p.teamId)?.group || "",
+    };
+  }
+
+  for (const m of MATCHES) {
+    const t1 = getTeamById(m.team1);
+    const t2 = getTeamById(m.team2);
+    if (!t1 || !t2) continue;
+    const result = results[m.id];
+    if (!result || result.status === "scheduled") continue;
+
+    for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+
+    for (const c of (result.cards || [])) {
+      const k = `${c.teamId}-${c.playerName}`;
+      if (map[k]) {
+        if (c.card === 2) map[k].redCards++;
+        else map[k].yellowCards++;
+      }
+    }
+  }
+
+  return Object.values(map)
+    .filter((s) => s.yellowCards > 0 || s.redCards > 0)
+    .sort((a, b) => b.yellowCards - a.yellowCards || b.redCards - a.redCards)
     .slice(0, limit);
 }
 

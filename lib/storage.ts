@@ -3,6 +3,8 @@ import { createClient } from "redis";
 export interface StoredMatchResult {
   score: [number, number];
   goals: { playerName: string; teamId: string; minute: number; isPenalty: boolean; isOwnGoal: boolean }[];
+  assists: { playerName: string; teamId: string; minute: number }[];
+  cards: { playerName: string; teamId: string; minute: string; card: number }[];
   status: "scheduled" | "live" | "finished";
   updatedAt: string;
 }
