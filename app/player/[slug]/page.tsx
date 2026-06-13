@@ -11,6 +11,7 @@ import RadarChart from "@/components/radar-chart";
 import ShareButton from "@/components/share-button";
 import { getPlayerAttributes, isGkAttributes, OF_ATTR_LABELS, OF_ATTR_COLORS, GK_ATTR_LABELS, GK_ATTR_COLORS } from "@/lib/player-attributes";
 import { getPlayerData, getPlayerPhotoSet } from "@/lib/player-photo-map";
+import { getAllMatchResults, type StoredMatchResult } from "@/lib/storage";
 
 function titleCase(name: string): string {
   return name.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
@@ -64,12 +65,14 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
   const related = getRelatedPlayers(player.name, team.id, player.position);
   const relatedPhotos = related.length > 0 ? await getPlayerPhotoSet(related.map(p => p.name)) : {};
 
-  const performances = getPlayerMatchPerformances(player.name, team.id);
+  const allResults = await getAllMatchResults();
+
+  const performances = getPlayerMatchPerformances(player.name, team.id, allResults);
   const totalGoals = performances.reduce((s, p) => s + p.goals, 0);
   const totalMatches = performances.length;
   const wins = performances.filter(p => p.isWin).length;
   const winRate = totalMatches > 0 ? Math.round((wins / totalMatches) * 100) : 0;
-  const potmMatches = getPlayerPOTMMatches(player.name, team.id);
+  const potmMatches = getPlayerPOTMMatches(player.name, team.id, allResults);
   const potmCount = potmMatches.length;
   const potmMatchIds = new Set(potmMatches.map(m => m.matchId));
 

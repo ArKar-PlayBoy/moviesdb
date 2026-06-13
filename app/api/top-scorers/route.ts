@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getTopScorers } from "@/data/worldcup-2026";
-import { getTopScorersList, computeTopScorersFromResults } from "@/lib/data-service";
+import { getTopScorersList } from "@/lib/data-service";
 import { getAllMatchResults } from "@/lib/storage";
 
 export async function GET(request: Request) {
@@ -14,16 +14,10 @@ export async function GET(request: Request) {
     });
   }
 
-  // Try computing from Redis (populated by cron)
+  // Compute from Redis or fall back to LIVE_RESULTS
   const allResults = await getAllMatchResults();
-  if (Object.keys(allResults).length > 0) {
-    const scorers = computeTopScorersFromResults(allResults, limit);
-    return NextResponse.json(scorers, {
-      headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
-    });
-  }
+  const scorers = getTopScorers(limit, allResults);
 
-  const scorers = getTopScorers(limit);
   return NextResponse.json(scorers, {
     headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
   });

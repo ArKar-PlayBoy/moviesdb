@@ -1,3 +1,5 @@
+import { type StoredMatchResult } from "@/lib/storage";
+
 export interface TeamData {
   id: string;
   name: string;
@@ -526,7 +528,22 @@ function generateMatches(): MatchData[] {
   return matches;
 }
 
-export const MATCHES = generateMatches();
+function getMatchesWithOverrides(): MatchData[] {
+  const matches = generateMatches();
+  const qatarSwiss = matches.find((m) => m.team1 === "qatar" && m.team2 === "switzerland" || m.team1 === "switzerland" && m.team2 === "qatar");
+  if (qatarSwiss) {
+    qatarSwiss.date = "Jun 13";
+    qatarSwiss.venue = "San Francisco";
+  }
+  const haitiScotland = matches.find((m) => m.team1 === "haiti" && m.team2 === "scotland" || m.team1 === "scotland" && m.team2 === "haiti");
+  if (haitiScotland) {
+    haitiScotland.date = "Jun 13";
+    haitiScotland.venue = "Boston";
+  }
+  return matches;
+}
+
+export const MATCHES = getMatchesWithOverrides();
 
 export function getTeamsByGroup(group: string): TeamData[] {
   return TEAMS.filter(t => t.group === group);
@@ -553,7 +570,7 @@ export function getTeamFlag(id: string): string {
 // When data/live-results.json exists (committed by GitHub Action during
 // tournament), these results take priority over deterministic simulation.
 // ---------------------------------------------------------------------------
-let LIVE_RESULTS: Record<string, { score1: number; score2: number; goalScorers?: { playerName: string; teamId: string; minute: number }[] }> = {};
+export let LIVE_RESULTS: Record<string, { score1: number; score2: number; goalScorers?: { playerName: string; teamId: string; minute: number }[] }> = {};
 try {
   // Next.js resolves require() of JSON at build/SSR time; silent fail in browser
   // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -630,7 +647,7 @@ function seededRandom(key: string): number {
   return x - Math.floor(x);
 }
 
-export function getGroupStandings(group: string): Standing[] {
+export function getGroupStandings(group: string, dynamicResults?: Record<string, StoredMatchResult>): Standing[] {
   const teams = getTeamsByGroup(group);
   const matches = MATCHES.filter((m) => m.group === group);
   const stats: Record<string, Standing> = {};
@@ -659,9 +676,9 @@ export function getGroupStandings(group: string): Standing[] {
     const t1 = teams.find((t) => t.id === match.team1);
     const t2 = teams.find((t) => t.id === match.team2);
     if (!t1 || !t2) continue;
-    if (!hasMatchResult(match.id)) continue;
+    if (!hasMatchResult(match.id, dynamicResults)) continue;
 
-    const [goals1, goals2] = getMatchScore(match.id, match.team1, match.team2, match.date);
+    const [goals1, goals2] = getMatchScore(match.id, match.team1, match.team2, match.date, dynamicResults);
 
     stats[match.team1].played++;
     stats[match.team2].played++;
@@ -727,12 +744,18 @@ function parseMatchDate(dateStr: string): Date {
   return new Date(`2026 ${dateStr}`);
 }
 
-export function hasMatchResult(matchId: string): boolean {
+export function hasMatchResult(matchId: string, dynamicResults?: Record<string, StoredMatchResult>): boolean {
+  if (dynamicResults && dynamicResults[matchId] && dynamicResults[matchId].status !== "scheduled") {
+    return true;
+  }
   return !!LIVE_RESULTS[matchId];
 }
 
-export function getMatchScore(matchId: string, team1Id: string, team2Id: string, date?: string): [number, number] {
-  if (!hasMatchResult(matchId)) return [0, 0];
+export function getMatchScore(matchId: string, team1Id: string, team2Id: string, date?: string, dynamicResults?: Record<string, StoredMatchResult>): [number, number] {
+  if (!hasMatchResult(matchId, dynamicResults)) return [0, 0];
+  if (dynamicResults && dynamicResults[matchId] && dynamicResults[matchId].status !== "scheduled") {
+    return dynamicResults[matchId].score;
+  }
   const live = LIVE_RESULTS[matchId];
   return [live.score1, live.score2];
 }
@@ -746,12 +769,20 @@ export interface KnockoutMatch {
   score2?: number;
 }
 
-export function getKnockoutBracket(): KnockoutMatch[] {
+function getKnockoutResult(matchId: string, dynamicResults?: Record<string, StoredMatchResult>): { score1?: number; score2?: number } {
+  if (dynamicResults && dynamicResults[matchId] && dynamicResults[matchId].status !== "scheduled") {
+    return { score1: dynamicResults[matchId].score[0], score2: dynamicResults[matchId].score[1] };
+  }
+  const live = LIVE_RESULTS[matchId];
+  return { score1: live?.score1, score2: live?.score2 };
+}
+
+export function getKnockoutBracket(dynamicResults?: Record<string, StoredMatchResult>): KnockoutMatch[] {
   const groupWinners: { team: TeamData; group: string }[] = [];
   const groupRunnersUp: { team: TeamData; group: string }[] = [];
 
   for (const group of GROUPS) {
-    const standings = getGroupStandings(group);
+    const standings = getGroupStandings(group, dynamicResults);
     if (standings.length >= 2) {
       const t1 = getTeamById(standings[0].teamId);
       const t2 = getTeamById(standings[1].teamId);
@@ -767,14 +798,14 @@ export function getKnockoutBracket(): KnockoutMatch[] {
     const r = groupRunnersUp[groupRunnersUp.length - 1 - i];
     if (w && r) {
       const matchId = `r32-${i}`;
-      const live = LIVE_RESULTS[matchId];
+      const { score1, score2 } = getKnockoutResult(matchId, dynamicResults);
       matches.push({
         id: matchId,
         round: "Round of 32",
         team1: w.team.id,
         team2: r.team.id,
-        score1: live?.score1,
-        score2: live?.score2,
+        score1,
+        score2,
       });
     }
   }
@@ -782,53 +813,53 @@ export function getKnockoutBracket(): KnockoutMatch[] {
   const r16: KnockoutMatch[] = [];
   for (let i = 0; i < Math.floor(matches.length / 2); i++) {
     const matchId = `r16-${i}`;
-    const live = LIVE_RESULTS[matchId];
+    const { score1, score2 } = getKnockoutResult(matchId, dynamicResults);
     r16.push({
       id: matchId,
       round: "Round of 16",
       team1: null,
       team2: null,
-      score1: live?.score1,
-      score2: live?.score2,
+      score1,
+      score2,
     });
   }
 
   const qf: KnockoutMatch[] = [];
   for (let i = 0; i < 4; i++) {
     const matchId = `qf-${i}`;
-    const live = LIVE_RESULTS[matchId];
+    const { score1, score2 } = getKnockoutResult(matchId, dynamicResults);
     qf.push({
       id: matchId,
       round: "Quarter-final",
       team1: null,
       team2: null,
-      score1: live?.score1,
-      score2: live?.score2,
+      score1,
+      score2,
     });
   }
 
   const sf: KnockoutMatch[] = [];
   for (let i = 0; i < 2; i++) {
     const matchId = `sf-${i}`;
-    const live = LIVE_RESULTS[matchId];
+    const { score1, score2 } = getKnockoutResult(matchId, dynamicResults);
     sf.push({
       id: matchId,
       round: "Semi-final",
       team1: null,
       team2: null,
-      score1: live?.score1,
-      score2: live?.score2,
+      score1,
+      score2,
     });
   }
 
-  const finalLive = LIVE_RESULTS["final"];
+  const { score1, score2 } = getKnockoutResult("final", dynamicResults);
   const final: KnockoutMatch[] = [{
     id: "final",
     round: "Final",
     team1: null,
     team2: null,
-    score1: finalLive?.score1,
-    score2: finalLive?.score2,
+    score1,
+    score2,
   }];
 
   return [...matches, ...r16, ...qf, ...sf, ...final];
@@ -874,7 +905,13 @@ export interface MatchGoalScorer {
   minute: number;
 }
 
-export function getMatchGoalScorers(matchId: string, team1Id: string, team2Id: string, date?: string): { scorers1: MatchGoalScorer[]; scorers2: MatchGoalScorer[] } {
+export function getMatchGoalScorers(matchId: string, team1Id: string, team2Id: string, date?: string, dynamicResults?: Record<string, StoredMatchResult>): { scorers1: MatchGoalScorer[]; scorers2: MatchGoalScorer[] } {
+  if (dynamicResults && dynamicResults[matchId] && dynamicResults[matchId].status !== "scheduled") {
+    const goals = dynamicResults[matchId].goals || [];
+    const scorers1 = goals.filter(g => g.teamId === team1Id).map(g => ({ playerName: g.playerName, teamId: g.teamId, minute: g.minute }));
+    const scorers2 = goals.filter(g => g.teamId === team2Id).map(g => ({ playerName: g.playerName, teamId: g.teamId, minute: g.minute }));
+    return { scorers1, scorers2 };
+  }
   const live = LIVE_RESULTS[matchId];
   if (live?.goalScorers) {
     const scorers1 = live.goalScorers.filter(g => g.teamId === team1Id).map(g => ({ playerName: g.playerName, teamId: g.teamId, minute: g.minute }));
@@ -884,7 +921,7 @@ export function getMatchGoalScorers(matchId: string, team1Id: string, team2Id: s
   return { scorers1: [], scorers2: [] };
 }
 
-export function getTopScorers(limit = 30): ScorerEntry[] {
+export function getTopScorers(limit = 30, dynamicResults?: Record<string, StoredMatchResult>): ScorerEntry[] {
   const all = getAllPlayers();
   const map: Record<string, ScorerEntry> = {};
   for (const p of all) {
@@ -895,10 +932,10 @@ export function getTopScorers(limit = 30): ScorerEntry[] {
     const t1 = getTeamById(m.team1);
     const t2 = getTeamById(m.team2);
     if (!t1 || !t2) continue;
-    if (!hasMatchResult(m.id)) continue;
+    if (!hasMatchResult(m.id, dynamicResults)) continue;
     for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
     for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
-    const gs = getMatchGoalScorers(m.id, m.team1, m.team2, m.date);
+    const gs = getMatchGoalScorers(m.id, m.team1, m.team2, m.date, dynamicResults);
     for (const sc of gs.scorers1) { const k = `${sc.teamId}-${sc.playerName}`; if (map[k]) map[k].goals++; }
     for (const sc of gs.scorers2) { const k = `${sc.teamId}-${sc.playerName}`; if (map[k]) map[k].goals++; }
   }
@@ -940,19 +977,19 @@ export interface PlayerMatchPerformance {
   isDraw: boolean;
 }
 
-export function getPlayerMatchPerformances(playerName: string, teamId: string): PlayerMatchPerformance[] {
+export function getPlayerMatchPerformances(playerName: string, teamId: string, dynamicResults?: Record<string, StoredMatchResult>): PlayerMatchPerformance[] {
   const teamMatches = MATCHES.filter(m => m.team1 === teamId || m.team2 === teamId);
   const result: PlayerMatchPerformance[] = [];
   for (const m of teamMatches) {
-    if (!hasMatchResult(m.id)) continue;
+    if (!hasMatchResult(m.id, dynamicResults)) continue;
     const isTeam1 = m.team1 === teamId;
     const opponentId = isTeam1 ? m.team2 : m.team1;
     const opponentTeam = getTeamById(opponentId);
     if (!opponentTeam) continue;
-    const [s1, s2] = getMatchScore(m.id, m.team1, m.team2, m.date);
+    const [s1, s2] = getMatchScore(m.id, m.team1, m.team2, m.date, dynamicResults);
     const teamScore = isTeam1 ? s1 : s2;
     const oppScore = isTeam1 ? s2 : s1;
-    const gs = getMatchGoalScorers(m.id, m.team1, m.team2, m.date);
+    const gs = getMatchGoalScorers(m.id, m.team1, m.team2, m.date, dynamicResults);
     const playerGoals = [...gs.scorers1, ...gs.scorers2]
       .filter(sc => sc.playerName === playerName && sc.teamId === teamId);
     result.push({
@@ -986,16 +1023,16 @@ export interface StarOfMatch {
   isWinningTeam: boolean;
 }
 
-export function getStarOfTheMatch(matchId: string): StarOfMatch | null {
+export function getStarOfTheMatch(matchId: string, dynamicResults?: Record<string, StoredMatchResult>): StarOfMatch | null {
   const match = MATCHES.find(m => m.id === matchId);
   if (!match) return null;
   const team1 = getTeamById(match.team1);
   const team2 = getTeamById(match.team2);
   if (!team1 || !team2) return null;
 
-  if (!hasMatchResult(match.id)) return null;
+  if (!hasMatchResult(match.id, dynamicResults)) return null;
 
-  const { scorers1, scorers2 } = getMatchGoalScorers(match.id, match.team1, match.team2, match.date);
+  const { scorers1, scorers2 } = getMatchGoalScorers(match.id, match.team1, match.team2, match.date, dynamicResults);
   const all = [...scorers1, ...scorers2];
   if (all.length === 0) return null;
 
@@ -1011,7 +1048,7 @@ export function getStarOfTheMatch(matchId: string): StarOfMatch | null {
   const playerData = getAllPlayers().find(p => p.name === top[0] && p.teamId === top[1].teamId);
   if (!playerData) return null;
 
-  const [s1, s2] = getMatchScore(match.id, match.team1, match.team2, match.date);
+  const [s1, s2] = getMatchScore(match.id, match.team1, match.team2, match.date, dynamicResults);
   const isTeam1 = top[1].teamId === match.team1;
   const teamScore = isTeam1 ? s1 : s2;
   const oppScore = isTeam1 ? s2 : s1;
@@ -1051,12 +1088,12 @@ export interface PlayerPOTMEntry extends StarOfMatch {
   matchId: string;
 }
 
-export function getPlayerPOTMMatches(playerName: string, teamId: string): PlayerPOTMEntry[] {
+export function getPlayerPOTMMatches(playerName: string, teamId: string, dynamicResults?: Record<string, StoredMatchResult>): PlayerPOTMEntry[] {
   const result: PlayerPOTMEntry[] = [];
   for (const match of MATCHES) {
-    if (!hasMatchResult(match.id)) continue;
+    if (!hasMatchResult(match.id, dynamicResults)) continue;
     if (match.team1 !== teamId && match.team2 !== teamId) continue;
-    const star = getStarOfTheMatch(match.id);
+    const star = getStarOfTheMatch(match.id, dynamicResults);
     if (star && star.playerName === playerName) {
       result.push({ ...star, matchId: match.id });
     }
@@ -1064,14 +1101,14 @@ export function getPlayerPOTMMatches(playerName: string, teamId: string): Player
   return result;
 }
 
-export function getRecentPOTMs(count = 5): (StarOfMatch & { matchId: string; matchDate: string; stage: string })[] {
+export function getRecentPOTMs(count = 5, dynamicResults?: Record<string, StoredMatchResult>): (StarOfMatch & { matchId: string; matchDate: string; stage: string })[] {
   const passed = MATCHES
-    .filter(m => hasMatchResult(m.id))
+    .filter(m => hasMatchResult(m.id, dynamicResults))
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const result: (StarOfMatch & { matchId: string; matchDate: string; stage: string })[] = [];
   for (const match of passed) {
-    const star = getStarOfTheMatch(match.id);
+    const star = getStarOfTheMatch(match.id, dynamicResults);
     if (star) {
       result.push({ ...star, matchId: match.id, matchDate: match.date, stage: match.stage });
       if (result.length >= count) break;

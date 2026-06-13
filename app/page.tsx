@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import TEAMS, { GROUPS, MATCHES, getTeamById, getGroupStandings, getStarOfTheWeek, getTopScorers, getVenues, getAllPlayers, getRecentPOTMs } from "@/data/worldcup-2026";
 import { slugify } from "@/lib/utils";
 import { getAllPlayerPhotos } from "@/lib/player-photo-map";
-import { getLiveScores, computeStandingsFromResults, computeTopScorersFromResults } from "@/lib/data-service";
+import { getLiveScores } from "@/lib/data-service";
 import { getAllMatchResults } from "@/lib/storage";
 
 import PlayerAvatar from "@/components/player-avatar";
@@ -106,8 +106,8 @@ function StarOfTheWeekFallback() {
   );
 }
 
-function RecentPOTMSection() {
-  const recent = getRecentPOTMs(5);
+function RecentPOTMSection({ allResults }: { allResults: Record<string, import("@/lib/storage").StoredMatchResult> }) {
+  const recent = getRecentPOTMs(5, allResults);
   return (
     <section>
       <div className="flex items-center gap-3 mb-4 md:mb-6">
@@ -166,8 +166,7 @@ export default async function Home() {
   const totalVenues = getVenues().length;
   const totalPlayers = getAllPlayers().length;
   const allResults = await getAllMatchResults();
-  const hasResults = Object.keys(allResults).length > 0;
-  const topScorers = hasResults ? computeTopScorersFromResults(allResults, 5) : getTopScorers(5);
+  const topScorers = getTopScorers(5, allResults);
   const totalGoalsHome = Object.values(allResults).reduce((sum, r) => {
     if (r.status === "finished") return sum + r.score[0] + r.score[1];
     return sum;
@@ -396,7 +395,7 @@ export default async function Home() {
       </section>
 
       {/* ===== RECENT PLAYERS OF THE MATCH ===== */}
-      <RecentPOTMSection />
+      <RecentPOTMSection allResults={allResults} />
 
       {/* ===== STAR OF THE WEEK ===== */}
       <Suspense fallback={<StarOfTheWeekFallback />}>
@@ -461,7 +460,7 @@ export default async function Home() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {GROUPS.map(group => {
-            const standings = hasResults ? computeStandingsFromResults(group, allResults) : getGroupStandings(group);
+            const standings = getGroupStandings(group, allResults);
             return (
               <div key={group} className="bg-card rounded-xl border border-border overflow-hidden">
                 <div className="bg-primary/5 border-b border-border px-4 py-2.5 flex items-center justify-between">

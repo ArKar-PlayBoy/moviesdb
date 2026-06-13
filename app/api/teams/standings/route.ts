@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import TEAMS, { getGroupStandings, type TeamData } from "@/data/worldcup-2026";
-import { getStandings, computeStandingsFromResults } from "@/lib/data-service";
+import { getStandings } from "@/lib/data-service";
 import { getAllMatchResults } from "@/lib/storage";
 
 export async function GET(request: Request) {
@@ -21,13 +21,13 @@ export async function GET(request: Request) {
     let body: Record<string, unknown>;
     if (!group) {
       const groups = [...new Set(TEAMS.map((t: TeamData) => t.group))].sort();
-      const allStandings: Record<string, ReturnType<typeof computeStandingsFromResults>> = {};
+      const allStandings: Record<string, ReturnType<typeof getGroupStandings>> = {};
       for (const g of groups) {
-        allStandings[g] = computeStandingsFromResults(g, allResults);
+        allStandings[g] = getGroupStandings(g, allResults);
       }
       body = allStandings;
     } else {
-      const standings = computeStandingsFromResults(group.toUpperCase(), allResults);
+      const standings = getGroupStandings(group.toUpperCase(), allResults);
       body = { [group.toUpperCase()]: standings };
     }
     return NextResponse.json(body, {

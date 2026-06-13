@@ -1,4 +1,4 @@
-import { getKnockoutBracket as getSimulatedBracket, getTeamName, getTeamsByGroup, getAllPlayers, getTeamById, MATCHES, type KnockoutMatch, type Standing, type ScorerEntry } from "@/data/worldcup-2026";
+import { getKnockoutBracket as getSimulatedBracket, getTeamName, getTeamsByGroup, getAllPlayers, getTeamById, MATCHES, LIVE_RESULTS, type KnockoutMatch, type Standing, type ScorerEntry } from "@/data/worldcup-2026";
 import { getMatchResult, type StoredMatchResult } from "@/lib/storage";
 
 interface SportSRCMatchRaw {
@@ -77,42 +77,51 @@ interface FIFACalendarResponse {
 
 let idMatchCache: { map: Map<string, number>; ts: number } | null = null;
 const ID_MATCH_CACHE_TTL = 120_000;
+let buildFIFAIdMatchMapPromise: Promise<Map<string, number>> | null = null;
 
-async function buildFIFAIdMatchMap(): Promise<Map<string, number>> {
+export async function buildFIFAIdMatchMap(): Promise<Map<string, number>> {
   if (idMatchCache && Date.now() - idMatchCache.ts < ID_MATCH_CACHE_TTL) {
     return idMatchCache.map;
   }
-  try {
-    const calRes = await fetch(
-      `https://api.fifa.com/api/v3/calendar/matches?idCompetition=17&from=2026-06-10&to=2026-07-20&count=104`,
-      {
-        headers: { "User-Agent": "WorldCup2026/1.0" },
-        next: { revalidate: 120 },
+  if (buildFIFAIdMatchMapPromise) return buildFIFAIdMatchMapPromise;
+
+  buildFIFAIdMatchMapPromise = (async () => {
+    try {
+      const calRes = await fetch(
+        `https://api.fifa.com/api/v3/calendar/matches?idCompetition=17&from=2026-06-10&to=2026-07-20&count=104`,
+        {
+          headers: { "User-Agent": "WorldCup2026/1.0" },
+          next: { revalidate: 120 },
+        }
+      );
+      if (!calRes.ok) {
+        idMatchCache = { map: new Map(), ts: Date.now() };
+        return idMatchCache.map;
       }
-    );
-    if (!calRes.ok) {
-      idMatchCache = { map: new Map(), ts: Date.now() };
-      return idMatchCache.map;
-    }
-    const calData = await calRes.json() as FIFACalendarResponse;
-    const map = new Map<string, number>();
-    for (const match of calData.Results || []) {
-      const home = normalizeTeamName(match.Home?.TeamName?.[0]?.Description || "");
-      const away = normalizeTeamName(match.Away?.TeamName?.[0]?.Description || "");
-      if (home && away && match.IdMatch) {
-        const key1 = `${home}-${away}`;
-        const key2 = `${away}-${home}`;
-        if (!map.has(key1) && !map.has(key2)) {
-          map.set(key1, match.IdMatch);
+      const calData = await calRes.json() as FIFACalendarResponse;
+      const map = new Map<string, number>();
+      for (const match of calData.Results || []) {
+        const home = normalizeTeamName(match.Home?.TeamName?.[0]?.Description || "");
+        const away = normalizeTeamName(match.Away?.TeamName?.[0]?.Description || "");
+        if (home && away && match.IdMatch) {
+          const key1 = `${home}-${away}`;
+          const key2 = `${away}-${home}`;
+          if (!map.has(key1) && !map.has(key2)) {
+            map.set(key1, match.IdMatch);
+          }
         }
       }
+      idMatchCache = { map, ts: Date.now() };
+      return map;
+    } catch {
+      idMatchCache = { map: new Map(), ts: Date.now() };
+      return idMatchCache.map;
+    } finally {
+      buildFIFAIdMatchMapPromise = null;
     }
-    idMatchCache = { map, ts: Date.now() };
-    return map;
-  } catch {
-    idMatchCache = { map: new Map(), ts: Date.now() };
-    return idMatchCache.map;
-  }
+  })();
+
+  return buildFIFAIdMatchMapPromise;
 }
 
 export async function getFIFAIdMatch(team1Id: string, team2Id: string): Promise<number | null> {
@@ -231,13 +240,19 @@ function doTeamsMatch(sportsrcHome: string | undefined, sportsrcAway: string | u
 }
 
 async function findSportSRCMatchByTeams(team1Id: string, team2Id: string): Promise<SportSRCMatchRaw | null> {
-  const finished = await fetchSportSRC<SportSRCResponse>("type=matches&sport=football&status=finished&days=7");
+  const [finishedRes, inprogressRes] = await Promise.allSettled([
+    fetchSportSRC<SportSRCResponse>("type=matches&sport=football&status=finished&days=7"),
+    fetchSportSRC<SportSRCResponse>("type=matches&sport=football&status=inprogress")
+  ]);
+
+  const finished = finishedRes.status === "fulfilled" ? finishedRes.value : null;
+  const inprogress = inprogressRes.status === "fulfilled" ? inprogressRes.value : null;
+
   if (finished?.data) {
     for (const m of finished.data) {
       if (doTeamsMatch(m.homeTeam?.name, m.awayTeam?.name, team1Id, team2Id)) return m;
     }
   }
-  const inprogress = await fetchSportSRC<SportSRCResponse>("type=matches&sport=football&status=inprogress");
   if (inprogress?.data) {
     for (const m of inprogress.data) {
       if (doTeamsMatch(m.homeTeam?.name, m.awayTeam?.name, team1Id, team2Id)) return m;
@@ -272,8 +287,16 @@ export async function getMatchData(
   }
   const attempts: TriageResult[] = [];
 
-  // 1) Try SportSRC by direct match ID (scores only, no goals)
-  const sportsrc = await fetchSportSRC<SportSRCResponse>(`type=detail&id=${matchId}`);
+  // Phase 1: Fire all independent requests in parallel
+  const [sportsrcRes, teamMatchRes, fifaIdMapRes] = await Promise.allSettled([
+    fetchSportSRC<SportSRCResponse>(`type=detail&id=${matchId}`),
+    findSportSRCMatchByTeams(team1Id, team2Id),
+    buildFIFAIdMatchMap()
+  ]);
+
+  const sportsrc = sportsrcRes.status === "fulfilled" ? sportsrcRes.value : null;
+  const teamMatch = teamMatchRes.status === "fulfilled" ? teamMatchRes.value : null;
+
   if (sportsrc?.data) {
     const d = sportsrc.data[0];
     attempts.push({
@@ -284,8 +307,6 @@ export async function getMatchData(
     });
   }
 
-  // 2) Try SportSRC by team name matching (scores only, no goals)
-  const teamMatch = await findSportSRCMatchByTeams(team1Id, team2Id);
   if (teamMatch) {
     attempts.push({
       score: [teamMatch.homeScore?.current ?? teamMatch.home_score ?? 0, teamMatch.awayScore?.current ?? teamMatch.away_score ?? 0],
@@ -295,74 +316,61 @@ export async function getMatchData(
     });
   }
 
-  // 3) Try FIFA live/football via calendar IdMatch (scores + goals + assists + cards)
-  const fifaIdMatch = await getFIFAIdMatch(team1Id, team2Id);
-  if (fifaIdMatch) {
-    const fifa = await fetchFIFA<FIFALiveResponse>(`live/football/${fifaIdMatch}`);
-    if (fifa) {
-      const goals: GoalEvent[] = [];
-      const teams = [
-        { data: fifa.HomeTeam, ourId: team1Id },
-        { data: fifa.AwayTeam, ourId: team2Id },
-      ];
-      for (const { data: team, ourId } of teams) {
-        if (!team?.Goals) continue;
-        for (const g of team.Goals) {
-          const playerName = findFIFAPlayerName(team.Players, g.IdPlayer || "");
-          const minuteNum = parseInt(g.Minute || "0", 10);
-          goals.push({
-            playerName,
-            teamId: ourId,
-            minute: isNaN(minuteNum) ? 0 : minuteNum,
-            isPenalty: g.Type === 2,
-            isOwnGoal: g.Type === 3,
-          });
-        }
-      }
-      attempts.push({
-        score: [fifa.HomeTeam?.Score ?? 0, fifa.AwayTeam?.Score ?? 0],
-        goals,
-        status: fifa.MatchStatus === 0 ? "finished" : fifa.MatchStatus === 2 ? "live" : "scheduled",
-        rank: 2,
-      });
-    }
-  }
+  // Phase 2: FIFA live match
+  if (fifaIdMapRes.status === "fulfilled" && fifaIdMapRes.value) {
+    const map = fifaIdMapRes.value;
+    const t1 = normalizeTeamName(getTeamName(team1Id));
+    const t2 = normalizeTeamName(getTeamName(team2Id));
+    const fifaIdMatch = map.get(`${t1}-${t2}`) ?? map.get(`${t2}-${t1}`) ?? null;
 
-  // 4) Fallback: FIFA calendar (scores only, no goals)
-  try {
-    const calRes = await fetch(`https://api.fifa.com/api/v3/calendar/matches?idCompetition=17&from=2026-06-10&to=2026-07-20&count=104`, {
-      headers: { "User-Agent": "WorldCup2026/1.0" },
-      next: { revalidate: 120 },
-    });
-    if (calRes.ok) {
-      const calData = await calRes.json() as { Results?: { Date?: string; Home?: { TeamName?: { Description?: string }[]; Score?: number }; Away?: { TeamName?: { Description?: string }[]; Score?: number }; MatchStatus?: number }[] };
-      const team1Display = normalizeTeamName(getTeamName(team1Id));
-      const team2Display = normalizeTeamName(getTeamName(team2Id));
-      const now = new Date();
-      const calMatch = (calData.Results || []).find((m) => {
-        const h = normalizeTeamName(m.Home?.TeamName?.[0]?.Description || "");
-        const a = normalizeTeamName(m.Away?.TeamName?.[0]?.Description || "");
-        return (h === team1Display && a === team2Display) || (h === team2Display && a === team1Display);
-      });
-      if (calMatch) {
-        const homeScore = calMatch.Home?.Score ?? 0;
-        const awayScore = calMatch.Away?.Score ?? 0;
-        const matchDate = calMatch.Date ? new Date(calMatch.Date) : null;
-        const hasScore = homeScore > 0 || awayScore > 0;
-        const isPast = matchDate ? matchDate <= now : false;
+    if (fifaIdMatch) {
+      const fifa = await fetchFIFA<FIFALiveResponse>(`live/football/${fifaIdMatch}`);
+      if (fifa) {
+        const goals: GoalEvent[] = [];
+        const teams = [
+          { data: fifa.HomeTeam, ourId: team1Id },
+          { data: fifa.AwayTeam, ourId: team2Id },
+        ];
+        for (const { data: team, ourId } of teams) {
+          if (!team?.Goals) continue;
+          for (const g of team.Goals) {
+            const playerName = findFIFAPlayerName(team.Players, g.IdPlayer || "");
+            const minuteNum = parseInt(g.Minute || "0", 10);
+            goals.push({
+              playerName,
+              teamId: ourId,
+              minute: isNaN(minuteNum) ? 0 : minuteNum,
+              isPenalty: g.Type === 2,
+              isOwnGoal: g.Type === 3,
+            });
+          }
+        }
         attempts.push({
-          score: [homeScore, awayScore],
-          goals: [],
-          status: isPast && hasScore ? "finished" : isPast && calMatch.MatchStatus === 0 ? "finished" : isPast ? "live" : "scheduled",
-          rank: 1,
+          score: [fifa.HomeTeam?.Score ?? 0, fifa.AwayTeam?.Score ?? 0],
+          goals,
+          status: fifa.MatchStatus === 0 ? "finished" : fifa.MatchStatus === 2 ? "live" : "scheduled",
+          rank: 2,
         });
       }
     }
-  } catch {}
+  }
 
   // Pick the best result: highest rank wins (2 = FIFA with goals > 1 = SportSRC scores only)
   const best = attempts.sort((a, b) => b.rank - a.rank)[0];
   if (best) return { score: best.score, goals: best.goals, status: best.status };
+
+  // Fallback to LIVE_RESULTS from static JSON (populated from cron)
+  const staticResult = LIVE_RESULTS[matchId];
+  if (staticResult) {
+    const goals: GoalEvent[] = (staticResult.goalScorers || []).map(g => ({
+      playerName: g.playerName,
+      teamId: g.teamId,
+      minute: g.minute,
+      isPenalty: false,
+      isOwnGoal: false,
+    }));
+    return { score: [staticResult.score1, staticResult.score2], goals, status: "finished" };
+  }
 
   // 5) Past matches with no live data: show as finished with no details available
   if (isWcStarted()) {
@@ -698,8 +706,8 @@ export function computeTopCardsFromResults(
     .slice(0, limit);
 }
 
-export function getBracketData(): KnockoutMatch[] {
-  const bracket = getSimulatedBracket();
+export function getBracketData(dynamicResults?: Record<string, StoredMatchResult>): KnockoutMatch[] {
+  const bracket = getSimulatedBracket(dynamicResults);
   if (!isWcStarted()) {
     return bracket.map((m) => ({ ...m, score1: undefined, score2: undefined }));
   }

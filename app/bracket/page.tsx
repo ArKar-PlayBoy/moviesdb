@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getBracketData } from "@/lib/data-service";
 import { getTeamName, getTeamFlag } from "@/data/worldcup-2026";
+import { getAllMatchResults } from "@/lib/storage";
 import { Trophy } from "lucide-react";
 
 export const revalidate = 120;
@@ -12,8 +13,9 @@ export const metadata: Metadata = {
 
 const ROUND_ORDER = ["Round of 32", "Round of 16", "Quarter-final", "Semi-final", "Final"];
 
-export default function BracketPage() {
-  const matches = getBracketData();
+export default async function BracketPage() {
+  const allResults = await getAllMatchResults();
+  const matches = Object.keys(allResults).length > 0 ? getBracketData(allResults) : getBracketData();
 
   return (
     <div>

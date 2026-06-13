@@ -181,6 +181,16 @@ export async function GET(request: Request) {
       const batch = MATCHES.slice(i, i + batchSize);
       const entries = await Promise.all(
         batch.map(async (m) => {
+          const matchDate = new Date(`2026 ${m.date}`);
+          const today = new Date();
+          matchDate.setHours(0, 0, 0, 0);
+          today.setHours(0, 0, 0, 0);
+
+          // Early exit for future matches to save API calls
+          if (matchDate > today) {
+             return { matchId: m.id, score: [0, 0] as [number, number], goals: [] as GoalEntry[], assists: [] as AssistEntry[], cards: [] as CardEntry[], status: "scheduled" as const };
+          }
+
           // 1) Always try FIFA live/football first (fresh data, no cache, has goals/assists/cards)
           const fifaIdMatch = await getFIFAIdMatch(m.team1, m.team2);
           if (fifaIdMatch) {
@@ -219,10 +229,6 @@ export async function GET(request: Request) {
           }
 
           // 3) Past matches: store as finished with no data (allows future live data to override)
-          const matchDate = new Date(`2026 ${m.date}`);
-          const today = new Date();
-          matchDate.setHours(0, 0, 0, 0);
-          today.setHours(0, 0, 0, 0);
           if (matchDate < today) {
             return { matchId: m.id, score: [0, 0] as [number, number], goals: [] as GoalEntry[], assists: [] as AssistEntry[], cards: [] as CardEntry[], status: "finished" as const };
           }
