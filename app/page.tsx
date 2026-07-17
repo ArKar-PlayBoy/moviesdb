@@ -1,14 +1,15 @@
 import { Suspense } from "react";
-import TEAMS, { GROUPS, MATCHES, getTeamById, getGroupStandings, getStarOfTheWeek, getTopScorers, getVenues, getAllPlayers, getRecentPOTMs } from "@/data/worldcup-2026";
+import TEAMS, { GROUPS, MATCHES, getTeamById, getGroupStandings, getStarOfTheWeek, getTopScorers, getVenues, getAllPlayers, getRecentPOTMs, getKnockoutBracket } from "@/data/worldcup-2026";
 import { slugify } from "@/lib/utils";
 import { getAllPlayerPhotos } from "@/lib/player-photo-map";
-import { getLiveScores } from "@/lib/data-service";
+import { getLiveScores, getBracketData } from "@/lib/data-service";
 import { getAllMatchResults } from "@/lib/storage";
 
 import PlayerAvatar from "@/components/player-avatar";
 import Countdown from "@/components/countdown";
+import ChampionCelebration from "@/components/champion-celebration";
 import Link from "next/link";
-import { Trophy, Calendar, MapPin, Users, Shield, Goal, Footprints, ChevronRight, Sparkles, Lightbulb, Star } from "lucide-react";
+import { Trophy, Calendar, MapPin, Users, Shield, Goal, Footprints, ChevronRight, Sparkles, Lightbulb, Star, Clock, Medal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 async function StarOfTheWeekSection() {
@@ -172,8 +173,14 @@ export default async function Home() {
     return sum;
   }, 0);
 
+  const bracket = getBracketData(allResults);
+  const finalMatch = bracket.find(m => m.id === "final") ?? null;
+  const bronzeMatch = bracket.find(m => m.id === "bronze") ?? null;
+  const isAfterFinal = allResults["final"]?.status === "finished";
+
   const todayStr = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" });
   const todayMatches = MATCHES.filter(m => m.date === todayStr);
+  const hasNoMatchesToday = todayMatches.length === 0;
   const liveMatches = await getLiveScores();
 
   return (
@@ -248,7 +255,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {todayMatches.length > 0 && (
+      {todayMatches.length > 0 ? (
         <section className="animate-in animate-in-delay-3">
           <div className="flex items-center gap-3 mb-4">
             <Calendar className="h-5 w-5 text-primary" />
@@ -304,6 +311,68 @@ export default async function Home() {
             })}
           </div>
         </section>
+      ) : (
+        <section className="animate-in animate-in-delay-3">
+          <div className="flex items-center gap-3 mb-4">
+            <Calendar className="h-5 w-5 text-primary" />
+            <h2 className="text-xl font-bold">Upcoming Finals</h2>
+            <div className="h-px flex-1 bg-border" />
+            <span className="text-xs text-muted-foreground">{todayStr}</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Bronze Final */}
+            <div className="bg-card rounded-xl border border-border p-5 hover:ring-2 hover:ring-amber-500/50 transition-all group">
+              <div className="flex items-center gap-2 mb-3">
+                <Medal className="h-4 w-4 text-amber-500" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-500">Bronze Final</span>
+                <span className="ml-auto text-[10px] text-muted-foreground">Jul 18</span>
+              </div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <span className="text-xl shrink-0">{bronzeMatch?.team1 ? getTeamById(bronzeMatch.team1)?.flag : ""}</span>
+                  <span className="font-semibold text-sm truncate">{bronzeMatch?.team1 ? getTeamById(bronzeMatch.team1)?.name : "TBD"}</span>
+                </div>
+                <span className="text-muted-foreground text-xs">?</span>
+              </div>
+              <div className="border-t border-border/40 my-1" />
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <span className="text-xl shrink-0">{bronzeMatch?.team2 ? getTeamById(bronzeMatch.team2)?.flag : ""}</span>
+                  <span className="font-semibold text-sm truncate">{bronzeMatch?.team2 ? getTeamById(bronzeMatch.team2)?.name : "TBD"}</span>
+                </div>
+                <span className="text-muted-foreground text-xs">?</span>
+              </div>
+            </div>
+
+            {/* Final */}
+            <div className="bg-gradient-to-br from-primary/5 to-yellow-500/5 rounded-xl border border-yellow-500/20 p-5 hover:ring-2 hover:ring-yellow-500/50 transition-all group">
+              <div className="flex items-center gap-2 mb-3">
+                <Trophy className="h-4 w-4 text-yellow-500" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-yellow-500">Championship Final</span>
+                <span className="ml-auto text-[10px] text-muted-foreground">Jul 19</span>
+              </div>
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <span className="text-xl shrink-0">{finalMatch?.team1 ? getTeamById(finalMatch.team1)?.flag : ""}</span>
+                  <span className="font-semibold text-sm truncate">{finalMatch?.team1 ? getTeamById(finalMatch.team1)?.name : "TBD"}</span>
+                </div>
+                <span className="text-muted-foreground text-xs">?</span>
+              </div>
+              <div className="border-t border-border/40 my-1" />
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
+                  <span className="text-xl shrink-0">{finalMatch?.team2 ? getTeamById(finalMatch.team2)?.flag : ""}</span>
+                  <span className="font-semibold text-sm truncate">{finalMatch?.team2 ? getTeamById(finalMatch.team2)?.name : "TBD"}</span>
+                </div>
+                <span className="text-muted-foreground text-xs">?</span>
+              </div>
+              <div className="mt-3 pt-3 border-t border-border/40 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                <Clock className="h-3 w-3" />
+                <span>Countdown to kickoff</span>
+              </div>
+            </div>
+          </div>
+        </section>
       )}
 
       {/* ===== QUICK STATS ===== */}
@@ -311,7 +380,7 @@ export default async function Home() {
         <StatCard icon={Trophy} value={totalTeams.toString()} label="Teams" sub="Across 12 groups" />
         <StatCard icon={Calendar} value={totalMatches.toString()} label="Matches" sub="Group stage to final" />
         <StatCard icon={MapPin} value={totalVenues.toString()} label="Venues" sub="3 host nations" />
-        <StatCard icon={Users} value={totalPlayers.toString()} label="Players" sub="15 per team squad" />
+        <StatCard icon={Users} value={totalPlayers.toString()} label="Players" sub="Top 5 players per team" />
       </section>
 
       {/* ===== TOURNAMENT JOURNEY ===== */}
@@ -447,6 +516,13 @@ export default async function Home() {
           </div>
         </section>
       )}
+
+      {/* ===== CHAMPION CELEBRATION ===== */}
+      <ChampionCelebration
+        finalMatch={finalMatch}
+        isAfterFinal={isAfterFinal}
+        bronzeMatch={bronzeMatch}
+      />
 
       {/* ===== GROUPS AT A GLANCE ===== */}
       <section>

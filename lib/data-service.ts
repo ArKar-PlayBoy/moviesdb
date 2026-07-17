@@ -66,9 +66,10 @@ interface FIFAMatchResponse {
 interface FIFACalendarMatch {
   IdMatch?: number;
   Date?: string;
-  Home?: { TeamName?: { Description?: string }[]; Score?: number };
-  Away?: { TeamName?: { Description?: string }[]; Score?: number };
+  Home?: { TeamName?: { Description?: string }[]; Score?: number; IdTeam?: string };
+  Away?: { TeamName?: { Description?: string }[]; Score?: number; IdTeam?: string };
   MatchStatus?: number;
+  StageName?: { Description?: string }[];
 }
 
 interface FIFACalendarResponse {
@@ -122,6 +123,23 @@ export async function buildFIFAIdMatchMap(): Promise<Map<string, number>> {
   })();
 
   return buildFIFAIdMatchMapPromise;
+}
+
+export async function fetchFIFACalendar(): Promise<FIFACalendarMatch[]> {
+  try {
+    const res = await fetch(
+      `https://api.fifa.com/api/v3/calendar/matches?idCompetition=17&from=2026-06-10&to=2026-07-20&count=104`,
+      {
+        headers: { "User-Agent": "WorldCup2026/1.0" },
+        next: { revalidate: 120 },
+      }
+    );
+    if (!res.ok) return [];
+    const data = await res.json() as FIFACalendarResponse;
+    return data.Results || [];
+  } catch {
+    return [];
+  }
 }
 
 export async function getFIFAIdMatch(team1Id: string, team2Id: string): Promise<number | null> {
@@ -213,7 +231,7 @@ export async function fetchFIFA<T>(path: string): Promise<T | null> {
   }
 }
 
-function normalizeTeamName(name: string): string {
+export function normalizeTeamName(name: string): string {
   const normalized = name.toLowerCase().replace(/[^a-z0-9]/g, "");
   return TEAM_NAME_ALIASES[normalized] || normalized;
 }
@@ -376,7 +394,16 @@ export async function getMatchData(
   if (isWcStarted()) {
     const matchInfo = MATCHES.find(m => m.id === matchId);
     if (matchInfo) {
-      const matchDate = new Date(`2026 ${matchInfo.date}`);
+      const months: Record<string, number> = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+      const parts = matchInfo.date.split(" ");
+      let matchDate: Date;
+      if (parts.length === 2 && parts[0]) {
+        const month = months[parts[0].toLowerCase().slice(0, 3)] ?? 0;
+        const day = parseInt(parts[1], 10);
+        matchDate = new Date(Date.UTC(2026, month, isNaN(day) ? 0 : day));
+      } else {
+        matchDate = new Date(matchInfo.date);
+      }
       const today = new Date();
       matchDate.setHours(0, 0, 0, 0);
       today.setHours(0, 0, 0, 0);
@@ -447,16 +474,44 @@ export async function getTopScorersList(limit = 30): Promise<ScorerData[] | null
 export async function getWeeklyStar(): Promise<StarData | null> {
   if (!isWcStarted()) return null;
 
-  const sportsrc = await fetchSportSRC<SportSRCResponse>("type=matches&sport=football&status=finished&days=7");
-  if (sportsrc?.data) {
-    return {
-      name: "TBD",
-      teamId: "",
-      reason: "Best performer of the week",
-    };
+  const { getAllMatchResults } = await import("@/lib/storage");
+  const allResults = await getAllMatchResults();
+  const goalCounts = new Map<string, { name: string; teamId: string; goals: number; matches: Set<string> }>();
+
+  for (const [matchId, result] of Object.entries(allResults)) {
+    if (result.status !== "finished") continue;
+    for (const g of result.goals) {
+      const key = `${g.teamId}-${g.playerName}`;
+      const existing = goalCounts.get(key);
+      if (existing) {
+        existing.goals++;
+        existing.matches.add(matchId);
+      } else {
+        goalCounts.set(key, { name: g.playerName, teamId: g.teamId, goals: 1, matches: new Set([matchId]) });
+      }
+    }
   }
 
-  return null;
+  if (goalCounts.size === 0) return null;
+
+  const top = [...goalCounts.entries()].sort((a, b) => b[1].goals - a[1].goals)[0];
+  if (!top) return null;
+
+  const { name, teamId, goals, matches } = top[1];
+  const t = getTeamById(teamId);
+  const teamName = t?.name || teamId;
+
+  return {
+    name,
+    teamId,
+    reason: `Top scorer with ${goals} goal${goals > 1 ? "s" : ""} in ${matches.size} match${matches.size > 1 ? "es" : ""}`,
+    photo: undefined,
+    stats: [
+      { label: "Goals", value: String(goals) },
+      { label: "Matches", value: String(matches.size) },
+      { label: "Team", value: teamName },
+    ],
+  };
 }
 
 export function getYouTubeMatchUrl(team1: string, team2: string, date: string): string {

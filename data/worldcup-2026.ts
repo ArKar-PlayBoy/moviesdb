@@ -567,15 +567,32 @@ export function getTeamFlag(id: string): string {
 
 // ---------------------------------------------------------------------------
 // Live results override
-// When data/live-results.json exists (committed by GitHub Action during
-// tournament), these results take priority over deterministic simulation.
+// Written by `npm run sync` (local) or Vercel cron → Redis (production).
 // ---------------------------------------------------------------------------
 export let LIVE_RESULTS: Record<string, { score1: number; score2: number; goalScorers?: { playerName: string; teamId: string; minute: number }[] }> = {};
 try {
-  // Next.js resolves require() of JSON at build/SSR time; silent fail in browser
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const data = require("../data/live-results.json");
-  LIVE_RESULTS = data?.matches || {};
+  const raw: Record<string, unknown> = (data?.matches as Record<string, unknown>) || {};
+  const normalized: typeof LIVE_RESULTS = {};
+  for (const id of Object.keys(raw)) {
+    const entry = raw[id] as Record<string, unknown>;
+    if (!entry) continue;
+    if (Array.isArray(entry.score)) {
+      normalized[id] = {
+        score1: (entry.score as number[])[0] ?? 0,
+        score2: (entry.score as number[])[1] ?? 0,
+        goalScorers: ((entry.goals as Record<string, unknown>[]) || []).map((g) => ({
+          playerName: g.playerName as string,
+          teamId: g.teamId as string,
+          minute: (g.minute as number) || 0,
+        })),
+      };
+    } else {
+      normalized[id] = entry as { score1: number; score2: number; goalScorers?: { playerName: string; teamId: string; minute: number }[] };
+    }
+  }
+  LIVE_RESULTS = normalized;
 } catch {
   LIVE_RESULTS = {};
 }
@@ -741,7 +758,17 @@ export function getAdjacentPlayers(name: string): { prev: PlayerWithTeam | null;
 }
 
 function parseMatchDate(dateStr: string): Date {
-  return new Date(`2026 ${dateStr}`);
+  const months: Record<string, number> = {
+    jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+    jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+  };
+  const parts = dateStr.split(" ");
+  if (parts.length === 2 && parts[0]) {
+    const month = months[parts[0].toLowerCase().slice(0, 3)] ?? 0;
+    const day = parseInt(parts[1], 10);
+    if (!isNaN(day)) return new Date(Date.UTC(2026, month, day));
+  }
+  return new Date(dateStr);
 }
 
 export function hasMatchResult(matchId: string, dynamicResults?: Record<string, StoredMatchResult>): boolean {
@@ -777,92 +804,27 @@ function getKnockoutResult(matchId: string, dynamicResults?: Record<string, Stor
   return { score1: live?.score1, score2: live?.score2 };
 }
 
+const KNOCKOUT_SLOTS: { id: string; round: string }[] = [
+  ...[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(i => ({ id: `r32-${i}`, round: "Round of 32" })),
+  ...[0,1,2,3,4,5,6,7].map(i => ({ id: `r16-${i}`, round: "Round of 16" })),
+  ...[0,1,2,3].map(i => ({ id: `qf-${i}`, round: "Quarter-final" })),
+  ...[0,1].map(i => ({ id: `sf-${i}`, round: "Semi-final" })),
+  { id: "bronze", round: "Bronze final" },
+  { id: "final", round: "Final" },
+];
+
 export function getKnockoutBracket(dynamicResults?: Record<string, StoredMatchResult>): KnockoutMatch[] {
-  const groupWinners: { team: TeamData; group: string }[] = [];
-  const groupRunnersUp: { team: TeamData; group: string }[] = [];
-
-  for (const group of GROUPS) {
-    const standings = getGroupStandings(group, dynamicResults);
-    if (standings.length >= 2) {
-      const t1 = getTeamById(standings[0].teamId);
-      const t2 = getTeamById(standings[1].teamId);
-      if (t1) groupWinners.push({ team: t1, group });
-      if (t2) groupRunnersUp.push({ team: t2, group });
-    }
-  }
-
-  const matches: KnockoutMatch[] = [];
-
-  for (let i = 0; i < Math.min(groupWinners.length, groupRunnersUp.length); i++) {
-    const w = groupWinners[i];
-    const r = groupRunnersUp[groupRunnersUp.length - 1 - i];
-    if (w && r) {
-      const matchId = `r32-${i}`;
-      const { score1, score2 } = getKnockoutResult(matchId, dynamicResults);
-      matches.push({
-        id: matchId,
-        round: "Round of 32",
-        team1: w.team.id,
-        team2: r.team.id,
-        score1,
-        score2,
-      });
-    }
-  }
-
-  const r16: KnockoutMatch[] = [];
-  for (let i = 0; i < Math.floor(matches.length / 2); i++) {
-    const matchId = `r16-${i}`;
-    const { score1, score2 } = getKnockoutResult(matchId, dynamicResults);
-    r16.push({
-      id: matchId,
-      round: "Round of 16",
-      team1: null,
-      team2: null,
-      score1,
-      score2,
-    });
-  }
-
-  const qf: KnockoutMatch[] = [];
-  for (let i = 0; i < 4; i++) {
-    const matchId = `qf-${i}`;
-    const { score1, score2 } = getKnockoutResult(matchId, dynamicResults);
-    qf.push({
-      id: matchId,
-      round: "Quarter-final",
-      team1: null,
-      team2: null,
-      score1,
-      score2,
-    });
-  }
-
-  const sf: KnockoutMatch[] = [];
-  for (let i = 0; i < 2; i++) {
-    const matchId = `sf-${i}`;
-    const { score1, score2 } = getKnockoutResult(matchId, dynamicResults);
-    sf.push({
-      id: matchId,
-      round: "Semi-final",
-      team1: null,
-      team2: null,
-      score1,
-      score2,
-    });
-  }
-
-  const { score1, score2 } = getKnockoutResult("final", dynamicResults);
-  const final: KnockoutMatch[] = [{
-    id: "final",
-    round: "Final",
-    team1: null,
-    team2: null,
-    score1,
-    score2,
-  }];
-
-  return [...matches, ...r16, ...qf, ...sf, ...final];
+  return KNOCKOUT_SLOTS.map(slot => {
+    const r = dynamicResults?.[slot.id];
+    return {
+      id: slot.id,
+      round: slot.round,
+      team1: r?.team1 ?? null,
+      team2: r?.team2 ?? null,
+      score1: r && r.status !== "scheduled" ? r.score[0] : undefined,
+      score2: r && r.status !== "scheduled" ? r.score[1] : undefined,
+    };
+  });
 }
 
 export interface ScorerEntry {
@@ -921,6 +883,20 @@ export function getMatchGoalScorers(matchId: string, team1Id: string, team2Id: s
   return { scorers1: [], scorers2: [] };
 }
 
+function normalizePlayerName(name: string): string {
+  return name.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Z0-9\s-]/g, "").trim();
+}
+
+function findInMap<T extends { playerName: string }>(map: Record<string, T>, teamId: string, playerName: string): T | undefined {
+  const normalized = normalizePlayerName(playerName);
+  for (const k of Object.keys(map)) {
+    if (k.startsWith(`${teamId}-`) && normalizePlayerName(k.slice(teamId.length + 1)) === normalized) {
+      return map[k];
+    }
+  }
+  return undefined;
+}
+
 export function getTopScorers(limit = 30, dynamicResults?: Record<string, StoredMatchResult>): ScorerEntry[] {
   const all = getAllPlayers();
   const map: Record<string, ScorerEntry> = {};
@@ -933,33 +909,78 @@ export function getTopScorers(limit = 30, dynamicResults?: Record<string, Stored
     const t2 = getTeamById(m.team2);
     if (!t1 || !t2) continue;
     if (!hasMatchResult(m.id, dynamicResults)) continue;
-    for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
-    for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    for (const pl of t1.players) { const entry = findInMap(map, t1.id, pl.name); if (entry) entry.matches++; }
+    for (const pl of t2.players) { const entry = findInMap(map, t2.id, pl.name); if (entry) entry.matches++; }
     const gs = getMatchGoalScorers(m.id, m.team1, m.team2, m.date, dynamicResults);
-    for (const sc of gs.scorers1) { const k = `${sc.teamId}-${sc.playerName}`; if (map[k]) map[k].goals++; }
-    for (const sc of gs.scorers2) { const k = `${sc.teamId}-${sc.playerName}`; if (map[k]) map[k].goals++; }
+    for (const sc of gs.scorers1) {
+      const entry = findInMap(map, sc.teamId, sc.playerName) || (() => {
+        const k = `${sc.teamId}-${sc.playerName}`;
+        const t = getTeamById(sc.teamId);
+        map[k] = { playerName: sc.playerName, teamId: sc.teamId, teamName: t?.name || sc.teamId, teamFlag: t?.flag || "", position: "", goals: 0, matches: 0, teamGroup: t?.group || "" };
+        return map[k];
+      })();
+      entry.goals++;
+    }
+    for (const sc of gs.scorers2) {
+      const entry = findInMap(map, sc.teamId, sc.playerName) || (() => {
+        const k = `${sc.teamId}-${sc.playerName}`;
+        const t = getTeamById(sc.teamId);
+        map[k] = { playerName: sc.playerName, teamId: sc.teamId, teamName: t?.name || sc.teamId, teamFlag: t?.flag || "", position: "", goals: 0, matches: 0, teamGroup: t?.group || "" };
+        return map[k];
+      })();
+      entry.goals++;
+    }
   }
   return Object.values(map).filter(s => s.goals > 0).sort((a, b) => b.goals - a.goals || b.matches - a.matches).slice(0, limit);
 }
 
-export function getTopAssists(limit = 30): AssistEntry[] {
+export function getTopAssists(limit = 30, dynamicResults?: Record<string, StoredMatchResult>): AssistEntry[] {
   const all = getAllPlayers();
   const map: Record<string, AssistEntry> = {};
   for (const p of all) {
     const k = `${p.teamId}-${p.name}`;
     map[k] = { playerName: p.name, teamId: p.teamId, teamName: p.teamName, teamFlag: p.teamFlag, position: p.position, assists: 0, matches: 0, teamGroup: getTeamById(p.teamId)?.group || "" };
   }
-  return [];
+  if (!dynamicResults) return [];
+  for (const m of MATCHES) {
+    const result = dynamicResults[m.id];
+    if (!result || result.status === "scheduled") continue;
+    for (const a of result.assists || []) {
+      const entry = findInMap(map, a.teamId, a.playerName) || (() => {
+        const k = `${a.teamId}-${a.playerName}`;
+        const t = getTeamById(a.teamId);
+        map[k] = { playerName: a.playerName, teamId: a.teamId, teamName: t?.name || a.teamId, teamFlag: t?.flag || "", position: "", assists: 0, matches: 0, teamGroup: t?.group || "" };
+        return map[k];
+      })();
+      entry.assists++;
+    }
+  }
+  return Object.values(map).filter(s => s.assists > 0).sort((a, b) => b.assists - a.assists).slice(0, limit);
 }
 
-export function getTopCards(limit = 30): CardEntry[] {
+export function getTopCards(limit = 30, dynamicResults?: Record<string, StoredMatchResult>): CardEntry[] {
   const all = getAllPlayers();
   const map: Record<string, CardEntry> = {};
   for (const p of all) {
     const k = `${p.teamId}-${p.name}`;
     map[k] = { playerName: p.name, teamId: p.teamId, teamName: p.teamName, teamFlag: p.teamFlag, position: p.position, yellowCards: 0, redCards: 0, matches: 0, teamGroup: getTeamById(p.teamId)?.group || "" };
   }
-  return [];
+  if (!dynamicResults) return [];
+  for (const m of MATCHES) {
+    const result = dynamicResults[m.id];
+    if (!result || result.status === "scheduled") continue;
+    for (const c of result.cards || []) {
+      const entry = findInMap(map, c.teamId, c.playerName) || (() => {
+        const k = `${c.teamId}-${c.playerName}`;
+        const t = getTeamById(c.teamId);
+        map[k] = { playerName: c.playerName, teamId: c.teamId, teamName: t?.name || c.teamId, teamFlag: t?.flag || "", position: "", yellowCards: 0, redCards: 0, matches: 0, teamGroup: t?.group || "" };
+        return map[k];
+      })();
+      if (c.card === 2) entry.redCards++;
+      else entry.yellowCards++;
+    }
+  }
+  return Object.values(map).filter(s => s.yellowCards > 0 || s.redCards > 0).sort((a, b) => b.redCards - a.redCards || b.yellowCards - a.yellowCards).slice(0, limit);
 }
 
 export interface PlayerMatchPerformance {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { MATCHES, getTeamById, getTeamName, getAllPlayers, type StarOfMatch } from "@/data/worldcup-2026";
-import { getMatchData, type GoalEvent } from "@/lib/data-service";
+import { MATCHES, getTeamById, getTeamName, getAllPlayers, type StarOfMatch, getKnockoutBracket } from "@/data/worldcup-2026";
+import { getMatchData, type GoalEvent, getBracketData } from "@/lib/data-service";
+import { getAllMatchResults } from "@/lib/storage";
 import { slugify } from "@/lib/utils";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -10,22 +11,48 @@ import PlayerAvatar from "@/components/player-avatar";
 import ShareButton from "@/components/share-button";
 import { resolvePlayerPhoto } from "@/lib/player-photos";
 
-
+function getRoundFromId(id: string): string {
+  if (id.startsWith("r32-")) return "Round of 32";
+  if (id.startsWith("r16-")) return "Round of 16";
+  if (id.startsWith("qf-")) return "Quarter-final";
+  if (id.startsWith("sf-")) return "Semi-final";
+  if (id === "bronze") return "Bronze final";
+  if (id === "final") return "Final";
+  return "";
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const match = MATCHES.find(m => m.id === id);
-  if (!match) return { title: "Match Not Found — WorldCup 2026" };
-  const t1 = getTeamName(match.team1);
-  const t2 = getTeamName(match.team2);
+  const gMatch = MATCHES.find(m => m.id === id);
+  if (gMatch) {
+    const t1 = getTeamName(gMatch.team1);
+    const t2 = getTeamName(gMatch.team2);
+    return {
+      title: `${t1} vs ${t2} — WorldCup 2026`,
+      description: `${t1} vs ${t2} — Group ${gMatch.group}`,
+    };
+  }
+  const allResults = await getAllMatchResults();
+  const bracket = getBracketData(allResults);
+  const bMatch = bracket.find(m => m.id === id);
+  if (!bMatch) return { title: "Match Not Found — WorldCup 2026" };
+  const t1 = bMatch.team1 ? getTeamName(bMatch.team1) : "TBD";
+  const t2 = bMatch.team2 ? getTeamName(bMatch.team2) : "TBD";
   return {
     title: `${t1} vs ${t2} — WorldCup 2026`,
-    description: `${t1} vs ${t2} — Group ${match.group} · ${match.date} · ${match.venue}`,
+    description: `${t1} vs ${t2} — ${bMatch.round}`,
   };
 }
 
 export function generateStaticParams() {
-  return MATCHES.map((m) => ({ id: m.id }));
+  const groupParams = MATCHES.map((m) => ({ id: m.id }));
+  const bracketIds: string[] = [];
+  for (let i = 0; i < 16; i++) bracketIds.push(`r32-${i}`);
+  for (let i = 0; i < 8; i++) bracketIds.push(`r16-${i}`);
+  for (let i = 0; i < 4; i++) bracketIds.push(`qf-${i}`);
+  for (let i = 0; i < 2; i++) bracketIds.push(`sf-${i}`);
+  bracketIds.push("bronze", "final");
+  return [...groupParams, ...bracketIds.map(id => ({ id }))];
 }
 
 function computeStarOfMatch(
@@ -73,7 +100,27 @@ export const revalidate = 60;
 
 export default async function MatchDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const match = MATCHES.find(m => m.id === id);
+  const groupMatch = MATCHES.find(m => m.id === id);
+
+  let match: { id: string; team1: string; team2: string; date: string; venue: string; group: string; stage: string } | null = groupMatch ?? null;
+
+  if (!match) {
+    const allResults = await getAllMatchResults();
+    const bracket = getBracketData(allResults);
+    const bMatch = bracket.find(m => m.id === id);
+    if (bMatch && bMatch.team1 && bMatch.team2) {
+      match = {
+        id: bMatch.id,
+        team1: bMatch.team1,
+        team2: bMatch.team2,
+        date: allResults[id]?.date ?? "",
+        venue: allResults[id]?.venue ?? "",
+        group: bMatch.round,
+        stage: bMatch.round,
+      };
+    }
+  }
+
   if (!match) notFound();
 
   const t1 = getTeamById(match.team1);
@@ -93,6 +140,8 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
   const starOfMatch = computeStarOfMatch(liveData.goals, match.team1, match.team2, t1.name, t2.name, t1.flag, t2.flag, [s1, s2]);
   const starPhoto = starOfMatch ? await resolvePlayerPhoto(starOfMatch.playerName) : null;
 
+  const isGroup = !!groupMatch;
+
   return (
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-6">
@@ -102,7 +151,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
             All Matches
           </Link>
         </Button>
-        <ShareButton title={`${t1.name} vs ${t2.name} — WorldCup 2026`} text={`${t1.name} ${played ? `${s1}-${s2}` : "vs"} ${t2.name} — Group ${match.group} · ${match.date}`} />
+        <ShareButton title={`${t1.name} vs ${t2.name} — WorldCup 2026`} text={`${t1.name} ${played ? `${s1}-${s2}` : "vs"} ${t2.name} — ${isGroup ? `Group ${match.group}` : match.group}`} />
       </div>
 
       {/* ===== MATCH HEADER ===== */}
@@ -112,16 +161,20 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
           <div className="flex items-center justify-center gap-3 text-xs text-muted-foreground mb-5 flex-wrap">
             <span className="inline-flex items-center gap-1 bg-secondary px-2.5 py-1 rounded-full font-medium">
               <Trophy className="h-3 w-3" />
-              Group {match.group}
+              {isGroup ? `Group ${match.group}` : match.group}
             </span>
-            <span className="inline-flex items-center gap-1 bg-secondary px-2.5 py-1 rounded-full font-medium">
-              <Calendar className="h-3 w-3" />
-              {match.date}
-            </span>
-            <span className="inline-flex items-center gap-1 bg-secondary px-2.5 py-1 rounded-full font-medium">
-              <MapPin className="h-3 w-3" />
-              {match.venue}
-            </span>
+            {match.date && (
+              <span className="inline-flex items-center gap-1 bg-secondary px-2.5 py-1 rounded-full font-medium">
+                <Calendar className="h-3 w-3" />
+                {match.date}
+              </span>
+            )}
+            {match.venue && (
+              <span className="inline-flex items-center gap-1 bg-secondary px-2.5 py-1 rounded-full font-medium">
+                <MapPin className="h-3 w-3" />
+                {match.venue}
+              </span>
+            )}
           </div>
 
           <div className="flex items-center justify-center gap-4 md:gap-10 py-6">
@@ -165,7 +218,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
                       <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Upcoming</span>
                     </div>
                   </div>
-                  <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{match.date} · 2026</span>
+                  <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{match.date ? `${match.date} · 2026` : match.group}</span>
                 </>
               )}
             </div>
@@ -458,7 +511,7 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
               <p className="text-sm text-muted-foreground">Highlights available after the match</p>
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <Calendar className="h-3 w-3" />
-                <span>{match.date}</span>
+                <span>{match.date || match.group}</span>
               </div>
             </div>
           )}
@@ -516,23 +569,27 @@ export default async function MatchDetailPage({ params }: { params: Promise<{ id
       </div>
 
       {/* ===== MATCH INFO FOOTER ===== */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 gap-3" style={{ gridTemplateColumns: match.date || match.venue ? "1fr 1fr 1fr 1fr" : "1fr 1fr" }}>
         <div className="bg-card rounded-xl border border-border p-4 text-center">
           <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Stage</p>
           <p className="text-sm font-bold">{match.stage}</p>
         </div>
         <div className="bg-card rounded-xl border border-border p-4 text-center">
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Group</p>
-          <p className="text-sm font-bold">Group {match.group}</p>
+          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">{isGroup ? "Group" : "Round"}</p>
+          <p className="text-sm font-bold">{isGroup ? `Group ${match.group}` : match.group}</p>
         </div>
-        <div className="bg-card rounded-xl border border-border p-4 text-center">
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Date</p>
-          <p className="text-sm font-bold">{match.date}</p>
-        </div>
-        <div className="bg-card rounded-xl border border-border p-4 text-center">
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Venue</p>
-          <p className="text-sm font-bold truncate" title={match.venue}>{match.venue}</p>
-        </div>
+        {match.date && (
+          <div className="bg-card rounded-xl border border-border p-4 text-center">
+            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Date</p>
+            <p className="text-sm font-bold">{match.date}</p>
+          </div>
+        )}
+        {match.venue && (
+          <div className="bg-card rounded-xl border border-border p-4 text-center">
+            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Venue</p>
+            <p className="text-sm font-bold truncate" title={match.venue}>{match.venue}</p>
+          </div>
+        )}
       </div>
     </div>
   );

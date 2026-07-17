@@ -23,7 +23,7 @@ const securityHeaders = [
   },
   {
     key: "Content-Security-Policy",
-    value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://upload.wikimedia.org https://images.unsplash.com; font-src 'self' data:; connect-src 'self' https://en.wikipedia.org https://api.sportsrc.org https://api.fifa.com; frame-src 'self' https://www.youtube.com;",
+    value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://upload.wikimedia.org https://images.unsplash.com; font-src 'self' data:; connect-src 'self' https://en.wikipedia.org https://api.sportsrc.org https://api.fifa.com; frame-src 'self' https://www.youtube.com;",
   },
 ];
 

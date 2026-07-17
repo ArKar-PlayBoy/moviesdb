@@ -1,42 +1,5465 @@
 {
-  "updatedAt": "2026-06-12T11:04:19.602Z",
+  "updatedAt": "2026-07-17T08:15:26.145Z",
   "matches": {
     "A-1": {
-      "score1": 2,
-      "score2": 0,
-      "goalScorers": [
+      "score": [
+        2,
+        0
+      ],
+      "goals": [
         {
-          "playerName": "Julián Quiñones",
+          "playerName": "Julian QUINONES",
           "teamId": "mexico",
-          "minute": 9
+          "minute": 9,
+          "isPenalty": true,
+          "isOwnGoal": false
         },
         {
-          "playerName": "Raúl Jiménez",
+          "playerName": "Raul JIMENEZ",
           "teamId": "mexico",
-          "minute": 67
+          "minute": 67,
+          "isPenalty": true,
+          "isOwnGoal": false
         }
-      ]
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Brian GUTIERREZ",
+          "teamId": "mexico",
+          "minute": "23'",
+          "card": 1
+        },
+        {
+          "playerName": "Cesar MONTES",
+          "teamId": "mexico",
+          "minute": "90'+2'",
+          "card": 2
+        },
+        {
+          "playerName": "Teboho MOKOENA",
+          "teamId": "south-africa",
+          "minute": "17'",
+          "card": 1
+        },
+        {
+          "playerName": "Sphephelo SITHOLE",
+          "teamId": "south-africa",
+          "minute": "49'",
+          "card": 2
+        },
+        {
+          "playerName": "Nkosinathi SIBISI",
+          "teamId": "south-africa",
+          "minute": "74'",
+          "card": 1
+        },
+        {
+          "playerName": "Themba ZWANE",
+          "teamId": "south-africa",
+          "minute": "84'",
+          "card": 2
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:09.879Z",
+      "_v": 3
     },
     "A-2": {
-      "score1": 2,
-      "score2": 1,
-      "goalScorers": [
+      "score": [
+        2,
+        1
+      ],
+      "goals": [
         {
-          "playerName": "Ladislav Krejčí",
+          "playerName": "HWANG Inbeom",
+          "teamId": "south-korea",
+          "minute": 67,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "OH Hyeongyu",
+          "teamId": "south-korea",
+          "minute": 80,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ladislav KREJCI",
           "teamId": "czech-republic",
-          "minute": 59
-        },
-        {
-          "playerName": "Hwang In-beom",
-          "teamId": "south-korea",
-          "minute": 67
-        },
-        {
-          "playerName": "Oh Hyeongyu",
-          "teamId": "south-korea",
-          "minute": 80
+          "minute": 59,
+          "isPenalty": true,
+          "isOwnGoal": false
         }
-      ]
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "LEE Gihyuk",
+          "teamId": "south-korea",
+          "minute": "90'+6'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:09.879Z",
+      "_v": 3
+    },
+    "A-3": {
+      "score": [
+        1,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Luis ROMO",
+          "teamId": "mexico",
+          "minute": 50,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "LEE Kangin",
+          "teamId": "south-korea",
+          "minute": "4'",
+          "card": 1
+        },
+        {
+          "playerName": "PAIK Seungho",
+          "teamId": "south-korea",
+          "minute": "58'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:09.879Z",
+      "_v": 3
+    },
+    "A-4": {
+      "score": [
+        1,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Michal SADILEK",
+          "teamId": "south-africa",
+          "minute": 6,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Teboho MOKOENA",
+          "teamId": "czech-republic",
+          "minute": 83,
+          "isPenalty": false,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Ladislav KREJCI",
+          "teamId": "south-africa",
+          "minute": "75'",
+          "card": 1
+        },
+        {
+          "playerName": "Teboho MOKOENA",
+          "teamId": "czech-republic",
+          "minute": "33'",
+          "card": 1
+        },
+        {
+          "playerName": "Thalente MBATHA",
+          "teamId": "czech-republic",
+          "minute": "40'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:09.879Z",
+      "_v": 3
+    },
+    "A-5": {
+      "score": [
+        0,
+        3
+      ],
+      "goals": [
+        {
+          "playerName": "Mateo CHAVEZ",
+          "teamId": "czech-republic",
+          "minute": 55,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Julian QUINONES",
+          "teamId": "czech-republic",
+          "minute": 61,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Alvaro FIDALGO",
+          "teamId": "czech-republic",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Edson ALVAREZ",
+          "teamId": "czech-republic",
+          "minute": "63'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:09.879Z",
+      "_v": 3
+    },
+    "A-6": {
+      "score": [
+        1,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Thapelo MASEKO",
+          "teamId": "south-africa",
+          "minute": 63,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Aubrey MODIBA",
+          "teamId": "south-africa",
+          "minute": "72'",
+          "card": 1
+        },
+        {
+          "playerName": "CHO Guesung",
+          "teamId": "south-korea",
+          "minute": "78'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.208Z",
+      "_v": 3
+    },
+    "B-1": {
+      "score": [
+        1,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Cyle LARIN",
+          "teamId": "canada",
+          "minute": 78,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jovo LUKIC",
+          "teamId": "bosnia",
+          "minute": 21,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Alistair JOHNSTON",
+          "teamId": "canada",
+          "minute": "11'",
+          "card": 1
+        },
+        {
+          "playerName": "Luc DE FOUGEROLLES",
+          "teamId": "canada",
+          "minute": "53'",
+          "card": 1
+        },
+        {
+          "playerName": "Ermedin DEMIROVIC",
+          "teamId": "bosnia",
+          "minute": "44'",
+          "card": 1
+        },
+        {
+          "playerName": "Jovo LUKIC",
+          "teamId": "bosnia",
+          "minute": "45'+1'",
+          "card": 1
+        },
+        {
+          "playerName": "Nikola KATIC",
+          "teamId": "bosnia",
+          "minute": "90'+3'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.208Z",
+      "_v": 3
+    },
+    "B-2": {
+      "score": [
+        1,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Unknown",
+          "teamId": "qatar",
+          "minute": 90,
+          "isPenalty": false,
+          "isOwnGoal": true
+        },
+        {
+          "playerName": "Breel EMBOLO",
+          "teamId": "switzerland",
+          "minute": 17,
+          "isPenalty": false,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "MAHMOUD ABUNADA",
+          "teamId": "qatar",
+          "minute": "13'",
+          "card": 1
+        },
+        {
+          "playerName": "JASSEM GABER",
+          "teamId": "qatar",
+          "minute": "23'",
+          "card": 1
+        },
+        {
+          "playerName": "Denis ZAKARIA",
+          "teamId": "switzerland",
+          "minute": "42'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.208Z",
+      "_v": 3
+    },
+    "B-3": {
+      "score": [
+        6,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Cyle LARIN",
+          "teamId": "canada",
+          "minute": 16,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jonathan DAVID",
+          "teamId": "canada",
+          "minute": 29,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jonathan DAVID",
+          "teamId": "canada",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Nathan SALIBA",
+          "teamId": "canada",
+          "minute": 64,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "canada",
+          "minute": 75,
+          "isPenalty": false,
+          "isOwnGoal": true
+        },
+        {
+          "playerName": "Jonathan DAVID",
+          "teamId": "canada",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Derek CORNELIUS",
+          "teamId": "canada",
+          "minute": "9'",
+          "card": 1
+        },
+        {
+          "playerName": "HOMAM AHMED",
+          "teamId": "qatar",
+          "minute": "33'",
+          "card": 2
+        },
+        {
+          "playerName": "ASSIM MADIBO",
+          "teamId": "qatar",
+          "minute": "51'",
+          "card": 2
+        },
+        {
+          "playerName": "AHMED FATHY",
+          "teamId": "qatar",
+          "minute": "62'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.208Z",
+      "_v": 3
+    },
+    "B-4": {
+      "score": [
+        4,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Johan MANZAMBI",
+          "teamId": "bosnia",
+          "minute": 74,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ruben VARGAS",
+          "teamId": "bosnia",
+          "minute": 84,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Johan MANZAMBI",
+          "teamId": "bosnia",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Granit XHAKA",
+          "teamId": "bosnia",
+          "minute": 90,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ermin MAHMIC",
+          "teamId": "switzerland",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Nico ELVEDI",
+          "teamId": "bosnia",
+          "minute": "65'",
+          "card": 1
+        },
+        {
+          "playerName": "Amar DEDIC",
+          "teamId": "switzerland",
+          "minute": "59'",
+          "card": 1
+        },
+        {
+          "playerName": "Edin DZEKO",
+          "teamId": "switzerland",
+          "minute": "61'",
+          "card": 1
+        },
+        {
+          "playerName": "Tarik MUHAREMOVIC",
+          "teamId": "switzerland",
+          "minute": "80'",
+          "card": 2
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.208Z",
+      "_v": 3
+    },
+    "B-5": {
+      "score": [
+        2,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Ruben VARGAS",
+          "teamId": "canada",
+          "minute": 46,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Johan MANZAMBI",
+          "teamId": "canada",
+          "minute": 57,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Promise DAVID",
+          "teamId": "switzerland",
+          "minute": 76,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Granit XHAKA",
+          "teamId": "canada",
+          "minute": "32'",
+          "card": 1
+        },
+        {
+          "playerName": "Cyle LARIN",
+          "teamId": "switzerland",
+          "minute": "32'",
+          "card": 1
+        },
+        {
+          "playerName": "Liam MILLAR",
+          "teamId": "switzerland",
+          "minute": "87'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.547Z",
+      "_v": 3
+    },
+    "B-6": {
+      "score": [
+        3,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Kerim ALAJBEGOVIC",
+          "teamId": "bosnia",
+          "minute": 29,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "bosnia",
+          "minute": 34,
+          "isPenalty": false,
+          "isOwnGoal": true
+        },
+        {
+          "playerName": "Ermin MAHMIC",
+          "teamId": "bosnia",
+          "minute": 80,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "HASSAN ALHAYDOS",
+          "teamId": "qatar",
+          "minute": 42,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Ermin MAHMIC",
+          "teamId": "bosnia",
+          "minute": "82'",
+          "card": 1
+        },
+        {
+          "playerName": "AHMED FATHY",
+          "teamId": "qatar",
+          "minute": "78'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.547Z",
+      "_v": 3
+    },
+    "C-1": {
+      "score": [
+        1,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "VINICIUS JUNIOR",
+          "teamId": "brazil",
+          "minute": 32,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ismael SAIBARI",
+          "teamId": "morocco",
+          "minute": 21,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "CASEMIRO",
+          "teamId": "brazil",
+          "minute": "37'",
+          "card": 1
+        },
+        {
+          "playerName": "ROGER IBANEZ",
+          "teamId": "brazil",
+          "minute": "43'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.547Z",
+      "_v": 3
+    },
+    "C-2": {
+      "score": [
+        0,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "John McGinn",
+          "teamId": "scotland",
+          "minute": 28,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Jean-Ricner Bellegarde",
+          "teamId": "haiti",
+          "minute": "39'",
+          "card": 1
+        },
+        {
+          "playerName": "Aaron HICKEY",
+          "teamId": "scotland",
+          "minute": "46'",
+          "card": 1
+        },
+        {
+          "playerName": "Findlay CURTIS",
+          "teamId": "scotland",
+          "minute": "90'+1'",
+          "card": 1
+        },
+        {
+          "playerName": "Kenny McLEAN",
+          "teamId": "scotland",
+          "minute": "90'+5'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.547Z",
+      "_v": 3
+    },
+    "C-3": {
+      "score": [
+        3,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "MATHEUS CUNHA",
+          "teamId": "brazil",
+          "minute": 23,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "MATHEUS CUNHA",
+          "teamId": "brazil",
+          "minute": 36,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "VINICIUS JUNIOR",
+          "teamId": "brazil",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "DOUGLAS SANTOS",
+          "teamId": "brazil",
+          "minute": "65'",
+          "card": 1
+        },
+        {
+          "playerName": "Carlens ARCUS",
+          "teamId": "haiti",
+          "minute": "4'",
+          "card": 1
+        },
+        {
+          "playerName": "Frantzdy Pierrot",
+          "teamId": "haiti",
+          "minute": "45'+4'",
+          "card": 1
+        },
+        {
+          "playerName": "Danley JEAN JACQUES",
+          "teamId": "haiti",
+          "minute": "72'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.547Z",
+      "_v": 3
+    },
+    "C-4": {
+      "score": [
+        0,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Ismael SAIBARI",
+          "teamId": "scotland",
+          "minute": 2,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Andy ROBERTSON",
+          "teamId": "morocco",
+          "minute": "65'",
+          "card": 1
+        },
+        {
+          "playerName": "Issa Diop",
+          "teamId": "scotland",
+          "minute": "22'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.939Z",
+      "_v": 3
+    },
+    "C-5": {
+      "score": [
+        0,
+        3
+      ],
+      "goals": [
+        {
+          "playerName": "VINICIUS JUNIOR",
+          "teamId": "scotland",
+          "minute": 7,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "VINICIUS JUNIOR",
+          "teamId": "scotland",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "MATHEUS CUNHA",
+          "teamId": "scotland",
+          "minute": 60,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Ryan Christie",
+          "teamId": "brazil",
+          "minute": "89'",
+          "card": 1
+        },
+        {
+          "playerName": "DANILO",
+          "teamId": "scotland",
+          "minute": "62'",
+          "card": 1
+        },
+        {
+          "playerName": "FABINHO",
+          "teamId": "scotland",
+          "minute": "82'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.939Z",
+      "_v": 3
+    },
+    "C-6": {
+      "score": [
+        4,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Achraf HAKIMI",
+          "teamId": "morocco",
+          "minute": 39,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ismael SAIBARI",
+          "teamId": "morocco",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Soufiane RAHIMI",
+          "teamId": "morocco",
+          "minute": 78,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Gessime YASSINE",
+          "teamId": "morocco",
+          "minute": 89,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "haiti",
+          "minute": 10,
+          "isPenalty": false,
+          "isOwnGoal": true
+        },
+        {
+          "playerName": "Wilson Isidor",
+          "teamId": "haiti",
+          "minute": 43,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Johny Placide",
+          "teamId": "haiti",
+          "minute": "79'",
+          "card": 1
+        },
+        {
+          "playerName": "Duckens NAZON",
+          "teamId": "haiti",
+          "minute": "79'",
+          "card": 1
+        },
+        {
+          "playerName": "Josue CASIMIR",
+          "teamId": "haiti",
+          "minute": "90'+3'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.939Z",
+      "_v": 3
+    },
+    "D-1": {
+      "score": [
+        4,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Unknown",
+          "teamId": "usa",
+          "minute": 7,
+          "isPenalty": false,
+          "isOwnGoal": true
+        },
+        {
+          "playerName": "Folarin BALOGUN",
+          "teamId": "usa",
+          "minute": 31,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Folarin BALOGUN",
+          "teamId": "usa",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Giovanni REYNA",
+          "teamId": "usa",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "MAURICIO",
+          "teamId": "paraguay",
+          "minute": 73,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Tyler ADAMS",
+          "teamId": "usa",
+          "minute": "59'",
+          "card": 1
+        },
+        {
+          "playerName": "Juan Jose CACERES",
+          "teamId": "paraguay",
+          "minute": "9'",
+          "card": 1
+        },
+        {
+          "playerName": "Miguel ALMIRON",
+          "teamId": "paraguay",
+          "minute": "53'",
+          "card": 1
+        },
+        {
+          "playerName": "Diego GOMEZ",
+          "teamId": "paraguay",
+          "minute": "79'",
+          "card": 1
+        },
+        {
+          "playerName": "Alex ARCE",
+          "teamId": "paraguay",
+          "minute": "88'",
+          "card": 1
+        },
+        {
+          "playerName": "Junior ALONSO",
+          "teamId": "paraguay",
+          "minute": "90'+3'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.939Z",
+      "_v": 3
+    },
+    "D-2": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [],
+      "assists": [],
+      "cards": [],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:10.939Z",
+      "_v": 3
+    },
+    "D-3": {
+      "score": [
+        2,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Unknown",
+          "teamId": "usa",
+          "minute": 11,
+          "isPenalty": false,
+          "isOwnGoal": true
+        },
+        {
+          "playerName": "Alex FREEMAN",
+          "teamId": "usa",
+          "minute": 43,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Antonee ROBINSON",
+          "teamId": "usa",
+          "minute": "56'",
+          "card": 1
+        },
+        {
+          "playerName": "Folarin BALOGUN",
+          "teamId": "usa",
+          "minute": "89'",
+          "card": 1
+        },
+        {
+          "playerName": "Chris RICHARDS",
+          "teamId": "usa",
+          "minute": "90'+3'",
+          "card": 1
+        },
+        {
+          "playerName": "Jordan BOS",
+          "teamId": "australia",
+          "minute": "16'",
+          "card": 1
+        },
+        {
+          "playerName": "Alessandro CIRCATI",
+          "teamId": "australia",
+          "minute": "32'",
+          "card": 1
+        },
+        {
+          "playerName": "Jacob ITALIANO",
+          "teamId": "australia",
+          "minute": "89'",
+          "card": 1
+        },
+        {
+          "playerName": "Harry SOUTTAR",
+          "teamId": "australia",
+          "minute": "89'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:11.282Z",
+      "_v": 3
+    },
+    "D-4": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [],
+      "assists": [],
+      "cards": [],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:11.282Z",
+      "_v": 3
+    },
+    "D-5": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [],
+      "assists": [],
+      "cards": [],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:11.282Z",
+      "_v": 3
+    },
+    "D-6": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Diego GOMEZ",
+          "teamId": "paraguay",
+          "minute": "77'",
+          "card": 1
+        },
+        {
+          "playerName": "Jackson IRVINE",
+          "teamId": "australia",
+          "minute": "46'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:11.282Z",
+      "_v": 3
+    },
+    "E-1": {
+      "score": [
+        7,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Felix NMECHA",
+          "teamId": "germany",
+          "minute": 6,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Nico SCHLOTTERBECK",
+          "teamId": "germany",
+          "minute": 38,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Kai HAVERTZ",
+          "teamId": "germany",
+          "minute": 45,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jamal MUSIALA",
+          "teamId": "germany",
+          "minute": 47,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Nathaniel BROWN",
+          "teamId": "germany",
+          "minute": 68,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Deniz UNDAV",
+          "teamId": "germany",
+          "minute": 78,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Kai HAVERTZ",
+          "teamId": "germany",
+          "minute": 88,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Livano COMENENCIA",
+          "teamId": "curacao",
+          "minute": 21,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:11.282Z",
+      "_v": 3
+    },
+    "E-2": {
+      "score": [
+        1,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Amad DIALLO",
+          "teamId": "ivory-coast",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Seko Fofana",
+          "teamId": "ivory-coast",
+          "minute": "28'",
+          "card": 1
+        },
+        {
+          "playerName": "Franck KESSIE",
+          "teamId": "ivory-coast",
+          "minute": "38'",
+          "card": 1
+        },
+        {
+          "playerName": "Guela DOUE",
+          "teamId": "ivory-coast",
+          "minute": "40'",
+          "card": 1
+        },
+        {
+          "playerName": "Jackson POROZO",
+          "teamId": "ecuador",
+          "minute": "73'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:11.678Z",
+      "_v": 3
+    },
+    "E-3": {
+      "score": [
+        2,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Deniz UNDAV",
+          "teamId": "germany",
+          "minute": 68,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Deniz UNDAV",
+          "teamId": "germany",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Franck KESSIE",
+          "teamId": "ivory-coast",
+          "minute": 30,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:11.679Z",
+      "_v": 3
+    },
+    "E-4": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Jordy ALCIVAR",
+          "teamId": "curacao",
+          "minute": "38'",
+          "card": 1
+        },
+        {
+          "playerName": "Leandro BACUNA",
+          "teamId": "ecuador",
+          "minute": "39'",
+          "card": 1
+        },
+        {
+          "playerName": "Juninho BACUNA",
+          "teamId": "ecuador",
+          "minute": "53'",
+          "card": 1
+        },
+        {
+          "playerName": "Livano COMENENCIA",
+          "teamId": "ecuador",
+          "minute": "56'",
+          "card": 1
+        },
+        {
+          "playerName": "Jurien GAARI",
+          "teamId": "ecuador",
+          "minute": "75'",
+          "card": 1
+        },
+        {
+          "playerName": "Gervane KASTANEER",
+          "teamId": "ecuador",
+          "minute": "90'+1'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:11.679Z",
+      "_v": 3
+    },
+    "E-5": {
+      "score": [
+        2,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Nilson ANGULO",
+          "teamId": "germany",
+          "minute": 9,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Gonzalo PLATA",
+          "teamId": "germany",
+          "minute": 77,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Leroy SANE",
+          "teamId": "ecuador",
+          "minute": 2,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Piero HINCAPIE",
+          "teamId": "germany",
+          "minute": "43'",
+          "card": 1
+        },
+        {
+          "playerName": "Alan FRANCO",
+          "teamId": "germany",
+          "minute": "50'",
+          "card": 1
+        },
+        {
+          "playerName": "Gonzalo PLATA",
+          "teamId": "germany",
+          "minute": "89'",
+          "card": 1
+        },
+        {
+          "playerName": "Aleksandar PAVLOVIC",
+          "teamId": "ecuador",
+          "minute": "44'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:11.679Z",
+      "_v": 3
+    },
+    "E-6": {
+      "score": [
+        0,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Nicolas PEPE",
+          "teamId": "ivory-coast",
+          "minute": 7,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Nicolas PEPE",
+          "teamId": "ivory-coast",
+          "minute": 64,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Juninho BACUNA",
+          "teamId": "curacao",
+          "minute": "75'",
+          "card": 1
+        },
+        {
+          "playerName": "Gervane KASTANEER",
+          "teamId": "curacao",
+          "minute": "83'",
+          "card": 1
+        },
+        {
+          "playerName": "Nicolas PEPE",
+          "teamId": "ivory-coast",
+          "minute": "34'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:11.679Z",
+      "_v": 3
+    },
+    "F-1": {
+      "score": [
+        2,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Virgil VAN DIJK",
+          "teamId": "netherlands",
+          "minute": 50,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Crysencio SUMMERVILLE",
+          "teamId": "netherlands",
+          "minute": 64,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Keito Nakamura",
+          "teamId": "japan",
+          "minute": 57,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Daichi KAMADA",
+          "teamId": "japan",
+          "minute": 88,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Crysencio SUMMERVILLE",
+          "teamId": "netherlands",
+          "minute": "61'",
+          "card": 1
+        },
+        {
+          "playerName": "Memphis DEPAY",
+          "teamId": "netherlands",
+          "minute": "83'",
+          "card": 1
+        },
+        {
+          "playerName": "Micky VAN DE VEN",
+          "teamId": "netherlands",
+          "minute": "90'+1'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:12.243Z",
+      "_v": 3
+    },
+    "F-2": {
+      "score": [
+        5,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Yasin AYARI",
+          "teamId": "sweden",
+          "minute": 7,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Alexander Isak",
+          "teamId": "sweden",
+          "minute": 30,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Viktor GYOKERES",
+          "teamId": "sweden",
+          "minute": 59,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Mattias SVANBERG",
+          "teamId": "sweden",
+          "minute": 84,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Yasin AYARI",
+          "teamId": "sweden",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Omar Rekik",
+          "teamId": "tunisia",
+          "minute": 43,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Rani Khedira",
+          "teamId": "tunisia",
+          "minute": "54'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:12.243Z",
+      "_v": 3
+    },
+    "F-3": {
+      "score": [
+        5,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Brian BROBBEY",
+          "teamId": "netherlands",
+          "minute": 5,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Brian BROBBEY",
+          "teamId": "netherlands",
+          "minute": 17,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Cody GAKPO",
+          "teamId": "netherlands",
+          "minute": 47,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Cody GAKPO",
+          "teamId": "netherlands",
+          "minute": 54,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Crysencio SUMMERVILLE",
+          "teamId": "netherlands",
+          "minute": 89,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Anthony ELANGA",
+          "teamId": "sweden",
+          "minute": 59,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Gabriel GUDMUNDSSON",
+          "teamId": "sweden",
+          "minute": "53'",
+          "card": 1
+        },
+        {
+          "playerName": "Yasin AYARI",
+          "teamId": "sweden",
+          "minute": "75'",
+          "card": 1
+        },
+        {
+          "playerName": "Lucas BERGVALL",
+          "teamId": "sweden",
+          "minute": "80'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:12.243Z",
+      "_v": 3
+    },
+    "F-4": {
+      "score": [
+        0,
+        4
+      ],
+      "goals": [
+        {
+          "playerName": "Daichi KAMADA",
+          "teamId": "tunisia",
+          "minute": 4,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ayase UEDA",
+          "teamId": "tunisia",
+          "minute": 31,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Junya ITO",
+          "teamId": "tunisia",
+          "minute": 69,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ayase UEDA",
+          "teamId": "tunisia",
+          "minute": 83,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:12.243Z",
+      "_v": 3
+    },
+    "F-5": {
+      "score": [
+        1,
+        3
+      ],
+      "goals": [
+        {
+          "playerName": "Hazem MASTOURI",
+          "teamId": "netherlands",
+          "minute": 54,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "tunisia",
+          "minute": 3,
+          "isPenalty": false,
+          "isOwnGoal": true
+        },
+        {
+          "playerName": "Brian BROBBEY",
+          "teamId": "tunisia",
+          "minute": 7,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jan Paul VAN HECKE",
+          "teamId": "tunisia",
+          "minute": 62,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:12.243Z",
+      "_v": 3
+    },
+    "F-6": {
+      "score": [
+        1,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Daizen MAEDA",
+          "teamId": "japan",
+          "minute": 56,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Anthony ELANGA",
+          "teamId": "sweden",
+          "minute": 62,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Shogo TANIGUCHI",
+          "teamId": "japan",
+          "minute": "77'",
+          "card": 1
+        },
+        {
+          "playerName": "Isak HIEN",
+          "teamId": "sweden",
+          "minute": "32'",
+          "card": 1
+        },
+        {
+          "playerName": "Viktor GYOKERES",
+          "teamId": "sweden",
+          "minute": "84'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:12.615Z",
+      "_v": 3
+    },
+    "G-1": {
+      "score": [
+        1,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Unknown",
+          "teamId": "belgium",
+          "minute": 66,
+          "isPenalty": false,
+          "isOwnGoal": true
+        },
+        {
+          "playerName": "EMAM ASHOUR",
+          "teamId": "egypt",
+          "minute": 19,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Timothy CASTAGNE",
+          "teamId": "belgium",
+          "minute": "14'",
+          "card": 1
+        },
+        {
+          "playerName": "Maxim DE CUYPER",
+          "teamId": "belgium",
+          "minute": "75'",
+          "card": 1
+        },
+        {
+          "playerName": "MARAWAN ATTIA",
+          "teamId": "egypt",
+          "minute": "13'",
+          "card": 1
+        },
+        {
+          "playerName": "AHMED FATOUH",
+          "teamId": "egypt",
+          "minute": "34'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:12.615Z",
+      "_v": 3
+    },
+    "G-2": {
+      "score": [
+        2,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Ramin REZAEIAN",
+          "teamId": "iran",
+          "minute": 32,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Mohammad MOHEBBI",
+          "teamId": "iran",
+          "minute": 64,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Elijah JUST",
+          "teamId": "new-zealand",
+          "minute": 7,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Elijah JUST",
+          "teamId": "new-zealand",
+          "minute": 54,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Ehsan HAJISAFI",
+          "teamId": "iran",
+          "minute": "89'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:12.615Z",
+      "_v": 3
+    },
+    "G-3": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Romelu LUKAKU",
+          "teamId": "belgium",
+          "minute": "3'",
+          "card": 1
+        },
+        {
+          "playerName": "Nathan NGOY",
+          "teamId": "belgium",
+          "minute": "66'",
+          "card": 2
+        },
+        {
+          "playerName": "Saeid EZATOLAHI",
+          "teamId": "iran",
+          "minute": "33'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:12.615Z",
+      "_v": 3
+    },
+    "G-4": {
+      "score": [
+        1,
+        3
+      ],
+      "goals": [
+        {
+          "playerName": "Finn SURMAN",
+          "teamId": "egypt",
+          "minute": 15,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "MOSTAFA ZICO",
+          "teamId": "new-zealand",
+          "minute": 58,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "MOHAMED SALAH",
+          "teamId": "new-zealand",
+          "minute": 67,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "TREZEGUET",
+          "teamId": "new-zealand",
+          "minute": 82,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Sarpreet SINGH",
+          "teamId": "egypt",
+          "minute": "20'",
+          "card": 1
+        },
+        {
+          "playerName": "Callum McCOWATT",
+          "teamId": "egypt",
+          "minute": "34'",
+          "card": 1
+        },
+        {
+          "playerName": "MOHANAD LASHIN",
+          "teamId": "new-zealand",
+          "minute": "17'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:12.615Z",
+      "_v": 3
+    },
+    "G-5": {
+      "score": [
+        1,
+        5
+      ],
+      "goals": [
+        {
+          "playerName": "Elijah JUST",
+          "teamId": "belgium",
+          "minute": 84,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Leandro TROSSARD",
+          "teamId": "new-zealand",
+          "minute": 28,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Leandro TROSSARD",
+          "teamId": "new-zealand",
+          "minute": 50,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Kevin DE BRUYNE",
+          "teamId": "new-zealand",
+          "minute": 66,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Romelu LUKAKU",
+          "teamId": "new-zealand",
+          "minute": 86,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Alexis SAELEMAEKERS",
+          "teamId": "new-zealand",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Marko STAMENIC",
+          "teamId": "belgium",
+          "minute": "46'",
+          "card": 1
+        },
+        {
+          "playerName": "Elijah JUST",
+          "teamId": "belgium",
+          "minute": "56'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.031Z",
+      "_v": 3
+    },
+    "G-6": {
+      "score": [
+        1,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "MAHMOUD SABER",
+          "teamId": "egypt",
+          "minute": 5,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ramin REZAEIAN",
+          "teamId": "iran",
+          "minute": 14,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "MAHMOUD SABER",
+          "teamId": "egypt",
+          "minute": "19'",
+          "card": 1
+        },
+        {
+          "playerName": "YASSER IBRAHIM",
+          "teamId": "egypt",
+          "minute": "41'",
+          "card": 1
+        },
+        {
+          "playerName": "MOHANAD LASHIN",
+          "teamId": "egypt",
+          "minute": "90'+2'",
+          "card": 1
+        },
+        {
+          "playerName": "Hossein KANANI",
+          "teamId": "iran",
+          "minute": "18'",
+          "card": 1
+        },
+        {
+          "playerName": "Ali NEMATI",
+          "teamId": "iran",
+          "minute": "43'",
+          "card": 1
+        },
+        {
+          "playerName": "Saeid EZATOLAHI",
+          "teamId": "iran",
+          "minute": "79'",
+          "card": 1
+        },
+        {
+          "playerName": "Shoja KHALILZADEH",
+          "teamId": "iran",
+          "minute": "90'+4'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.031Z",
+      "_v": 3
+    },
+    "H-1": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "PEDRI",
+          "teamId": "spain",
+          "minute": "90'+3'",
+          "card": 1
+        },
+        {
+          "playerName": "SIDNY LOPES CABRAL",
+          "teamId": "cape-verde",
+          "minute": "16'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.031Z",
+      "_v": 3
+    },
+    "H-2": {
+      "score": [
+        1,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Abdulelah ALAMRI",
+          "teamId": "saudi-arabia",
+          "minute": 41,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Maxi ARAUJO",
+          "teamId": "uruguay",
+          "minute": 80,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Abdulelah ALAMRI",
+          "teamId": "saudi-arabia",
+          "minute": "44'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.031Z",
+      "_v": 3
+    },
+    "H-3": {
+      "score": [
+        4,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Lamine YAMAL",
+          "teamId": "spain",
+          "minute": 10,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Mikel OYARZABAL",
+          "teamId": "spain",
+          "minute": 21,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Mikel OYARZABAL",
+          "teamId": "spain",
+          "minute": 24,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "spain",
+          "minute": 49,
+          "isPenalty": false,
+          "isOwnGoal": true
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "SALEM ALDAWSARI",
+          "teamId": "saudi-arabia",
+          "minute": "30'",
+          "card": 1
+        },
+        {
+          "playerName": "MOHAMED KANNO",
+          "teamId": "saudi-arabia",
+          "minute": "60'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.031Z",
+      "_v": 3
+    },
+    "H-4": {
+      "score": [
+        2,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Maxi ARAUJO",
+          "teamId": "cape-verde",
+          "minute": 44,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Agustin CANOBBIO",
+          "teamId": "cape-verde",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "KEVIN PINA",
+          "teamId": "uruguay",
+          "minute": 21,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "HELIO VARELA",
+          "teamId": "uruguay",
+          "minute": 61,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Rodrigo BENTANCUR",
+          "teamId": "cape-verde",
+          "minute": "20'",
+          "card": 1
+        },
+        {
+          "playerName": "Mathias OLIVERA",
+          "teamId": "cape-verde",
+          "minute": "58'",
+          "card": 1
+        },
+        {
+          "playerName": "SIDNY LOPES CABRAL",
+          "teamId": "uruguay",
+          "minute": "5'",
+          "card": 1
+        },
+        {
+          "playerName": "DINEY BORGES",
+          "teamId": "uruguay",
+          "minute": "90'+3'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.376Z",
+      "_v": 3
+    },
+    "H-5": {
+      "score": [
+        0,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Alex BAENA",
+          "teamId": "uruguay",
+          "minute": 42,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Juan Manuel SANABRIA",
+          "teamId": "spain",
+          "minute": "54'",
+          "card": 1
+        },
+        {
+          "playerName": "Guillermo VARELA",
+          "teamId": "spain",
+          "minute": "58'",
+          "card": 1
+        },
+        {
+          "playerName": "Nicolas DE LA CRUZ",
+          "teamId": "spain",
+          "minute": "90'+3'",
+          "card": 1
+        },
+        {
+          "playerName": "Agustin CANOBBIO",
+          "teamId": "spain",
+          "minute": "90'+4'",
+          "card": 2
+        },
+        {
+          "playerName": "Alex BAENA",
+          "teamId": "uruguay",
+          "minute": "46'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.376Z",
+      "_v": 3
+    },
+    "H-6": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "WAGNER PINA",
+          "teamId": "cape-verde",
+          "minute": "8'",
+          "card": 1
+        },
+        {
+          "playerName": "SAUD ABDULHAMID",
+          "teamId": "saudi-arabia",
+          "minute": "4'",
+          "card": 1
+        },
+        {
+          "playerName": "NASSER ALDAWSARI",
+          "teamId": "saudi-arabia",
+          "minute": "67'",
+          "card": 1
+        },
+        {
+          "playerName": "FERAS ALBRIKAN",
+          "teamId": "saudi-arabia",
+          "minute": "90'+3'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.376Z",
+      "_v": 3
+    },
+    "I-1": {
+      "score": [
+        3,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Kylian MBAPPE",
+          "teamId": "france",
+          "minute": 66,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Bradley BARCOLA",
+          "teamId": "france",
+          "minute": 82,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Kylian MBAPPE",
+          "teamId": "france",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ibrahim MBAYE",
+          "teamId": "senegal",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.376Z",
+      "_v": 3
+    },
+    "I-2": {
+      "score": [
+        1,
+        4
+      ],
+      "goals": [
+        {
+          "playerName": "AYMEN HUSSEIN",
+          "teamId": "iraq",
+          "minute": 39,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Erling HAALAND",
+          "teamId": "norway",
+          "minute": 29,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Erling HAALAND",
+          "teamId": "norway",
+          "minute": 43,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Leo OSTIGARD",
+          "teamId": "norway",
+          "minute": 76,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "norway",
+          "minute": 90,
+          "isPenalty": false,
+          "isOwnGoal": true
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "ZAID TAHSEEN",
+          "teamId": "iraq",
+          "minute": "86'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.376Z",
+      "_v": 3
+    },
+    "I-3": {
+      "score": [
+        3,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Kylian MBAPPE",
+          "teamId": "france",
+          "minute": 14,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Kylian MBAPPE",
+          "teamId": "france",
+          "minute": 54,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ousmane DEMBELE",
+          "teamId": "france",
+          "minute": 66,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "AMIR ALAMMARI",
+          "teamId": "iraq",
+          "minute": "6'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.766Z",
+      "_v": 3
+    },
+    "I-4": {
+      "score": [
+        3,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Marcus HOLMGREN PEDERSEN",
+          "teamId": "senegal",
+          "minute": 43,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Erling HAALAND",
+          "teamId": "senegal",
+          "minute": 48,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Erling HAALAND",
+          "teamId": "senegal",
+          "minute": 58,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ismaila SARR",
+          "teamId": "norway",
+          "minute": 53,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ismaila SARR",
+          "teamId": "norway",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.766Z",
+      "_v": 3
+    },
+    "I-5": {
+      "score": [
+        1,
+        4
+      ],
+      "goals": [
+        {
+          "playerName": "Thelo AASGAARD",
+          "teamId": "france",
+          "minute": 21,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ousmane DEMBELE",
+          "teamId": "norway",
+          "minute": 7,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ousmane DEMBELE",
+          "teamId": "norway",
+          "minute": 20,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ousmane DEMBELE",
+          "teamId": "norway",
+          "minute": 32,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Desire DOUE",
+          "teamId": "norway",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Patrick BERG",
+          "teamId": "france",
+          "minute": "10'",
+          "card": 1
+        },
+        {
+          "playerName": "Aurelien TCHOUAMENI",
+          "teamId": "norway",
+          "minute": "74'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.766Z",
+      "_v": 3
+    },
+    "I-6": {
+      "score": [
+        5,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Habib DIARRA",
+          "teamId": "senegal",
+          "minute": 4,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ismaila SARR",
+          "teamId": "senegal",
+          "minute": 56,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Pape GUEYE",
+          "teamId": "senegal",
+          "minute": 59,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Pape GUEYE",
+          "teamId": "senegal",
+          "minute": 71,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Iliman NDIAYE",
+          "teamId": "senegal",
+          "minute": 82,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Abdoulaye Seck",
+          "teamId": "senegal",
+          "minute": "18'",
+          "card": 1
+        },
+        {
+          "playerName": "Pape GUEYE",
+          "teamId": "senegal",
+          "minute": "81'",
+          "card": 1
+        },
+        {
+          "playerName": "REBIN SULAKA",
+          "teamId": "iraq",
+          "minute": "13'",
+          "card": 2
+        },
+        {
+          "playerName": "AMIR ALAMMARI",
+          "teamId": "iraq",
+          "minute": "75'",
+          "card": 1
+        },
+        {
+          "playerName": "MERCHAS DOSKI",
+          "teamId": "iraq",
+          "minute": "90'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.766Z",
+      "_v": 3
+    },
+    "J-1": {
+      "score": [
+        3,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Lionel MESSI",
+          "teamId": "argentina",
+          "minute": 17,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Lionel MESSI",
+          "teamId": "argentina",
+          "minute": 60,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Lionel MESSI",
+          "teamId": "argentina",
+          "minute": 76,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:13.766Z",
+      "_v": 3
+    },
+    "J-2": {
+      "score": [
+        3,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Romano SCHMID",
+          "teamId": "austria",
+          "minute": 20,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "austria",
+          "minute": 76,
+          "isPenalty": false,
+          "isOwnGoal": true
+        },
+        {
+          "playerName": "Marko ARNAUTOVIC",
+          "teamId": "austria",
+          "minute": 90,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "ALI OLWAN",
+          "teamId": "jordan",
+          "minute": 50,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Marcel SABITZER",
+          "teamId": "austria",
+          "minute": "77'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.146Z",
+      "_v": 3
+    },
+    "J-3": {
+      "score": [
+        2,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Lionel MESSI",
+          "teamId": "argentina",
+          "minute": 38,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Lionel MESSI",
+          "teamId": "argentina",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Facundo MEDINA",
+          "teamId": "argentina",
+          "minute": "76'",
+          "card": 1
+        },
+        {
+          "playerName": "Leandro PAREDES",
+          "teamId": "argentina",
+          "minute": "90'+2'",
+          "card": 1
+        },
+        {
+          "playerName": "Stefan POSCH",
+          "teamId": "austria",
+          "minute": "40'",
+          "card": 1
+        },
+        {
+          "playerName": "Konrad LAIMER",
+          "teamId": "austria",
+          "minute": "76'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.146Z",
+      "_v": 3
+    },
+    "J-4": {
+      "score": [
+        1,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "NIZAR ALRASHDAN",
+          "teamId": "algeria",
+          "minute": 36,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Nadhir BENBOUALI",
+          "teamId": "jordan",
+          "minute": 69,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Amine GOUIRI",
+          "teamId": "jordan",
+          "minute": 82,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "HUSAM ABUDAHAB",
+          "teamId": "algeria",
+          "minute": "64'",
+          "card": 1
+        },
+        {
+          "playerName": "Ramiz ZERROUKI",
+          "teamId": "jordan",
+          "minute": "44'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.146Z",
+      "_v": 3
+    },
+    "J-5": {
+      "score": [
+        1,
+        3
+      ],
+      "goals": [
+        {
+          "playerName": "MOUSA ALTAMARI",
+          "teamId": "argentina",
+          "minute": 55,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Giovani Lo Celso",
+          "teamId": "jordan",
+          "minute": 19,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Lautaro MARTINEZ",
+          "teamId": "jordan",
+          "minute": 31,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Lionel MESSI",
+          "teamId": "jordan",
+          "minute": 80,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "MOHANNAD ABUTAHA",
+          "teamId": "argentina",
+          "minute": "17'",
+          "card": 1
+        },
+        {
+          "playerName": "YAZAN ALARAB",
+          "teamId": "argentina",
+          "minute": "64'",
+          "card": 1
+        },
+        {
+          "playerName": "MOHAMMAD ABUZRAIQ",
+          "teamId": "argentina",
+          "minute": "90'+4'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.146Z",
+      "_v": 3
+    },
+    "J-6": {
+      "score": [
+        3,
+        3
+      ],
+      "goals": [
+        {
+          "playerName": "Rafik BELGHALI",
+          "teamId": "algeria",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Riyad Mahrez",
+          "teamId": "algeria",
+          "minute": 60,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Riyad Mahrez",
+          "teamId": "algeria",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Marko ARNAUTOVIC",
+          "teamId": "austria",
+          "minute": 28,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Marcel SABITZER",
+          "teamId": "austria",
+          "minute": 55,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Sasa KALAJDZIC",
+          "teamId": "austria",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Marko ARNAUTOVIC",
+          "teamId": "austria",
+          "minute": "11'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.146Z",
+      "_v": 3
+    },
+    "K-1": {
+      "score": [
+        1,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "JOAO NEVES",
+          "teamId": "portugal",
+          "minute": 6,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Yoane WISSA",
+          "teamId": "dr-congo",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "BERNARDO SILVA",
+          "teamId": "portugal",
+          "minute": "13'",
+          "card": 1
+        },
+        {
+          "playerName": "NELSON SEMEDO",
+          "teamId": "portugal",
+          "minute": "88'",
+          "card": 1
+        },
+        {
+          "playerName": "TOMAS ARAUJO",
+          "teamId": "portugal",
+          "minute": "90'+2'",
+          "card": 1
+        },
+        {
+          "playerName": "Chancel MBEMBA",
+          "teamId": "dr-congo",
+          "minute": "32'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.513Z",
+      "_v": 3
+    },
+    "K-2": {
+      "score": [
+        1,
+        3
+      ],
+      "goals": [
+        {
+          "playerName": "Abbosbek FAYZULLAEV",
+          "teamId": "uzbekistan",
+          "minute": 60,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Daniel MUNOZ",
+          "teamId": "colombia",
+          "minute": 40,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Luis DIAZ",
+          "teamId": "colombia",
+          "minute": 65,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jaminton CAMPAZ",
+          "teamId": "colombia",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Abdukodir KHUSANOV",
+          "teamId": "uzbekistan",
+          "minute": "34'",
+          "card": 1
+        },
+        {
+          "playerName": "Johan MOJICA",
+          "teamId": "colombia",
+          "minute": "7'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.513Z",
+      "_v": 3
+    },
+    "K-3": {
+      "score": [
+        5,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "CRISTIANO RONALDO",
+          "teamId": "portugal",
+          "minute": 6,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "NUNO MENDES",
+          "teamId": "portugal",
+          "minute": 17,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "CRISTIANO RONALDO",
+          "teamId": "portugal",
+          "minute": 39,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "portugal",
+          "minute": 60,
+          "isPenalty": false,
+          "isOwnGoal": true
+        },
+        {
+          "playerName": "RAFAEL LEAO",
+          "teamId": "portugal",
+          "minute": 87,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "RENATO VEIGA",
+          "teamId": "portugal",
+          "minute": "68'",
+          "card": 1
+        },
+        {
+          "playerName": "Odiljon XAMROBEKOV",
+          "teamId": "uzbekistan",
+          "minute": "14'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.513Z",
+      "_v": 3
+    },
+    "K-4": {
+      "score": [
+        1,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Daniel MUNOZ",
+          "teamId": "dr-congo",
+          "minute": 76,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Jhon LUCUMI",
+          "teamId": "dr-congo",
+          "minute": "56'",
+          "card": 1
+        },
+        {
+          "playerName": "Jefferson LERMA",
+          "teamId": "dr-congo",
+          "minute": "90'+4'",
+          "card": 1
+        },
+        {
+          "playerName": "Charles PICKEL",
+          "teamId": "colombia",
+          "minute": "90'+3'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.513Z",
+      "_v": 3
+    },
+    "K-5": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Gustavo PUERTA",
+          "teamId": "portugal",
+          "minute": "86'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.513Z",
+      "_v": 3
+    },
+    "K-6": {
+      "score": [
+        3,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Yoane WISSA",
+          "teamId": "dr-congo",
+          "minute": 68,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Fiston MAYELE",
+          "teamId": "dr-congo",
+          "minute": 78,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Yoane WISSA",
+          "teamId": "dr-congo",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Eldor SHOMURODOV",
+          "teamId": "uzbekistan",
+          "minute": 10,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Noah SADIKI",
+          "teamId": "dr-congo",
+          "minute": "21'",
+          "card": 1
+        },
+        {
+          "playerName": "Nathanael MBUKU",
+          "teamId": "dr-congo",
+          "minute": "45'+4'",
+          "card": 1
+        },
+        {
+          "playerName": "Samuel Moutoussamy",
+          "teamId": "dr-congo",
+          "minute": "62'",
+          "card": 1
+        },
+        {
+          "playerName": "Abdukodir KHUSANOV",
+          "teamId": "uzbekistan",
+          "minute": "43'",
+          "card": 1
+        },
+        {
+          "playerName": "Sherzod NASRULLAEV",
+          "teamId": "uzbekistan",
+          "minute": "47'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.950Z",
+      "_v": 3
+    },
+    "L-1": {
+      "score": [
+        4,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Harry KANE",
+          "teamId": "england",
+          "minute": 12,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Harry KANE",
+          "teamId": "england",
+          "minute": 42,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jude BELLINGHAM",
+          "teamId": "england",
+          "minute": 47,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Marcus RASHFORD",
+          "teamId": "england",
+          "minute": 85,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Martin BATURINA",
+          "teamId": "croatia",
+          "minute": 36,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Petar Musa",
+          "teamId": "croatia",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.950Z",
+      "_v": 3
+    },
+    "L-2": {
+      "score": [
+        1,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Caleb YIRENKYI",
+          "teamId": "ghana",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Caleb YIRENKYI",
+          "teamId": "ghana",
+          "minute": "16'",
+          "card": 1
+        },
+        {
+          "playerName": "Cesar BLACKMAN",
+          "teamId": "panama",
+          "minute": "72'",
+          "card": 1
+        },
+        {
+          "playerName": "Carlos HARVEY",
+          "teamId": "panama",
+          "minute": "90'+9'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.950Z",
+      "_v": 3
+    },
+    "L-3": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Declan RICE",
+          "teamId": "england",
+          "minute": "41'",
+          "card": 1
+        },
+        {
+          "playerName": "Inaki WILLIAMS",
+          "teamId": "ghana",
+          "minute": "60'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.950Z",
+      "_v": 3
+    },
+    "L-4": {
+      "score": [
+        0,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Ante BUDIMIR",
+          "teamId": "panama",
+          "minute": 54,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Edgar Yoel BARCENAS",
+          "teamId": "croatia",
+          "minute": "61'",
+          "card": 1
+        },
+        {
+          "playerName": "Petar SUCIC",
+          "teamId": "panama",
+          "minute": "90'+2'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:14.950Z",
+      "_v": 3
+    },
+    "L-5": {
+      "score": [
+        0,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Jude BELLINGHAM",
+          "teamId": "panama",
+          "minute": 62,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Harry KANE",
+          "teamId": "panama",
+          "minute": 67,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Jose FAJARDO",
+          "teamId": "england",
+          "minute": "53'",
+          "card": 1
+        },
+        {
+          "playerName": "Andres ANDRADE",
+          "teamId": "england",
+          "minute": "83'",
+          "card": 1
+        },
+        {
+          "playerName": "Jarell QUANSAH",
+          "teamId": "panama",
+          "minute": "60'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:15.412Z",
+      "_v": 3
+    },
+    "L-6": {
+      "score": [
+        2,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Petar SUCIC",
+          "teamId": "croatia",
+          "minute": 31,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Nikola VLASIC",
+          "teamId": "croatia",
+          "minute": 83,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Derrick LUCKASSEN",
+          "teamId": "ghana",
+          "minute": 73,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Ivan PERISIC",
+          "teamId": "croatia",
+          "minute": "68'",
+          "card": 1
+        },
+        {
+          "playerName": "Kojo Peprah OPPONG",
+          "teamId": "ghana",
+          "minute": "90'+4'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:15.412Z",
+      "_v": 3
+    },
+    "r32-0": {
+      "score": [
+        0,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Stephen EUSTAQUIO",
+          "teamId": "canada",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Nathan SALIBA",
+          "teamId": "canada",
+          "minute": "54'",
+          "card": 1
+        },
+        {
+          "playerName": "Niko SIGUR",
+          "teamId": "canada",
+          "minute": "67'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:15.799Z",
+      "team1": "south-africa",
+      "team2": "canada",
+      "date": "2026-06-28",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-1": {
+      "score": [
+        2,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "CASEMIRO",
+          "teamId": "brazil",
+          "minute": 56,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "GABRIEL MARTINELLI",
+          "teamId": "brazil",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Kaishu SANO",
+          "teamId": "japan",
+          "minute": 29,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "CASEMIRO",
+          "teamId": "brazil",
+          "minute": "14'",
+          "card": 1
+        },
+        {
+          "playerName": "DANILO",
+          "teamId": "brazil",
+          "minute": "48'",
+          "card": 1
+        },
+        {
+          "playerName": "Kaishu SANO",
+          "teamId": "japan",
+          "minute": "12'",
+          "card": 1
+        },
+        {
+          "playerName": "Daichi KAMADA",
+          "teamId": "japan",
+          "minute": "45'",
+          "card": 1
+        },
+        {
+          "playerName": "Junnosuke SUZUKI",
+          "teamId": "japan",
+          "minute": "84'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:16.079Z",
+      "team1": "brazil",
+      "team2": "japan",
+      "date": "2026-06-29",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-2": {
+      "score": [
+        1,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Kai HAVERTZ",
+          "teamId": "germany",
+          "minute": 54,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Joshua KIMMICH",
+          "teamId": "germany",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jamal MUSIALA",
+          "teamId": "germany",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Nadiem Amiri",
+          "teamId": "germany",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Julio ENCISO",
+          "teamId": "paraguay",
+          "minute": 42,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "MAURICIO",
+          "teamId": "paraguay",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Gustavo GOMEZ",
+          "teamId": "paraguay",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Matias GALARZA",
+          "teamId": "paraguay",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jose CANALE",
+          "teamId": "paraguay",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Unknown",
+          "teamId": "germany",
+          "minute": "105'+1'",
+          "card": 1
+        },
+        {
+          "playerName": "Kai HAVERTZ",
+          "teamId": "germany",
+          "minute": "106'",
+          "card": 1
+        },
+        {
+          "playerName": "Jamal MUSIALA",
+          "teamId": "germany",
+          "minute": "115'",
+          "card": 1
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "germany",
+          "minute": "116'",
+          "card": 1
+        },
+        {
+          "playerName": "Andres CUBAS",
+          "teamId": "paraguay",
+          "minute": "65'",
+          "card": 1
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "paraguay",
+          "minute": "105'",
+          "card": 1
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "paraguay",
+          "minute": "117'",
+          "card": 1
+        },
+        {
+          "playerName": "Matias GALARZA",
+          "teamId": "paraguay",
+          "minute": "117'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:16.395Z",
+      "team1": "germany",
+      "team2": "paraguay",
+      "date": "2026-06-29",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-3": {
+      "score": [
+        1,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Cody GAKPO",
+          "teamId": "netherlands",
+          "minute": 72,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Teun KOOPMEINERS",
+          "teamId": "netherlands",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Wout WEGHORST",
+          "teamId": "netherlands",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Issa Diop",
+          "teamId": "morocco",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Soufiane RAHIMI",
+          "teamId": "morocco",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Chemsdine TALBI",
+          "teamId": "morocco",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ismael SAIBARI",
+          "teamId": "morocco",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Issa Diop",
+          "teamId": "morocco",
+          "minute": "47'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:16.706Z",
+      "team1": "netherlands",
+      "team2": "morocco",
+      "date": "2026-06-30",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-4": {
+      "score": [
+        1,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Amad DIALLO",
+          "teamId": "ivory-coast",
+          "minute": 74,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Antonio NUSA",
+          "teamId": "norway",
+          "minute": 39,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Erling HAALAND",
+          "teamId": "norway",
+          "minute": 86,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Antonio NUSA",
+          "teamId": "norway",
+          "minute": "45'+1'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:17.075Z",
+      "team1": "ivory-coast",
+      "team2": "norway",
+      "date": "2026-06-30",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-5": {
+      "score": [
+        3,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Kylian MBAPPE",
+          "teamId": "france",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Bradley BARCOLA",
+          "teamId": "france",
+          "minute": 53,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Kylian MBAPPE",
+          "teamId": "france",
+          "minute": 74,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:17.400Z",
+      "team1": "france",
+      "team2": "sweden",
+      "date": "2026-06-30",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-6": {
+      "score": [
+        2,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Julian QUINONES",
+          "teamId": "mexico",
+          "minute": 22,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Raul JIMENEZ",
+          "teamId": "mexico",
+          "minute": 31,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Alan FRANCO",
+          "teamId": "ecuador",
+          "minute": "45'+1'",
+          "card": 1
+        },
+        {
+          "playerName": "Kendry PAEZ",
+          "teamId": "ecuador",
+          "minute": "90'+3'",
+          "card": 1
+        },
+        {
+          "playerName": "Piero HINCAPIE",
+          "teamId": "ecuador",
+          "minute": "90'+5'",
+          "card": 2
+        },
+        {
+          "playerName": "Moises CAICEDO",
+          "teamId": "ecuador",
+          "minute": "90'+9'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:17.761Z",
+      "team1": "mexico",
+      "team2": "ecuador",
+      "date": "2026-07-01",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-7": {
+      "score": [
+        2,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Harry KANE",
+          "teamId": "england",
+          "minute": 75,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Harry KANE",
+          "teamId": "england",
+          "minute": 86,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Brian CIPENGA",
+          "teamId": "dr-congo",
+          "minute": 7,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Jude BELLINGHAM",
+          "teamId": "england",
+          "minute": "19'",
+          "card": 1
+        },
+        {
+          "playerName": "Noah SADIKI",
+          "teamId": "dr-congo",
+          "minute": "27'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:18.133Z",
+      "team1": "england",
+      "team2": "dr-congo",
+      "date": "2026-07-01",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-8": {
+      "score": [
+        3,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Romelu LUKAKU",
+          "teamId": "belgium",
+          "minute": 86,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Youri TIELEMANS",
+          "teamId": "belgium",
+          "minute": 89,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Youri TIELEMANS",
+          "teamId": "belgium",
+          "minute": 120,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Habib DIARRA",
+          "teamId": "senegal",
+          "minute": 24,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ismaila SARR",
+          "teamId": "senegal",
+          "minute": 51,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Brandon MECHELE",
+          "teamId": "belgium",
+          "minute": "64'",
+          "card": 1
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "belgium",
+          "minute": "90'",
+          "card": 1
+        },
+        {
+          "playerName": "Lamine CAMARA",
+          "teamId": "senegal",
+          "minute": "67'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:18.496Z",
+      "team1": "belgium",
+      "team2": "senegal",
+      "date": "2026-07-01",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-9": {
+      "score": [
+        2,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Folarin BALOGUN",
+          "teamId": "usa",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Malik TILLMAN",
+          "teamId": "usa",
+          "minute": 82,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Folarin BALOGUN",
+          "teamId": "usa",
+          "minute": "64'",
+          "card": 2
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "bosnia",
+          "minute": "80'",
+          "card": 1
+        },
+        {
+          "playerName": "Stjepan RADELJIC",
+          "teamId": "bosnia",
+          "minute": "80'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:18.846Z",
+      "team1": "usa",
+      "team2": "bosnia",
+      "date": "2026-07-02",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-10": {
+      "score": [
+        3,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Mikel OYARZABAL",
+          "teamId": "spain",
+          "minute": 36,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Pedro PORRO",
+          "teamId": "spain",
+          "minute": 66,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Mikel OYARZABAL",
+          "teamId": "spain",
+          "minute": 89,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Stefan POSCH",
+          "teamId": "austria",
+          "minute": "83'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:19.207Z",
+      "team1": "spain",
+      "team2": "austria",
+      "date": "2026-07-02",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-11": {
+      "score": [
+        2,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "CRISTIANO RONALDO",
+          "teamId": "portugal",
+          "minute": 68,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "GONCALO RAMOS",
+          "teamId": "portugal",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ivan PERISIC",
+          "teamId": "croatia",
+          "minute": 53,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "RUBEN DIAS",
+          "teamId": "portugal",
+          "minute": "17'",
+          "card": 1
+        },
+        {
+          "playerName": "Luka MODRIC",
+          "teamId": "croatia",
+          "minute": "59'",
+          "card": 1
+        },
+        {
+          "playerName": "Ivan PERISIC",
+          "teamId": "croatia",
+          "minute": "90'+8'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:19.453Z",
+      "team1": "portugal",
+      "team2": "croatia",
+      "date": "2026-07-02",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-12": {
+      "score": [
+        2,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Breel EMBOLO",
+          "teamId": "switzerland",
+          "minute": 10,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Dan NDOYE",
+          "teamId": "switzerland",
+          "minute": 46,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Fares CHAIBI",
+          "teamId": "algeria",
+          "minute": "36'",
+          "card": 1
+        },
+        {
+          "playerName": "Hicham BOUDAOUI",
+          "teamId": "algeria",
+          "minute": "72'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:19.754Z",
+      "team1": "switzerland",
+      "team2": "algeria",
+      "date": "2026-07-03",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-13": {
+      "score": [
+        1,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Unknown",
+          "teamId": "australia",
+          "minute": 55,
+          "isPenalty": false,
+          "isOwnGoal": true
+        },
+        {
+          "playerName": "Jackson IRVINE",
+          "teamId": "australia",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Awer MABIL",
+          "teamId": "australia",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "EMAM ASHOUR",
+          "teamId": "egypt",
+          "minute": 13,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "MAHMOUD SABER",
+          "teamId": "egypt",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "RAMY RABIA",
+          "teamId": "egypt",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "MOHAMED SALAH",
+          "teamId": "egypt",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "HOSSAM ABDELMAGUID",
+          "teamId": "egypt",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Unknown",
+          "teamId": "egypt",
+          "minute": "91'",
+          "card": 1
+        },
+        {
+          "playerName": "Haissem HASSAN",
+          "teamId": "egypt",
+          "minute": "104'",
+          "card": 1
+        },
+        {
+          "playerName": "YASSER IBRAHIM",
+          "teamId": "egypt",
+          "minute": "120'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:20.011Z",
+      "team1": "australia",
+      "team2": "egypt",
+      "date": "2026-07-03",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-14": {
+      "score": [
+        3,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Lionel MESSI",
+          "teamId": "argentina",
+          "minute": 29,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Lisandro MARTINEZ",
+          "teamId": "argentina",
+          "minute": 92,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "argentina",
+          "minute": 111,
+          "isPenalty": false,
+          "isOwnGoal": true
+        },
+        {
+          "playerName": "DEROY DUARTE",
+          "teamId": "cape-verde",
+          "minute": 59,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "SIDNY LOPES CABRAL",
+          "teamId": "cape-verde",
+          "minute": 103,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Gonzalo MONTIEL",
+          "teamId": "argentina",
+          "minute": "115'",
+          "card": 1
+        },
+        {
+          "playerName": "KEVIN PINA",
+          "teamId": "cape-verde",
+          "minute": "68'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:20.284Z",
+      "team1": "argentina",
+      "team2": "cape-verde",
+      "date": "2026-07-03",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r32-15": {
+      "score": [
+        1,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Jhon ARIAS",
+          "teamId": "colombia",
+          "minute": 14,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Jhon ARIAS",
+          "teamId": "colombia",
+          "minute": "12'",
+          "card": 1
+        },
+        {
+          "playerName": "Richard RIOS",
+          "teamId": "colombia",
+          "minute": "78'",
+          "card": 1
+        },
+        {
+          "playerName": "Caleb YIRENKYI",
+          "teamId": "ghana",
+          "minute": "49'",
+          "card": 1
+        },
+        {
+          "playerName": "Abdul FATAWU",
+          "teamId": "ghana",
+          "minute": "66'",
+          "card": 1
+        },
+        {
+          "playerName": "Alidu SEIDU",
+          "teamId": "ghana",
+          "minute": "76'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:20.551Z",
+      "team1": "colombia",
+      "team2": "ghana",
+      "date": "2026-07-04",
+      "stage": "Round of 32",
+      "_v": 3
+    },
+    "r16-0": {
+      "score": [
+        0,
+        3
+      ],
+      "goals": [
+        {
+          "playerName": "Azzedine OUNAHI",
+          "teamId": "morocco",
+          "minute": 50,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Azzedine OUNAHI",
+          "teamId": "morocco",
+          "minute": 82,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Soufiane RAHIMI",
+          "teamId": "morocco",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Richie LARYEA",
+          "teamId": "canada",
+          "minute": "40'",
+          "card": 1
+        },
+        {
+          "playerName": "Jonathan DAVID",
+          "teamId": "canada",
+          "minute": "43'",
+          "card": 1
+        },
+        {
+          "playerName": "Luc DE FOUGEROLLES",
+          "teamId": "canada",
+          "minute": "49'",
+          "card": 1
+        },
+        {
+          "playerName": "Cyle LARIN",
+          "teamId": "canada",
+          "minute": "67'",
+          "card": 1
+        },
+        {
+          "playerName": "Redouane HALHAL",
+          "teamId": "morocco",
+          "minute": "20'",
+          "card": 1
+        },
+        {
+          "playerName": "Achraf HAKIMI",
+          "teamId": "morocco",
+          "minute": "40'",
+          "card": 1
+        },
+        {
+          "playerName": "Azzedine OUNAHI",
+          "teamId": "morocco",
+          "minute": "45'",
+          "card": 1
+        },
+        {
+          "playerName": "Bilal EL KHANNOUSS",
+          "teamId": "morocco",
+          "minute": "45'+6'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:20.822Z",
+      "team1": "canada",
+      "team2": "morocco",
+      "date": "2026-07-04",
+      "stage": "Round of 16",
+      "_v": 3
+    },
+    "r16-1": {
+      "score": [
+        0,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Kylian MBAPPE",
+          "teamId": "france",
+          "minute": 70,
+          "isPenalty": false,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Unknown",
+          "teamId": "paraguay",
+          "minute": "90'",
+          "card": 1
+        },
+        {
+          "playerName": "Bradley BARCOLA",
+          "teamId": "france",
+          "minute": "19'",
+          "card": 1
+        },
+        {
+          "playerName": "Manu KONE",
+          "teamId": "france",
+          "minute": "81'",
+          "card": 1
+        },
+        {
+          "playerName": "Michael OLISE",
+          "teamId": "france",
+          "minute": "90'+7'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:21.121Z",
+      "team1": "paraguay",
+      "team2": "france",
+      "date": "2026-07-04",
+      "stage": "Round of 16",
+      "_v": 3
+    },
+    "r16-2": {
+      "score": [
+        1,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "NEYMAR JR",
+          "teamId": "brazil",
+          "minute": 90,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Erling HAALAND",
+          "teamId": "norway",
+          "minute": 79,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Erling HAALAND",
+          "teamId": "norway",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "NEYMAR JR",
+          "teamId": "brazil",
+          "minute": "90'+6'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:22.018Z",
+      "team1": "brazil",
+      "team2": "norway",
+      "date": "2026-07-05",
+      "stage": "Round of 16",
+      "_v": 3
+    },
+    "r16-3": {
+      "score": [
+        2,
+        3
+      ],
+      "goals": [
+        {
+          "playerName": "Julian QUINONES",
+          "teamId": "mexico",
+          "minute": 42,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Raul JIMENEZ",
+          "teamId": "mexico",
+          "minute": 69,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jude BELLINGHAM",
+          "teamId": "england",
+          "minute": 36,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jude BELLINGHAM",
+          "teamId": "england",
+          "minute": 38,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Harry KANE",
+          "teamId": "england",
+          "minute": 60,
+          "isPenalty": false,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Jorge SANCHEZ",
+          "teamId": "mexico",
+          "minute": "71'",
+          "card": 1
+        },
+        {
+          "playerName": "Johan VASQUEZ",
+          "teamId": "mexico",
+          "minute": "90'+8'",
+          "card": 1
+        },
+        {
+          "playerName": "Declan RICE",
+          "teamId": "england",
+          "minute": "1'",
+          "card": 1
+        },
+        {
+          "playerName": "Jarell QUANSAH",
+          "teamId": "england",
+          "minute": "54'",
+          "card": 2
+        },
+        {
+          "playerName": "Marc GUEHI",
+          "teamId": "england",
+          "minute": "68'",
+          "card": 1
+        },
+        {
+          "playerName": "Nico OREILLY",
+          "teamId": "england",
+          "minute": "72'",
+          "card": 1
+        },
+        {
+          "playerName": "Jordan HENDERSON",
+          "teamId": "england",
+          "minute": "90'+8'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:22.275Z",
+      "team1": "mexico",
+      "team2": "england",
+      "date": "2026-07-06",
+      "stage": "Round of 16",
+      "_v": 3
+    },
+    "r16-4": {
+      "score": [
+        0,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Mikel MERINO",
+          "teamId": "spain",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "BERNARDO SILVA",
+          "teamId": "portugal",
+          "minute": "89'",
+          "card": 1
+        },
+        {
+          "playerName": "RENATO VEIGA",
+          "teamId": "portugal",
+          "minute": "90'+3'",
+          "card": 1
+        },
+        {
+          "playerName": "Ferran TORRES",
+          "teamId": "spain",
+          "minute": "90'+8'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:22.551Z",
+      "team1": "portugal",
+      "team2": "spain",
+      "date": "2026-07-06",
+      "stage": "Round of 16",
+      "_v": 3
+    },
+    "r16-5": {
+      "score": [
+        1,
+        4
+      ],
+      "goals": [
+        {
+          "playerName": "Malik TILLMAN",
+          "teamId": "usa",
+          "minute": 31,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Charles DE KETELAERE",
+          "teamId": "belgium",
+          "minute": 0,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Charles DE KETELAERE",
+          "teamId": "belgium",
+          "minute": 33,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Hans VANAKEN",
+          "teamId": "belgium",
+          "minute": 57,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Romelu LUKAKU",
+          "teamId": "belgium",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Weston McKENNIE",
+          "teamId": "usa",
+          "minute": "35'",
+          "card": 1
+        },
+        {
+          "playerName": "Malik TILLMAN",
+          "teamId": "usa",
+          "minute": "69'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:22.836Z",
+      "team1": "usa",
+      "team2": "belgium",
+      "date": "2026-07-07",
+      "stage": "Round of 16",
+      "_v": 3
+    },
+    "r16-6": {
+      "score": [
+        3,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Cristian ROMERO",
+          "teamId": "argentina",
+          "minute": 79,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Lionel MESSI",
+          "teamId": "argentina",
+          "minute": 83,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Enzo FERNANDEZ",
+          "teamId": "argentina",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "YASSER IBRAHIM",
+          "teamId": "egypt",
+          "minute": 15,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "MOSTAFA ZICO",
+          "teamId": "egypt",
+          "minute": 67,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Unknown",
+          "teamId": "egypt",
+          "minute": "21'",
+          "card": 1
+        },
+        {
+          "playerName": "MOSTAFA SHOUBIR",
+          "teamId": "egypt",
+          "minute": "90'+3'",
+          "card": 1
+        },
+        {
+          "playerName": "HAMDY FATHY",
+          "teamId": "egypt",
+          "minute": "90'+4'",
+          "card": 1
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "egypt",
+          "minute": "90'+4'",
+          "card": 2
+        },
+        {
+          "playerName": "MARAWAN ATTIA",
+          "teamId": "egypt",
+          "minute": "90'+8'",
+          "card": 1
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "egypt",
+          "minute": "90'+9'",
+          "card": 1
+        },
+        {
+          "playerName": "Haissem HASSAN",
+          "teamId": "egypt",
+          "minute": "90'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:23.154Z",
+      "team1": "argentina",
+      "team2": "egypt",
+      "date": "2026-07-07",
+      "stage": "Round of 16",
+      "_v": 3
+    },
+    "r16-7": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Granit XHAKA",
+          "teamId": "switzerland",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Zeki AMDOUNI",
+          "teamId": "switzerland",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Cedric ITTEN",
+          "teamId": "switzerland",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ruben VARGAS",
+          "teamId": "switzerland",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Juan QUINTERO",
+          "teamId": "colombia",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jaminton CAMPAZ",
+          "teamId": "colombia",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Luis DIAZ",
+          "teamId": "colombia",
+          "minute": 0,
+          "isPenalty": false,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Granit XHAKA",
+          "teamId": "switzerland",
+          "minute": "51'",
+          "card": 1
+        },
+        {
+          "playerName": "Denis ZAKARIA",
+          "teamId": "switzerland",
+          "minute": "59'",
+          "card": 1
+        },
+        {
+          "playerName": "Miro MUHEIM",
+          "teamId": "switzerland",
+          "minute": "105'",
+          "card": 1
+        },
+        {
+          "playerName": "Luis SUAREZ",
+          "teamId": "colombia",
+          "minute": "60'",
+          "card": 1
+        },
+        {
+          "playerName": "Davinson SANCHEZ",
+          "teamId": "colombia",
+          "minute": "94'",
+          "card": 1
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "colombia",
+          "minute": "95'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:23.830Z",
+      "team1": "switzerland",
+      "team2": "colombia",
+      "date": "2026-07-07",
+      "stage": "Round of 16",
+      "_v": 3
+    },
+    "qf-0": {
+      "score": [
+        2,
+        0
+      ],
+      "goals": [
+        {
+          "playerName": "Kylian MBAPPE",
+          "teamId": "france",
+          "minute": 60,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ousmane DEMBELE",
+          "teamId": "france",
+          "minute": 66,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Issa Diop",
+          "teamId": "morocco",
+          "minute": "63'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:24.152Z",
+      "team1": "france",
+      "team2": "morocco",
+      "date": "2026-07-09",
+      "stage": "Quarter-final",
+      "_v": 3
+    },
+    "qf-1": {
+      "score": [
+        2,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Fabian RUIZ",
+          "teamId": "spain",
+          "minute": 30,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Mikel MERINO",
+          "teamId": "spain",
+          "minute": 88,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Charles DE KETELAERE",
+          "teamId": "belgium",
+          "minute": 41,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Pau CUBARSI",
+          "teamId": "spain",
+          "minute": "43'",
+          "card": 1
+        },
+        {
+          "playerName": "Aymeric LAPORTE",
+          "teamId": "spain",
+          "minute": "90'+3'",
+          "card": 1
+        },
+        {
+          "playerName": "Kevin DE BRUYNE",
+          "teamId": "belgium",
+          "minute": "85'",
+          "card": 1
+        },
+        {
+          "playerName": "Axel WITSEL",
+          "teamId": "belgium",
+          "minute": "90'+5'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:24.502Z",
+      "team1": "spain",
+      "team2": "belgium",
+      "date": "2026-07-10",
+      "stage": "Quarter-final",
+      "_v": 3
+    },
+    "qf-2": {
+      "score": [
+        1,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Andreas SCHJELDERUP",
+          "teamId": "norway",
+          "minute": 36,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jude BELLINGHAM",
+          "teamId": "england",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jude BELLINGHAM",
+          "teamId": "england",
+          "minute": 93,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Kristoffer AJER",
+          "teamId": "norway",
+          "minute": "117'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:24.776Z",
+      "team1": "norway",
+      "team2": "england",
+      "date": "2026-07-11",
+      "stage": "Quarter-final",
+      "_v": 3
+    },
+    "qf-3": {
+      "score": [
+        3,
+        1
+      ],
+      "goals": [
+        {
+          "playerName": "Alexis MAC ALLISTER",
+          "teamId": "argentina",
+          "minute": 10,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Julian ALVAREZ",
+          "teamId": "argentina",
+          "minute": 112,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Lautaro MARTINEZ",
+          "teamId": "argentina",
+          "minute": 120,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Dan NDOYE",
+          "teamId": "switzerland",
+          "minute": 67,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Thiago ALMADA",
+          "teamId": "argentina",
+          "minute": "97'",
+          "card": 1
+        },
+        {
+          "playerName": "Lautaro MARTINEZ",
+          "teamId": "argentina",
+          "minute": "98'",
+          "card": 1
+        },
+        {
+          "playerName": "Jose Manuel LOPEZ",
+          "teamId": "argentina",
+          "minute": "114'",
+          "card": 1
+        },
+        {
+          "playerName": "Breel EMBOLO",
+          "teamId": "switzerland",
+          "minute": "44'",
+          "card": 1
+        },
+        {
+          "playerName": "Breel EMBOLO",
+          "teamId": "switzerland",
+          "minute": "72'",
+          "card": 3
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:25.035Z",
+      "team1": "argentina",
+      "team2": "switzerland",
+      "date": "2026-07-12",
+      "stage": "Quarter-final",
+      "_v": 3
+    },
+    "sf-0": {
+      "score": [
+        0,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Mikel OYARZABAL",
+          "teamId": "spain",
+          "minute": 22,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Pedro PORRO",
+          "teamId": "spain",
+          "minute": 58,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Adrien RABIOT",
+          "teamId": "france",
+          "minute": "8'",
+          "card": 1
+        },
+        {
+          "playerName": "Kylian MBAPPE",
+          "teamId": "france",
+          "minute": "86'",
+          "card": 1
+        },
+        {
+          "playerName": "Marc CUCURELLA",
+          "teamId": "spain",
+          "minute": "31'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:25.322Z",
+      "team1": "france",
+      "team2": "spain",
+      "date": "2026-07-14",
+      "stage": "Semi-final",
+      "_v": 3
+    },
+    "sf-1": {
+      "score": [
+        1,
+        2
+      ],
+      "goals": [
+        {
+          "playerName": "Anthony GORDON",
+          "teamId": "england",
+          "minute": 55,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Enzo FERNANDEZ",
+          "teamId": "argentina",
+          "minute": 85,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Lautaro MARTINEZ",
+          "teamId": "argentina",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
+      "assists": [],
+      "cards": [
+        {
+          "playerName": "Elliot ANDERSON",
+          "teamId": "england",
+          "minute": "37'",
+          "card": 1
+        },
+        {
+          "playerName": "Lisandro MARTINEZ",
+          "teamId": "argentina",
+          "minute": "42'",
+          "card": 1
+        },
+        {
+          "playerName": "Cristian ROMERO",
+          "teamId": "argentina",
+          "minute": "51'",
+          "card": 1
+        },
+        {
+          "playerName": "Rodrigo DE PAUL",
+          "teamId": "argentina",
+          "minute": "90'+4'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-17T08:15:25.608Z",
+      "team1": "england",
+      "team2": "argentina",
+      "date": "2026-07-15",
+      "stage": "Semi-final",
+      "_v": 3
+    },
+    "bronze": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [],
+      "assists": [],
+      "cards": [],
+      "status": "scheduled",
+      "updatedAt": "2026-07-17T08:15:25.869Z",
+      "team1": "france",
+      "team2": "england",
+      "date": "2026-07-18",
+      "stage": "Bronze final",
+      "_v": 3
+    },
+    "final": {
+      "score": [
+        0,
+        0
+      ],
+      "goals": [],
+      "assists": [],
+      "cards": [],
+      "status": "scheduled",
+      "updatedAt": "2026-07-17T08:15:26.144Z",
+      "team1": "spain",
+      "team2": "argentina",
+      "date": "2026-07-19",
+      "stage": "Final",
+      "_v": 3
     }
   }
 }

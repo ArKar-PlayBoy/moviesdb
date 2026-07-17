@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { MATCHES, getTeamFlag, getTeamName, getMatchScore, getStarOfTheMatch } from "@/data/worldcup-2026";
+import { MATCHES, getTeamFlag, getTeamName, getMatchScore, getStarOfTheMatch, getKnockoutBracket } from "@/data/worldcup-2026";
 import { getMatchData, type GoalEvent } from "@/lib/data-service";
+import { getAllMatchResults } from "@/lib/storage";
 import { rateLimit } from "@/lib/rate-limit";
 
 function computePOTMFromGoals(goals: GoalEvent[]): { playerName: string; teamId: string; goals: number; minutes: number[] } | null {
@@ -32,7 +33,25 @@ export async function GET(request: Request) {
   const stage = searchParams.get("stage");
   const limitParam = searchParams.get("limit");
 
-  let matches = MATCHES;
+  let matches: { id: string; group: string; team1: string; team2: string; date: string; venue: string; stage: string }[] = [...MATCHES];
+
+  // Include knockout matches from stored data
+  const allResults = await getAllMatchResults();
+  const bracket = getKnockoutBracket(allResults);
+  for (const bm of bracket) {
+    if (bm.team1 && bm.team2) {
+      const stored = allResults[bm.id];
+      matches.push({
+        id: bm.id,
+        group: bm.round,
+        team1: bm.team1,
+        team2: bm.team2,
+        date: stored?.date || "",
+        venue: stored?.venue || "",
+        stage: bm.round,
+      });
+    }
+  }
 
   if (teamId) {
     matches = matches.filter((m) => m.team1 === teamId || m.team2 === teamId);

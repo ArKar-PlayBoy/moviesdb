@@ -7,25 +7,94 @@ export interface StoredMatchResult {
   cards: { playerName: string; teamId: string; minute: string; card: number }[];
   status: "scheduled" | "live" | "finished";
   updatedAt: string;
+  team1?: string;
+  team2?: string;
+  date?: string;
+  venue?: string;
+  stage?: string;
 }
 
-const TTL_SECONDS = 604800; // 7 days — refreshed every 30min by cron
-const SSR_CACHE_TTL = 30_000; // 30 seconds in-memory cache for SSR pages
-const DATA_VERSION = 2; // Increment to invalidate all cached data on deploy
+const TTL_SECONDS = 604800;
+const SSR_CACHE_TTL = 30_000;
+const DATA_VERSION = 3;
 
 let client: ReturnType<typeof createClient> | null = null;
 
-// In-memory fallback for local dev when Redis is unavailable.
-// Data survives within the process lifetime (dev server restart = data reset).
 const memoryStore = new Map<string, string>();
 const memoryMatchIds = new Set<string>();
 
-// SSR-level cache: prevents hitting Redis on every request.
-// Clears after SSR_CACHE_TTL, or immediately after a cron write.
 let ssrCache: { data: Record<string, StoredMatchResult> | null; ts: number } | null = null;
+let fileLoaded = false;
 
 function shouldUseMemoryFallback(): boolean {
   return !process.env.REDIS_URL;
+}
+
+function getDataFilePath(): string {
+  return require("path").join(process.cwd(), "data", "live-results.json");
+}
+
+function loadFromFile(): void {
+  if (fileLoaded) return;
+  fileLoaded = true;
+  try {
+    const fs = require("fs") as typeof import("fs");
+    const filePath = getDataFilePath();
+    if (!fs.existsSync(filePath)) return;
+    const raw = fs.readFileSync(filePath, "utf-8");
+    const parsed = JSON.parse(raw);
+    const matches = parsed.matches || {};
+    for (const id of Object.keys(matches)) {
+      const entry = matches[id];
+      if (!entry) continue;
+
+      if (entry.score1 !== undefined) {
+        const stored = {
+          score: [entry.score1 ?? 0, entry.score2 ?? 0] as [number, number],
+          goals: (entry.goalScorers || []).map((g: { playerName: string; teamId: string; minute: number }) => ({
+            playerName: g.playerName,
+            teamId: g.teamId || "",
+            minute: g.minute || 0,
+            isPenalty: false,
+            isOwnGoal: false,
+          })),
+          assists: [] as { playerName: string; teamId: string; minute: number }[],
+          cards: [] as { playerName: string; teamId: string; minute: string; card: number }[],
+          status: "finished" as const,
+          updatedAt: parsed.updatedAt || "",
+          _v: DATA_VERSION,
+        };
+        memoryStore.set(id, JSON.stringify(stored));
+        memoryMatchIds.add(id);
+      } else {
+        const payload = JSON.stringify({ ...entry, _v: DATA_VERSION });
+        memoryStore.set(id, payload);
+        memoryMatchIds.add(id);
+      }
+    }
+  } catch {
+    // File not found or invalid format — start fresh
+  }
+}
+
+export function persistToFile(): void {
+  try {
+    const fs = require("fs") as typeof import("fs");
+    const filePath = getDataFilePath();
+    const matches: Record<string, unknown> = {};
+    for (const id of memoryMatchIds) {
+      const raw = memoryStore.get(id);
+      if (raw) matches[id] = JSON.parse(raw);
+    }
+    const output = JSON.stringify(
+      { updatedAt: new Date().toISOString(), matches },
+      null,
+      2,
+    );
+    fs.writeFileSync(filePath, output, "utf-8");
+  } catch {
+    // Silently fail on Vercel (read-only filesystem)
+  }
 }
 
 export function clearSSRCache(): void {
@@ -107,6 +176,7 @@ export async function getMatchResult(matchId: string): Promise<StoredMatchResult
   if (!isValidMatchId(matchId)) return null;
 
   if (shouldUseMemoryFallback()) {
+    if (memoryStore.size === 0 && !fileLoaded) loadFromFile();
     const raw = memoryStore.get(matchId);
     return raw ? parseStoredResult(raw) : null;
   }
@@ -125,15 +195,25 @@ export async function getMatchResult(matchId: string): Promise<StoredMatchResult
 }
 
 function isDateBeforeToday(dateStr: string): boolean {
-  const matchDate = new Date(`2026 ${dateStr}`);
+  const months: Record<string, number> = {
+    jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
+    jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+  };
+  const parts = dateStr.split(" ");
+  let matchDate: Date;
+  if (parts.length === 2 && parts[0]) {
+    const month = months[parts[0].toLowerCase().slice(0, 3)] ?? 0;
+    const day = parseInt(parts[1], 10);
+    matchDate = new Date(Date.UTC(2026, month, isNaN(day) ? 0 : day));
+  } else {
+    matchDate = new Date(dateStr);
+  }
   const today = new Date();
-  matchDate.setHours(0, 0, 0, 0);
   today.setHours(0, 0, 0, 0);
   return matchDate < today;
 }
 
 export async function getAllMatchResults(): Promise<Record<string, StoredMatchResult>> {
-  // SSR cache hit
   if (ssrCache && Date.now() - ssrCache.ts < SSR_CACHE_TTL) {
     return ssrCache.data ?? {};
   }
@@ -141,6 +221,7 @@ export async function getAllMatchResults(): Promise<Record<string, StoredMatchRe
   let result: Record<string, StoredMatchResult> = {};
 
   if (shouldUseMemoryFallback()) {
+    if (memoryStore.size === 0 && !fileLoaded) loadFromFile();
     for (const id of memoryMatchIds) {
       const raw = memoryStore.get(id);
       if (raw) {
