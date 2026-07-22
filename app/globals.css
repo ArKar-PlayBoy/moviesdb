@@ -270,3 +270,92 @@
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
+/* Golden sunburst rays */
+.sunburst-rays {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg, #d4a017 2deg, transparent 4deg,
+    transparent 10deg, #d4a017 12deg, transparent 14deg,
+    transparent 20deg, #d4a017 22deg, transparent 24deg,
+    transparent 30deg, #d4a017 32deg, transparent 34deg,
+    transparent 40deg, #d4a017 42deg, transparent 44deg,
+    transparent 50deg, #d4a017 52deg, transparent 54deg,
+    transparent 60deg, #d4a017 62deg, transparent 64deg,
+    transparent 70deg, #d4a017 72deg, transparent 74deg,
+    transparent 80deg, #d4a017 82deg, transparent 84deg,
+    transparent 90deg, #d4a017 92deg, transparent 94deg,
+    transparent 100deg, #d4a017 102deg, transparent 104deg,
+    transparent 110deg, #d4a017 112deg, transparent 114deg,
+    transparent 120deg, #d4a017 122deg, transparent 124deg,
+    transparent 130deg, #d4a017 132deg, transparent 134deg,
+    transparent 140deg, #d4a017 142deg, transparent 144deg,
+    transparent 150deg, #d4a017 152deg, transparent 154deg,
+    transparent 160deg, #d4a017 162deg, transparent 164deg,
+    transparent 170deg, #d4a017 172deg, transparent 174deg,
+    transparent 180deg, #d4a017 182deg, transparent 184deg,
+    transparent 190deg, #d4a017 192deg, transparent 194deg,
+    transparent 200deg, #d4a017 202deg, transparent 204deg,
+    transparent 210deg, #d4a017 212deg, transparent 214deg,
+    transparent 220deg, #d4a017 222deg, transparent 224deg,
+    transparent 230deg, #d4a017 232deg, transparent 234deg,
+    transparent 240deg, #d4a017 242deg, transparent 244deg,
+    transparent 250deg, #d4a017 252deg, transparent 254deg,
+    transparent 260deg, #d4a017 262deg, transparent 264deg,
+    transparent 270deg, #d4a017 272deg, transparent 274deg,
+    transparent 280deg, #d4a017 282deg, transparent 284deg,
+    transparent 290deg, #d4a017 292deg, transparent 294deg,
+    transparent 300deg, #d4a017 302deg, transparent 304deg,
+    transparent 310deg, #d4a017 312deg, transparent 314deg,
+    transparent 320deg, #d4a017 322deg, transparent 324deg,
+    transparent 330deg, #d4a017 332deg, transparent 334deg,
+    transparent 340deg, #d4a017 342deg, transparent 344deg,
+    transparent 350deg, #d4a017 352deg, transparent 354deg
+  );
+  animation: spin-slow 60s linear infinite;
+}
+
+.sunburst-rays-2 {
+  background: conic-gradient(
+    from 15deg,
+    transparent 0deg, #b8860b 3deg, transparent 6deg,
+    transparent 15deg, #b8860b 18deg, transparent 21deg,
+    transparent 30deg, #b8860b 33deg, transparent 36deg,
+    transparent 45deg, #b8860b 48deg, transparent 51deg,
+    transparent 60deg, #b8860b 63deg, transparent 66deg,
+    transparent 75deg, #b8860b 78deg, transparent 81deg,
+    transparent 90deg, #b8860b 93deg, transparent 96deg,
+    transparent 105deg, #b8860b 108deg, transparent 111deg,
+    transparent 120deg, #b8860b 123deg, transparent 126deg,
+    transparent 135deg, #b8860b 138deg, transparent 141deg,
+    transparent 150deg, #b8860b 153deg, transparent 156deg,
+    transparent 165deg, #b8860b 168deg, transparent 171deg,
+    transparent 180deg, #b8860b 183deg, transparent 186deg,
+    transparent 195deg, #b8860b 198deg, transparent 201deg,
+    transparent 210deg, #b8860b 213deg, transparent 216deg,
+    transparent 225deg, #b8860b 228deg, transparent 231deg,
+    transparent 240deg, #b8860b 243deg, transparent 246deg,
+    transparent 255deg, #b8860b 258deg, transparent 261deg,
+    transparent 270deg, #b8860b 273deg, transparent 276deg,
+    transparent 285deg, #b8860b 288deg, transparent 291deg,
+    transparent 300deg, #b8860b 303deg, transparent 306deg,
+    transparent 315deg, #b8860b 318deg, transparent 321deg,
+    transparent 330deg, #b8860b 333deg, transparent 336deg,
+    transparent 345deg, #b8860b 348deg, transparent 351deg
+  );
+  animation: spin-slow 90s linear infinite reverse;
+}
+
+@keyframes spin-slow {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.champion-flag-bounce {
+  animation: champion-bounce 3s ease-in-out infinite;
+}
+
+@keyframes champion-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.02); }
+}
