@@ -255,7 +255,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {todayMatches.length > 0 ? (
+      {isAfterFinal ? null : todayMatches.length > 0 ? (
         <section className="animate-in animate-in-delay-3">
           <div className="flex items-center gap-3 mb-4">
             <Calendar className="h-5 w-5 text-primary" />
