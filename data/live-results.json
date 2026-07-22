@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-17T08:15:26.145Z",
+  "updatedAt": "2026-07-22T05:54:18.189Z",
   "matches": {
     "A-1": {
       "score": [
@@ -62,7 +62,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:09.879Z",
+      "updatedAt": "2026-07-22T05:54:02.201Z",
       "_v": 3
     },
     "A-2": {
@@ -103,7 +103,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:09.879Z",
+      "updatedAt": "2026-07-22T05:54:02.202Z",
       "_v": 3
     },
     "A-3": {
@@ -136,7 +136,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:09.879Z",
+      "updatedAt": "2026-07-22T05:54:02.202Z",
       "_v": 3
     },
     "A-4": {
@@ -182,7 +182,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:09.879Z",
+      "updatedAt": "2026-07-22T05:54:02.202Z",
       "_v": 3
     },
     "A-5": {
@@ -223,7 +223,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:09.879Z",
+      "updatedAt": "2026-07-22T05:54:02.202Z",
       "_v": 3
     },
     "A-6": {
@@ -256,7 +256,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.208Z",
+      "updatedAt": "2026-07-22T05:54:02.527Z",
       "_v": 3
     },
     "B-1": {
@@ -314,7 +314,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.208Z",
+      "updatedAt": "2026-07-22T05:54:02.527Z",
       "_v": 3
     },
     "B-2": {
@@ -360,7 +360,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.208Z",
+      "updatedAt": "2026-07-22T05:54:02.527Z",
       "_v": 3
     },
     "B-3": {
@@ -440,7 +440,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.208Z",
+      "updatedAt": "2026-07-22T05:54:02.527Z",
       "_v": 3
     },
     "B-4": {
@@ -513,7 +513,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.208Z",
+      "updatedAt": "2026-07-22T05:54:02.527Z",
       "_v": 3
     },
     "B-5": {
@@ -566,7 +566,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.547Z",
+      "updatedAt": "2026-07-22T05:54:02.824Z",
       "_v": 3
     },
     "B-6": {
@@ -620,7 +620,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.547Z",
+      "updatedAt": "2026-07-22T05:54:02.824Z",
       "_v": 3
     },
     "C-1": {
@@ -660,7 +660,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.547Z",
+      "updatedAt": "2026-07-22T05:54:02.824Z",
       "_v": 3
     },
     "C-2": {
@@ -705,7 +705,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.547Z",
+      "updatedAt": "2026-07-22T05:54:02.824Z",
       "_v": 3
     },
     "C-3": {
@@ -764,7 +764,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.547Z",
+      "updatedAt": "2026-07-22T05:54:02.824Z",
       "_v": 3
     },
     "C-4": {
@@ -797,7 +797,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.939Z",
+      "updatedAt": "2026-07-22T05:54:03.149Z",
       "_v": 3
     },
     "C-5": {
@@ -850,7 +850,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.939Z",
+      "updatedAt": "2026-07-22T05:54:03.149Z",
       "_v": 3
     },
     "C-6": {
@@ -924,7 +924,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.939Z",
+      "updatedAt": "2026-07-22T05:54:03.149Z",
       "_v": 3
     },
     "D-1": {
@@ -1009,7 +1009,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.939Z",
+      "updatedAt": "2026-07-22T05:54:03.149Z",
       "_v": 3
     },
     "D-2": {
@@ -1021,7 +1021,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:10.939Z",
+      "updatedAt": "2026-07-22T05:54:03.149Z",
       "_v": 3
     },
     "D-3": {
@@ -1091,7 +1091,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:11.282Z",
+      "updatedAt": "2026-07-22T05:54:03.505Z",
       "_v": 3
     },
     "D-4": {
@@ -1103,7 +1103,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:11.282Z",
+      "updatedAt": "2026-07-22T05:54:03.505Z",
       "_v": 3
     },
     "D-5": {
@@ -1115,7 +1115,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:11.282Z",
+      "updatedAt": "2026-07-22T05:54:03.505Z",
       "_v": 3
     },
     "D-6": {
@@ -1140,7 +1140,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:11.282Z",
+      "updatedAt": "2026-07-22T05:54:03.505Z",
       "_v": 3
     },
     "E-1": {
@@ -1209,7 +1209,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:11.282Z",
+      "updatedAt": "2026-07-22T05:54:03.505Z",
       "_v": 3
     },
     "E-2": {
@@ -1254,7 +1254,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:11.678Z",
+      "updatedAt": "2026-07-22T05:54:03.862Z",
       "_v": 3
     },
     "E-3": {
@@ -1288,7 +1288,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:11.679Z",
+      "updatedAt": "2026-07-22T05:54:03.862Z",
       "_v": 3
     },
     "E-4": {
@@ -1337,7 +1337,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:11.679Z",
+      "updatedAt": "2026-07-22T05:54:03.862Z",
       "_v": 3
     },
     "E-5": {
@@ -1396,7 +1396,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:11.679Z",
+      "updatedAt": "2026-07-22T05:54:03.862Z",
       "_v": 3
     },
     "E-6": {
@@ -1442,7 +1442,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:11.679Z",
+      "updatedAt": "2026-07-22T05:54:03.862Z",
       "_v": 3
     },
     "F-1": {
@@ -1502,7 +1502,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:12.243Z",
+      "updatedAt": "2026-07-22T05:54:04.188Z",
       "_v": 3
     },
     "F-2": {
@@ -1564,7 +1564,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:12.243Z",
+      "updatedAt": "2026-07-22T05:54:04.189Z",
       "_v": 3
     },
     "F-3": {
@@ -1638,7 +1638,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:12.243Z",
+      "updatedAt": "2026-07-22T05:54:04.189Z",
       "_v": 3
     },
     "F-4": {
@@ -1679,7 +1679,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:12.243Z",
+      "updatedAt": "2026-07-22T05:54:04.189Z",
       "_v": 3
     },
     "F-5": {
@@ -1720,7 +1720,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:12.243Z",
+      "updatedAt": "2026-07-22T05:54:04.189Z",
       "_v": 3
     },
     "F-6": {
@@ -1766,7 +1766,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:12.615Z",
+      "updatedAt": "2026-07-22T05:54:04.505Z",
       "_v": 3
     },
     "G-1": {
@@ -1818,7 +1818,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:12.615Z",
+      "updatedAt": "2026-07-22T05:54:04.505Z",
       "_v": 3
     },
     "G-2": {
@@ -1866,7 +1866,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:12.615Z",
+      "updatedAt": "2026-07-22T05:54:04.505Z",
       "_v": 3
     },
     "G-3": {
@@ -1897,7 +1897,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:12.615Z",
+      "updatedAt": "2026-07-22T05:54:04.505Z",
       "_v": 3
     },
     "G-4": {
@@ -1957,7 +1957,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:12.615Z",
+      "updatedAt": "2026-07-22T05:54:04.505Z",
       "_v": 3
     },
     "G-5": {
@@ -2025,7 +2025,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.031Z",
+      "updatedAt": "2026-07-22T05:54:04.941Z",
       "_v": 3
     },
     "G-6": {
@@ -2095,7 +2095,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.031Z",
+      "updatedAt": "2026-07-22T05:54:04.941Z",
       "_v": 3
     },
     "H-1": {
@@ -2120,7 +2120,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.031Z",
+      "updatedAt": "2026-07-22T05:54:04.941Z",
       "_v": 3
     },
     "H-2": {
@@ -2154,7 +2154,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.031Z",
+      "updatedAt": "2026-07-22T05:54:04.941Z",
       "_v": 3
     },
     "H-3": {
@@ -2208,7 +2208,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.031Z",
+      "updatedAt": "2026-07-22T05:54:04.941Z",
       "_v": 3
     },
     "H-4": {
@@ -2274,7 +2274,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.376Z",
+      "updatedAt": "2026-07-22T05:54:05.367Z",
       "_v": 3
     },
     "H-5": {
@@ -2325,7 +2325,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.376Z",
+      "updatedAt": "2026-07-22T05:54:05.367Z",
       "_v": 3
     },
     "H-6": {
@@ -2362,7 +2362,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.376Z",
+      "updatedAt": "2026-07-22T05:54:05.368Z",
       "_v": 3
     },
     "I-1": {
@@ -2403,7 +2403,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.376Z",
+      "updatedAt": "2026-07-22T05:54:05.368Z",
       "_v": 3
     },
     "I-2": {
@@ -2458,7 +2458,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.376Z",
+      "updatedAt": "2026-07-22T05:54:05.368Z",
       "_v": 3
     },
     "I-3": {
@@ -2499,7 +2499,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.766Z",
+      "updatedAt": "2026-07-22T05:54:05.727Z",
       "_v": 3
     },
     "I-4": {
@@ -2547,7 +2547,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.766Z",
+      "updatedAt": "2026-07-22T05:54:05.727Z",
       "_v": 3
     },
     "I-5": {
@@ -2608,7 +2608,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.766Z",
+      "updatedAt": "2026-07-22T05:54:05.727Z",
       "_v": 3
     },
     "I-6": {
@@ -2687,7 +2687,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.766Z",
+      "updatedAt": "2026-07-22T05:54:05.727Z",
       "_v": 3
     },
     "J-1": {
@@ -2721,7 +2721,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:13.766Z",
+      "updatedAt": "2026-07-22T05:54:05.727Z",
       "_v": 3
     },
     "J-2": {
@@ -2769,7 +2769,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.146Z",
+      "updatedAt": "2026-07-22T05:54:06.037Z",
       "_v": 3
     },
     "J-3": {
@@ -2821,7 +2821,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.146Z",
+      "updatedAt": "2026-07-22T05:54:06.037Z",
       "_v": 3
     },
     "J-4": {
@@ -2868,7 +2868,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.146Z",
+      "updatedAt": "2026-07-22T05:54:06.037Z",
       "_v": 3
     },
     "J-5": {
@@ -2928,7 +2928,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.146Z",
+      "updatedAt": "2026-07-22T05:54:06.037Z",
       "_v": 3
     },
     "J-6": {
@@ -2990,7 +2990,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.146Z",
+      "updatedAt": "2026-07-22T05:54:06.037Z",
       "_v": 3
     },
     "K-1": {
@@ -3042,7 +3042,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.513Z",
+      "updatedAt": "2026-07-22T05:54:06.369Z",
       "_v": 3
     },
     "K-2": {
@@ -3096,7 +3096,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.513Z",
+      "updatedAt": "2026-07-22T05:54:06.369Z",
       "_v": 3
     },
     "K-3": {
@@ -3157,7 +3157,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.513Z",
+      "updatedAt": "2026-07-22T05:54:06.369Z",
       "_v": 3
     },
     "K-4": {
@@ -3196,7 +3196,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.513Z",
+      "updatedAt": "2026-07-22T05:54:06.369Z",
       "_v": 3
     },
     "K-5": {
@@ -3215,7 +3215,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.513Z",
+      "updatedAt": "2026-07-22T05:54:06.369Z",
       "_v": 3
     },
     "K-6": {
@@ -3287,7 +3287,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.950Z",
+      "updatedAt": "2026-07-22T05:54:06.711Z",
       "_v": 3
     },
     "L-1": {
@@ -3342,7 +3342,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.950Z",
+      "updatedAt": "2026-07-22T05:54:06.711Z",
       "_v": 3
     },
     "L-2": {
@@ -3381,7 +3381,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.950Z",
+      "updatedAt": "2026-07-22T05:54:06.711Z",
       "_v": 3
     },
     "L-3": {
@@ -3406,7 +3406,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.950Z",
+      "updatedAt": "2026-07-22T05:54:06.711Z",
       "_v": 3
     },
     "L-4": {
@@ -3439,7 +3439,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:14.950Z",
+      "updatedAt": "2026-07-22T05:54:06.711Z",
       "_v": 3
     },
     "L-5": {
@@ -3485,7 +3485,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:15.412Z",
+      "updatedAt": "2026-07-22T05:54:07.036Z",
       "_v": 3
     },
     "L-6": {
@@ -3532,7 +3532,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:15.412Z",
+      "updatedAt": "2026-07-22T05:54:07.036Z",
       "_v": 3
     },
     "r32-0": {
@@ -3565,7 +3565,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:15.799Z",
+      "updatedAt": "2026-07-22T05:54:07.405Z",
       "team1": "south-africa",
       "team2": "canada",
       "date": "2026-06-28",
@@ -3634,7 +3634,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:16.079Z",
+      "updatedAt": "2026-07-22T05:54:07.678Z",
       "team1": "brazil",
       "team2": "japan",
       "date": "2026-06-29",
@@ -3763,7 +3763,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:16.395Z",
+      "updatedAt": "2026-07-22T05:54:07.995Z",
       "team1": "germany",
       "team2": "paraguay",
       "date": "2026-06-29",
@@ -3836,7 +3836,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:16.706Z",
+      "updatedAt": "2026-07-22T05:54:08.297Z",
       "team1": "netherlands",
       "team2": "morocco",
       "date": "2026-06-30",
@@ -3881,7 +3881,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:17.075Z",
+      "updatedAt": "2026-07-22T05:54:08.581Z",
       "team1": "ivory-coast",
       "team2": "norway",
       "date": "2026-06-30",
@@ -3919,7 +3919,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:17.400Z",
+      "updatedAt": "2026-07-22T05:54:08.847Z",
       "team1": "france",
       "team2": "sweden",
       "date": "2026-06-30",
@@ -3975,7 +3975,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:17.761Z",
+      "updatedAt": "2026-07-22T05:54:09.141Z",
       "team1": "mexico",
       "team2": "ecuador",
       "date": "2026-07-01",
@@ -4026,7 +4026,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:18.133Z",
+      "updatedAt": "2026-07-22T05:54:09.442Z",
       "team1": "england",
       "team2": "dr-congo",
       "date": "2026-07-01",
@@ -4097,7 +4097,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:18.496Z",
+      "updatedAt": "2026-07-22T05:54:09.746Z",
       "team1": "belgium",
       "team2": "senegal",
       "date": "2026-07-01",
@@ -4147,7 +4147,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:18.846Z",
+      "updatedAt": "2026-07-22T05:54:10.034Z",
       "team1": "usa",
       "team2": "bosnia",
       "date": "2026-07-02",
@@ -4192,7 +4192,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:19.207Z",
+      "updatedAt": "2026-07-22T05:54:10.311Z",
       "team1": "spain",
       "team2": "austria",
       "date": "2026-07-02",
@@ -4249,7 +4249,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:19.453Z",
+      "updatedAt": "2026-07-22T05:54:10.574Z",
       "team1": "portugal",
       "team2": "croatia",
       "date": "2026-07-02",
@@ -4293,7 +4293,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:19.754Z",
+      "updatedAt": "2026-07-22T05:54:10.871Z",
       "team1": "switzerland",
       "team2": "algeria",
       "date": "2026-07-03",
@@ -4385,7 +4385,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:20.011Z",
+      "updatedAt": "2026-07-22T05:54:11.155Z",
       "team1": "australia",
       "team2": "egypt",
       "date": "2026-07-03",
@@ -4450,7 +4450,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:20.284Z",
+      "updatedAt": "2026-07-22T05:54:11.453Z",
       "team1": "argentina",
       "team2": "cape-verde",
       "date": "2026-07-03",
@@ -4505,7 +4505,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:20.551Z",
+      "updatedAt": "2026-07-22T05:54:11.786Z",
       "team1": "colombia",
       "team2": "ghana",
       "date": "2026-07-04",
@@ -4592,7 +4592,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:20.822Z",
+      "updatedAt": "2026-07-22T05:54:13.586Z",
       "team1": "canada",
       "team2": "morocco",
       "date": "2026-07-04",
@@ -4641,7 +4641,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:21.121Z",
+      "updatedAt": "2026-07-22T05:54:13.922Z",
       "team1": "paraguay",
       "team2": "france",
       "date": "2026-07-04",
@@ -4686,7 +4686,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:22.018Z",
+      "updatedAt": "2026-07-22T05:54:14.243Z",
       "team1": "brazil",
       "team2": "norway",
       "date": "2026-07-05",
@@ -4781,7 +4781,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:22.275Z",
+      "updatedAt": "2026-07-22T05:54:14.543Z",
       "team1": "mexico",
       "team2": "england",
       "date": "2026-07-06",
@@ -4824,7 +4824,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:22.551Z",
+      "updatedAt": "2026-07-22T05:54:14.958Z",
       "team1": "portugal",
       "team2": "spain",
       "date": "2026-07-06",
@@ -4889,7 +4889,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:22.836Z",
+      "updatedAt": "2026-07-22T05:54:15.226Z",
       "team1": "usa",
       "team2": "belgium",
       "date": "2026-07-07",
@@ -4984,7 +4984,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:23.154Z",
+      "updatedAt": "2026-07-22T05:54:15.499Z",
       "team1": "argentina",
       "team2": "egypt",
       "date": "2026-07-07",
@@ -5087,7 +5087,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:23.830Z",
+      "updatedAt": "2026-07-22T05:54:15.802Z",
       "team1": "switzerland",
       "team2": "colombia",
       "date": "2026-07-07",
@@ -5125,7 +5125,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:24.152Z",
+      "updatedAt": "2026-07-22T05:54:16.157Z",
       "team1": "france",
       "team2": "morocco",
       "date": "2026-07-09",
@@ -5188,7 +5188,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:24.502Z",
+      "updatedAt": "2026-07-22T05:54:16.463Z",
       "team1": "spain",
       "team2": "belgium",
       "date": "2026-07-10",
@@ -5233,7 +5233,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:24.776Z",
+      "updatedAt": "2026-07-22T05:54:16.789Z",
       "team1": "norway",
       "team2": "england",
       "date": "2026-07-11",
@@ -5309,7 +5309,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:25.035Z",
+      "updatedAt": "2026-07-22T05:54:17.048Z",
       "team1": "argentina",
       "team2": "switzerland",
       "date": "2026-07-12",
@@ -5359,7 +5359,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:25.322Z",
+      "updatedAt": "2026-07-22T05:54:17.352Z",
       "team1": "france",
       "team2": "spain",
       "date": "2026-07-14",
@@ -5422,7 +5422,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-17T08:15:25.608Z",
+      "updatedAt": "2026-07-22T05:54:17.626Z",
       "team1": "england",
       "team2": "argentina",
       "date": "2026-07-15",
@@ -5431,14 +5431,85 @@
     },
     "bronze": {
       "score": [
-        0,
-        0
+        4,
+        6
       ],
-      "goals": [],
+      "goals": [
+        {
+          "playerName": "Kylian MBAPPE",
+          "teamId": "france",
+          "minute": 48,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Bradley BARCOLA",
+          "teamId": "france",
+          "minute": 54,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Kylian MBAPPE",
+          "teamId": "france",
+          "minute": 66,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ousmane DEMBELE",
+          "teamId": "france",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Declan RICE",
+          "teamId": "england",
+          "minute": 3,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Ezri KONSA",
+          "teamId": "england",
+          "minute": 18,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Bukayo SAKA",
+          "teamId": "england",
+          "minute": 37,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Bukayo SAKA",
+          "teamId": "england",
+          "minute": 45,
+          "isPenalty": true,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Bukayo SAKA",
+          "teamId": "england",
+          "minute": 87,
+          "isPenalty": false,
+          "isOwnGoal": false
+        },
+        {
+          "playerName": "Jude BELLINGHAM",
+          "teamId": "england",
+          "minute": 90,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
       "assists": [],
       "cards": [],
-      "status": "scheduled",
-      "updatedAt": "2026-07-17T08:15:25.869Z",
+      "status": "finished",
+      "updatedAt": "2026-07-22T05:54:17.885Z",
       "team1": "france",
       "team2": "england",
       "date": "2026-07-18",
@@ -5447,14 +5518,65 @@
     },
     "final": {
       "score": [
-        0,
+        1,
         0
       ],
-      "goals": [],
+      "goals": [
+        {
+          "playerName": "Ferran TORRES",
+          "teamId": "spain",
+          "minute": 106,
+          "isPenalty": true,
+          "isOwnGoal": false
+        }
+      ],
       "assists": [],
-      "cards": [],
-      "status": "scheduled",
-      "updatedAt": "2026-07-17T08:15:26.144Z",
+      "cards": [
+        {
+          "playerName": "Lisandro MARTINEZ",
+          "teamId": "argentina",
+          "minute": "41'",
+          "card": 1
+        },
+        {
+          "playerName": "Leandro PAREDES",
+          "teamId": "argentina",
+          "minute": "52'",
+          "card": 1
+        },
+        {
+          "playerName": "Enzo FERNANDEZ",
+          "teamId": "argentina",
+          "minute": "82'",
+          "card": 1
+        },
+        {
+          "playerName": "Cristian ROMERO",
+          "teamId": "argentina",
+          "minute": "90'+2'",
+          "card": 1
+        },
+        {
+          "playerName": "Enzo FERNANDEZ",
+          "teamId": "argentina",
+          "minute": "90'+3'",
+          "card": 3
+        },
+        {
+          "playerName": "Unknown",
+          "teamId": "argentina",
+          "minute": "105'",
+          "card": 1
+        },
+        {
+          "playerName": "Alexis MAC ALLISTER",
+          "teamId": "argentina",
+          "minute": "111'",
+          "card": 1
+        }
+      ],
+      "status": "finished",
+      "updatedAt": "2026-07-22T05:54:18.188Z",
       "team1": "spain",
       "team2": "argentina",
       "date": "2026-07-19",
