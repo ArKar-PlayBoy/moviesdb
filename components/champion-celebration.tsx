@@ -126,7 +126,13 @@ export default function ChampionCelebration({ finalMatch, isAfterFinal, bronzeMa
     const margin = Math.abs((finalMatch.score1 ?? 0) - (finalMatch.score2 ?? 0));
 
     return (
-      <section className="relative w-[100vw] left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] overflow-hidden bg-gradient-to-b from-yellow-900/30 via-amber-900/15 to-background">
+      <section className="relative w-full overflow-hidden rounded-2xl md:rounded-3xl border border-yellow-500/30 bg-gradient-to-b from-yellow-900/80 via-amber-900/60 to-background animate-in">
+        {/* Group celebration photo background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=1400&q=80')] bg-cover bg-center opacity-20" />
+          <div className="absolute inset-0 bg-gradient-to-b from-yellow-900/70 via-amber-900/50 to-background" />
+        </div>
+
         {/* Golden sunburst rays */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="sunburst-rays absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[200%] opacity-[0.07]" />

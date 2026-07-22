@@ -185,6 +185,13 @@ export default async function Home() {
 
   return (
     <div className="space-y-10 md:space-y-14">
+      {/* ===== CHAMPION CELEBRATION ===== */}
+      <ChampionCelebration
+        finalMatch={finalMatch}
+        isAfterFinal={isAfterFinal}
+        bronzeMatch={bronzeMatch}
+      />
+
       {/* ===== HERO ===== */}
       <section className="relative text-center py-14 sm:py-20 md:py-28 rounded-xl md:rounded-2xl border overflow-hidden animate-in">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1400&q=80')] bg-cover bg-center" />
@@ -516,13 +523,6 @@ export default async function Home() {
           </div>
         </section>
       )}
-
-      {/* ===== CHAMPION CELEBRATION ===== */}
-      <ChampionCelebration
-        finalMatch={finalMatch}
-        isAfterFinal={isAfterFinal}
-        bronzeMatch={bronzeMatch}
-      />
 
       {/* ===== GROUPS AT A GLANCE ===== */}
       <section>
