@@ -218,18 +218,20 @@ export async function getAllMatchResults(): Promise<Record<string, StoredMatchRe
     return ssrCache.data ?? {};
   }
 
-  let result: Record<string, StoredMatchResult> = {};
+  const result: Record<string, StoredMatchResult> = {};
 
-  if (shouldUseMemoryFallback()) {
-    if (memoryStore.size === 0 && !fileLoaded) loadFromFile();
-    for (const id of memoryMatchIds) {
-      const raw = memoryStore.get(id);
-      if (raw) {
-        const parsed = parseStoredResult(raw);
-        if (parsed) result[id] = parsed;
-      }
+  // Always load from file first (source of truth)
+  if (memoryStore.size === 0 && !fileLoaded) loadFromFile();
+  for (const id of memoryMatchIds) {
+    const raw = memoryStore.get(id);
+    if (raw) {
+      const parsed = parseStoredResult(raw);
+      if (parsed) result[id] = parsed;
     }
-  } else {
+  }
+
+  // If Redis is available and has more data, merge it
+  if (!shouldUseMemoryFallback()) {
     const c = await getClient();
     if (c) {
       try {
@@ -241,10 +243,12 @@ export async function getAllMatchResults(): Promise<Record<string, StoredMatchRe
               return [id, data] as const;
             })
           );
-          result = Object.fromEntries(entries.filter(([, d]) => d !== null)) as Record<string, StoredMatchResult>;
+          for (const [id, data] of entries) {
+            if (data && !result[id]) result[id] = data;
+          }
         }
       } catch {
-        // Redis error, result stays empty
+        // Redis error, keep file data
       }
     }
   }
