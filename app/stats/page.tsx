@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import StatsClient from "./stats-client";
 import { getAllPlayerPhotos } from "@/lib/player-photo-map";
-import { getTopScorers } from "@/data/worldcup-2026";
-import { computeTopAssistsFromResults, computeTopCardsFromResults } from "@/lib/data-service";
+import { computeTopScorersFromResults, computeTopAssistsFromResults, computeTopCardsFromResults } from "@/lib/data-service";
 import { getAllMatchResults } from "@/lib/storage";
 
 export const metadata: Metadata = {
@@ -17,7 +16,7 @@ export default async function StatsPage() {
 
   const allResults = await getAllMatchResults();
   const hasResults = Object.keys(allResults).length > 0;
-  const scorers = getTopScorers(200, allResults);
+  const scorers = hasResults ? computeTopScorersFromResults(allResults, 200) : [];
   const assists = hasResults ? computeTopAssistsFromResults(allResults, 200) : [];
   const cards = hasResults ? computeTopCardsFromResults(allResults, 200) : [];
 

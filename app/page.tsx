@@ -1,5 +1,6 @@
 import { Suspense } from "react";
-import TEAMS, { GROUPS, MATCHES, getTeamById, getGroupStandings, getStarOfTheWeek, getTopScorers, getVenues, getAllPlayers, getRecentPOTMs, getKnockoutBracket } from "@/data/worldcup-2026";
+import TEAMS, { GROUPS, MATCHES, getTeamById, getGroupStandings, getStarOfTheWeek, getVenues, getAllPlayers, getRecentPOTMs, getKnockoutBracket } from "@/data/worldcup-2026";
+import { computeTopScorersFromResults } from "@/lib/data-service";
 import { slugify } from "@/lib/utils";
 import { getAllPlayerPhotos } from "@/lib/player-photo-map";
 import { getLiveScores, getBracketData } from "@/lib/data-service";
@@ -167,7 +168,7 @@ export default async function Home() {
   const totalVenues = getVenues().length;
   const totalPlayers = getAllPlayers().length;
   const allResults = await getAllMatchResults();
-  const topScorers = getTopScorers(5, allResults);
+  const topScorers = computeTopScorersFromResults(allResults, 5);
   const totalGoalsHome = Object.values(allResults).reduce((sum, r) => {
     if (r.status === "finished") return sum + r.score[0] + r.score[1];
     return sum;
