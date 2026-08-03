@@ -657,16 +657,23 @@ export function computeTopScorersFromResults(
     };
   }
 
-  for (const m of MATCHES) {
-    const t1 = getTeamById(m.team1);
-    const t2 = getTeamById(m.team2);
-    if (!t1 || !t2) continue;
-    const result = results[m.id];
+  // Process ALL results (group + knockout), not just MATCHES
+  for (const [matchId, result] of Object.entries(results)) {
     if (!result || result.status === "scheduled") continue;
 
-    for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
-    for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    // Count matches for roster players
+    if (result.team1 && result.team2) {
+      const t1 = getTeamById(result.team1);
+      const t2 = getTeamById(result.team2);
+      if (t1) {
+        for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+      }
+      if (t2) {
+        for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+      }
+    }
 
+    // Count goals
     for (const g of result.goals) {
       if (g.isOwnGoal) continue;
       const entry = getOrCreateEntry(map, g.teamId, g.playerName);
@@ -718,15 +725,20 @@ export function computeTopAssistsFromResults(
     };
   }
 
-  for (const m of MATCHES) {
-    const t1 = getTeamById(m.team1);
-    const t2 = getTeamById(m.team2);
-    if (!t1 || !t2) continue;
-    const result = results[m.id];
+  // Process ALL results (group + knockout)
+  for (const [matchId, result] of Object.entries(results)) {
     if (!result || result.status === "scheduled") continue;
 
-    for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
-    for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    if (result.team1 && result.team2) {
+      const t1 = getTeamById(result.team1);
+      const t2 = getTeamById(result.team2);
+      if (t1) {
+        for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+      }
+      if (t2) {
+        for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+      }
+    }
 
     for (const a of (result.assists || [])) {
       const entry = getOrCreateEntry(map, a.teamId, a.playerName);
@@ -755,15 +767,20 @@ export function computeTopCardsFromResults(
     };
   }
 
-  for (const m of MATCHES) {
-    const t1 = getTeamById(m.team1);
-    const t2 = getTeamById(m.team2);
-    if (!t1 || !t2) continue;
-    const result = results[m.id];
+  // Process ALL results (group + knockout)
+  for (const [matchId, result] of Object.entries(results)) {
     if (!result || result.status === "scheduled") continue;
 
-    for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
-    for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+    if (result.team1 && result.team2) {
+      const t1 = getTeamById(result.team1);
+      const t2 = getTeamById(result.team2);
+      if (t1) {
+        for (const pl of t1.players) { const k = `${t1.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+      }
+      if (t2) {
+        for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
+      }
+    }
 
     for (const c of (result.cards || [])) {
       const entry = getOrCreateEntry(map, c.teamId, c.playerName);
