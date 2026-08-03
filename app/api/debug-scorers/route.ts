@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { getAllMatchResults } from "@/lib/storage";
+import { computeTopScorersFromResults } from "@/lib/data-service";
 
 export async function GET() {
   const results = await getAllMatchResults();
   const matchCount = Object.keys(results).length;
   
-  // Count goals for top players
+  // Count goals for top players (raw count)
   const goalCounts: Record<string, number> = {};
   for (const result of Object.values(results)) {
     if (result.status !== "finished" || !result.goals) continue;
@@ -15,14 +16,17 @@ export async function GET() {
     }
   }
   
-  const top = Object.entries(goalCounts)
+  const rawTop = Object.entries(goalCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 10)
     .map(([name, count]) => ({ name, count }));
   
+  // Now call computeTopScorersFromResults
+  const computed = computeTopScorersFromResults(results, 10);
+  
   return NextResponse.json({
     matchCount,
-    topScorers: top,
-    sampleMatch: Object.keys(results)[0] ? results[Object.keys(results)[0]] : null,
+    rawTopScorers: rawTop,
+    computedTopScorers: computed.map(s => ({ name: s.playerName, team: s.teamName, goals: s.goals })),
   });
 }
