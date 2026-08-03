@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
 import { getAllMatchResults } from "@/lib/storage";
 import { computeTopScorersFromResults } from "@/lib/data-service";
+import { MATCHES } from "@/data/worldcup-2026";
 
 export async function GET() {
   const results = await getAllMatchResults();
   const matchCount = Object.keys(results).length;
+  
+  // Check match ID overlap
+  const matchIds = MATCHES.map(m => m.id);
+  const resultIds = Object.keys(results);
+  const overlap = matchIds.filter(id => resultIds.includes(id));
   
   // Count goals for top players (raw count)
   const goalCounts: Record<string, number> = {};
@@ -26,6 +32,11 @@ export async function GET() {
   
   return NextResponse.json({
     matchCount,
+    matchesInCode: matchIds.length,
+    matchesInResults: resultIds.length,
+    overlapCount: overlap.length,
+    sampleMatchIds: matchIds.slice(0, 5),
+    sampleResultIds: resultIds.slice(0, 5),
     rawTopScorers: rawTop,
     computedTopScorers: computed.map(s => ({ name: s.playerName, team: s.teamName, goals: s.goals })),
   });
