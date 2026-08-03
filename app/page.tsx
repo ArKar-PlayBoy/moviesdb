@@ -169,6 +169,7 @@ export default async function Home() {
   const totalPlayers = getAllPlayers().length;
   const allResults = await getAllMatchResults();
   const topScorers = computeTopScorersFromResults(allResults, 5);
+  const photos = await getAllPlayerPhotos();
   const totalGoalsHome = Object.values(allResults).reduce((sum, r) => {
     if (r.status === "finished") return sum + r.score[0] + r.score[1];
     return sum;
@@ -440,9 +441,7 @@ export default async function Home() {
               <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-xs font-bold mb-2">
                 {i + 1}
               </div>
-              <div className="w-12 h-12 rounded-full bg-secondary mx-auto mb-2 flex items-center justify-center text-xl font-bold text-muted-foreground group-hover:text-primary transition-colors">
-                {s.playerName.charAt(0)}
-              </div>
+              <PlayerAvatar name={s.playerName} photoUrl={photos[s.playerName]} size="md" className="mx-auto mb-2 group-hover:ring-primary/50 transition-all" />
               <p className="font-semibold text-sm truncate group-hover:text-primary transition-colors">{s.playerName}</p>
               <div className="flex items-center justify-center gap-1.5 mt-1">
                 <span className="text-xs text-muted-foreground">{s.teamFlag}</span>
