@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-22T05:54:18.189Z",
+  "updatedAt": "2026-08-03T08:38:38.564Z",
   "matches": {
     "A-1": {
       "score": [
@@ -62,7 +62,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.201Z",
+      "updatedAt": "2026-08-03T08:38:34.855Z",
       "_v": 3
     },
     "A-2": {
@@ -103,7 +103,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.202Z",
+      "updatedAt": "2026-08-03T08:38:34.855Z",
       "_v": 3
     },
     "A-3": {
@@ -136,7 +136,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.202Z",
+      "updatedAt": "2026-08-03T08:38:34.855Z",
       "_v": 3
     },
     "A-4": {
@@ -147,14 +147,14 @@
       "goals": [
         {
           "playerName": "Michal SADILEK",
-          "teamId": "south-africa",
+          "teamId": "czech-republic",
           "minute": 6,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Teboho MOKOENA",
-          "teamId": "czech-republic",
+          "teamId": "south-africa",
           "minute": 83,
           "isPenalty": false,
           "isOwnGoal": false
@@ -164,50 +164,50 @@
       "cards": [
         {
           "playerName": "Ladislav KREJCI",
-          "teamId": "south-africa",
+          "teamId": "czech-republic",
           "minute": "75'",
           "card": 1
         },
         {
           "playerName": "Teboho MOKOENA",
-          "teamId": "czech-republic",
+          "teamId": "south-africa",
           "minute": "33'",
           "card": 1
         },
         {
           "playerName": "Thalente MBATHA",
-          "teamId": "czech-republic",
+          "teamId": "south-africa",
           "minute": "40'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.202Z",
+      "updatedAt": "2026-08-03T08:38:34.855Z",
       "_v": 3
     },
     "A-5": {
       "score": [
-        0,
-        3
+        3,
+        0
       ],
       "goals": [
         {
           "playerName": "Mateo CHAVEZ",
-          "teamId": "czech-republic",
+          "teamId": "mexico",
           "minute": 55,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Julian QUINONES",
-          "teamId": "czech-republic",
+          "teamId": "mexico",
           "minute": 61,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Alvaro FIDALGO",
-          "teamId": "czech-republic",
+          "teamId": "mexico",
           "minute": 90,
           "isPenalty": true,
           "isOwnGoal": false
@@ -217,13 +217,13 @@
       "cards": [
         {
           "playerName": "Edson ALVAREZ",
-          "teamId": "czech-republic",
+          "teamId": "mexico",
           "minute": "63'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.202Z",
+      "updatedAt": "2026-08-03T08:38:34.855Z",
       "_v": 3
     },
     "A-6": {
@@ -256,7 +256,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.527Z",
+      "updatedAt": "2026-08-03T08:38:35.050Z",
       "_v": 3
     },
     "B-1": {
@@ -314,7 +314,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.527Z",
+      "updatedAt": "2026-08-03T08:38:35.050Z",
       "_v": 3
     },
     "B-2": {
@@ -360,7 +360,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.527Z",
+      "updatedAt": "2026-08-03T08:38:35.050Z",
       "_v": 3
     },
     "B-3": {
@@ -440,46 +440,46 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.527Z",
+      "updatedAt": "2026-08-03T08:38:35.050Z",
       "_v": 3
     },
     "B-4": {
       "score": [
-        4,
-        1
+        1,
+        4
       ],
       "goals": [
         {
           "playerName": "Johan MANZAMBI",
-          "teamId": "bosnia",
+          "teamId": "switzerland",
           "minute": 74,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Ruben VARGAS",
-          "teamId": "bosnia",
+          "teamId": "switzerland",
           "minute": 84,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Johan MANZAMBI",
-          "teamId": "bosnia",
+          "teamId": "switzerland",
           "minute": 90,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Granit XHAKA",
-          "teamId": "bosnia",
+          "teamId": "switzerland",
           "minute": 90,
           "isPenalty": false,
           "isOwnGoal": false
         },
         {
           "playerName": "Ermin MAHMIC",
-          "teamId": "switzerland",
+          "teamId": "bosnia",
           "minute": 90,
           "isPenalty": true,
           "isOwnGoal": false
@@ -489,56 +489,56 @@
       "cards": [
         {
           "playerName": "Nico ELVEDI",
-          "teamId": "bosnia",
+          "teamId": "switzerland",
           "minute": "65'",
           "card": 1
         },
         {
           "playerName": "Amar DEDIC",
-          "teamId": "switzerland",
+          "teamId": "bosnia",
           "minute": "59'",
           "card": 1
         },
         {
           "playerName": "Edin DZEKO",
-          "teamId": "switzerland",
+          "teamId": "bosnia",
           "minute": "61'",
           "card": 1
         },
         {
           "playerName": "Tarik MUHAREMOVIC",
-          "teamId": "switzerland",
+          "teamId": "bosnia",
           "minute": "80'",
           "card": 2
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.527Z",
+      "updatedAt": "2026-08-03T08:38:35.050Z",
       "_v": 3
     },
     "B-5": {
       "score": [
-        2,
-        1
+        1,
+        2
       ],
       "goals": [
         {
           "playerName": "Ruben VARGAS",
-          "teamId": "canada",
+          "teamId": "switzerland",
           "minute": 46,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Johan MANZAMBI",
-          "teamId": "canada",
+          "teamId": "switzerland",
           "minute": 57,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Promise DAVID",
-          "teamId": "switzerland",
+          "teamId": "canada",
           "minute": 76,
           "isPenalty": true,
           "isOwnGoal": false
@@ -548,25 +548,25 @@
       "cards": [
         {
           "playerName": "Granit XHAKA",
-          "teamId": "canada",
+          "teamId": "switzerland",
           "minute": "32'",
           "card": 1
         },
         {
           "playerName": "Cyle LARIN",
-          "teamId": "switzerland",
+          "teamId": "canada",
           "minute": "32'",
           "card": 1
         },
         {
           "playerName": "Liam MILLAR",
-          "teamId": "switzerland",
+          "teamId": "canada",
           "minute": "87'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.824Z",
+      "updatedAt": "2026-08-03T08:38:35.193Z",
       "_v": 3
     },
     "B-6": {
@@ -620,7 +620,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.824Z",
+      "updatedAt": "2026-08-03T08:38:35.193Z",
       "_v": 3
     },
     "C-1": {
@@ -660,7 +660,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.824Z",
+      "updatedAt": "2026-08-03T08:38:35.193Z",
       "_v": 3
     },
     "C-2": {
@@ -705,7 +705,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.824Z",
+      "updatedAt": "2026-08-03T08:38:35.193Z",
       "_v": 3
     },
     "C-3": {
@@ -764,18 +764,18 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:02.824Z",
+      "updatedAt": "2026-08-03T08:38:35.193Z",
       "_v": 3
     },
     "C-4": {
       "score": [
-        0,
-        1
+        1,
+        0
       ],
       "goals": [
         {
           "playerName": "Ismael SAIBARI",
-          "teamId": "scotland",
+          "teamId": "morocco",
           "minute": 2,
           "isPenalty": true,
           "isOwnGoal": false
@@ -785,44 +785,44 @@
       "cards": [
         {
           "playerName": "Andy ROBERTSON",
-          "teamId": "morocco",
+          "teamId": "scotland",
           "minute": "65'",
           "card": 1
         },
         {
           "playerName": "Issa Diop",
-          "teamId": "scotland",
+          "teamId": "morocco",
           "minute": "22'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.149Z",
+      "updatedAt": "2026-08-03T08:38:35.312Z",
       "_v": 3
     },
     "C-5": {
       "score": [
-        0,
-        3
+        3,
+        0
       ],
       "goals": [
         {
           "playerName": "VINICIUS JUNIOR",
-          "teamId": "scotland",
+          "teamId": "brazil",
           "minute": 7,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "VINICIUS JUNIOR",
-          "teamId": "scotland",
+          "teamId": "brazil",
           "minute": 45,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "MATHEUS CUNHA",
-          "teamId": "scotland",
+          "teamId": "brazil",
           "minute": 60,
           "isPenalty": true,
           "isOwnGoal": false
@@ -832,25 +832,25 @@
       "cards": [
         {
           "playerName": "Ryan Christie",
-          "teamId": "brazil",
+          "teamId": "scotland",
           "minute": "89'",
           "card": 1
         },
         {
           "playerName": "DANILO",
-          "teamId": "scotland",
+          "teamId": "brazil",
           "minute": "62'",
           "card": 1
         },
         {
           "playerName": "FABINHO",
-          "teamId": "scotland",
+          "teamId": "brazil",
           "minute": "82'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.149Z",
+      "updatedAt": "2026-08-03T08:38:35.312Z",
       "_v": 3
     },
     "C-6": {
@@ -924,7 +924,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.149Z",
+      "updatedAt": "2026-08-03T08:38:35.312Z",
       "_v": 3
     },
     "D-1": {
@@ -1009,7 +1009,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.149Z",
+      "updatedAt": "2026-08-03T08:38:35.312Z",
       "_v": 3
     },
     "D-2": {
@@ -1021,7 +1021,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.149Z",
+      "updatedAt": "2026-08-03T08:38:35.312Z",
       "_v": 3
     },
     "D-3": {
@@ -1091,7 +1091,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.505Z",
+      "updatedAt": "2026-08-03T08:38:35.479Z",
       "_v": 3
     },
     "D-4": {
@@ -1103,7 +1103,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.505Z",
+      "updatedAt": "2026-08-03T08:38:35.479Z",
       "_v": 3
     },
     "D-5": {
@@ -1115,7 +1115,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.505Z",
+      "updatedAt": "2026-08-03T08:38:35.479Z",
       "_v": 3
     },
     "D-6": {
@@ -1140,7 +1140,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.505Z",
+      "updatedAt": "2026-08-03T08:38:35.479Z",
       "_v": 3
     },
     "E-1": {
@@ -1209,7 +1209,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.505Z",
+      "updatedAt": "2026-08-03T08:38:35.479Z",
       "_v": 3
     },
     "E-2": {
@@ -1254,7 +1254,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.862Z",
+      "updatedAt": "2026-08-03T08:38:35.608Z",
       "_v": 3
     },
     "E-3": {
@@ -1288,7 +1288,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.862Z",
+      "updatedAt": "2026-08-03T08:38:35.608Z",
       "_v": 3
     },
     "E-4": {
@@ -1301,68 +1301,68 @@
       "cards": [
         {
           "playerName": "Jordy ALCIVAR",
-          "teamId": "curacao",
+          "teamId": "ecuador",
           "minute": "38'",
           "card": 1
         },
         {
           "playerName": "Leandro BACUNA",
-          "teamId": "ecuador",
+          "teamId": "curacao",
           "minute": "39'",
           "card": 1
         },
         {
           "playerName": "Juninho BACUNA",
-          "teamId": "ecuador",
+          "teamId": "curacao",
           "minute": "53'",
           "card": 1
         },
         {
           "playerName": "Livano COMENENCIA",
-          "teamId": "ecuador",
+          "teamId": "curacao",
           "minute": "56'",
           "card": 1
         },
         {
           "playerName": "Jurien GAARI",
-          "teamId": "ecuador",
+          "teamId": "curacao",
           "minute": "75'",
           "card": 1
         },
         {
           "playerName": "Gervane KASTANEER",
-          "teamId": "ecuador",
+          "teamId": "curacao",
           "minute": "90'+1'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.862Z",
+      "updatedAt": "2026-08-03T08:38:35.608Z",
       "_v": 3
     },
     "E-5": {
       "score": [
-        2,
-        1
+        1,
+        2
       ],
       "goals": [
         {
           "playerName": "Nilson ANGULO",
-          "teamId": "germany",
+          "teamId": "ecuador",
           "minute": 9,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Gonzalo PLATA",
-          "teamId": "germany",
+          "teamId": "ecuador",
           "minute": 77,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Leroy SANE",
-          "teamId": "ecuador",
+          "teamId": "germany",
           "minute": 2,
           "isPenalty": true,
           "isOwnGoal": false
@@ -1372,31 +1372,31 @@
       "cards": [
         {
           "playerName": "Piero HINCAPIE",
-          "teamId": "germany",
+          "teamId": "ecuador",
           "minute": "43'",
           "card": 1
         },
         {
           "playerName": "Alan FRANCO",
-          "teamId": "germany",
+          "teamId": "ecuador",
           "minute": "50'",
           "card": 1
         },
         {
           "playerName": "Gonzalo PLATA",
-          "teamId": "germany",
+          "teamId": "ecuador",
           "minute": "89'",
           "card": 1
         },
         {
           "playerName": "Aleksandar PAVLOVIC",
-          "teamId": "ecuador",
+          "teamId": "germany",
           "minute": "44'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.862Z",
+      "updatedAt": "2026-08-03T08:38:35.608Z",
       "_v": 3
     },
     "E-6": {
@@ -1442,7 +1442,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:03.862Z",
+      "updatedAt": "2026-08-03T08:38:35.608Z",
       "_v": 3
     },
     "F-1": {
@@ -1502,7 +1502,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.188Z",
+      "updatedAt": "2026-08-03T08:38:35.765Z",
       "_v": 3
     },
     "F-2": {
@@ -1564,7 +1564,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.189Z",
+      "updatedAt": "2026-08-03T08:38:35.765Z",
       "_v": 3
     },
     "F-3": {
@@ -1638,39 +1638,39 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.189Z",
+      "updatedAt": "2026-08-03T08:38:35.765Z",
       "_v": 3
     },
     "F-4": {
       "score": [
-        0,
-        4
+        4,
+        0
       ],
       "goals": [
         {
           "playerName": "Daichi KAMADA",
-          "teamId": "tunisia",
+          "teamId": "japan",
           "minute": 4,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Ayase UEDA",
-          "teamId": "tunisia",
+          "teamId": "japan",
           "minute": 31,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Junya ITO",
-          "teamId": "tunisia",
+          "teamId": "japan",
           "minute": 69,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Ayase UEDA",
-          "teamId": "tunisia",
+          "teamId": "japan",
           "minute": 83,
           "isPenalty": true,
           "isOwnGoal": false
@@ -1679,39 +1679,39 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.189Z",
+      "updatedAt": "2026-08-03T08:38:35.765Z",
       "_v": 3
     },
     "F-5": {
       "score": [
-        1,
-        3
+        3,
+        1
       ],
       "goals": [
         {
           "playerName": "Hazem MASTOURI",
-          "teamId": "netherlands",
+          "teamId": "tunisia",
           "minute": 54,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Unknown",
-          "teamId": "tunisia",
+          "teamId": "netherlands",
           "minute": 3,
           "isPenalty": false,
           "isOwnGoal": true
         },
         {
           "playerName": "Brian BROBBEY",
-          "teamId": "tunisia",
+          "teamId": "netherlands",
           "minute": 7,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Jan Paul VAN HECKE",
-          "teamId": "tunisia",
+          "teamId": "netherlands",
           "minute": 62,
           "isPenalty": true,
           "isOwnGoal": false
@@ -1720,7 +1720,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.189Z",
+      "updatedAt": "2026-08-03T08:38:35.765Z",
       "_v": 3
     },
     "F-6": {
@@ -1766,7 +1766,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.505Z",
+      "updatedAt": "2026-08-03T08:38:35.902Z",
       "_v": 3
     },
     "G-1": {
@@ -1818,7 +1818,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.505Z",
+      "updatedAt": "2026-08-03T08:38:35.902Z",
       "_v": 3
     },
     "G-2": {
@@ -1866,7 +1866,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.505Z",
+      "updatedAt": "2026-08-03T08:38:35.902Z",
       "_v": 3
     },
     "G-3": {
@@ -1897,39 +1897,39 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.505Z",
+      "updatedAt": "2026-08-03T08:38:35.902Z",
       "_v": 3
     },
     "G-4": {
       "score": [
-        1,
-        3
+        3,
+        1
       ],
       "goals": [
         {
           "playerName": "Finn SURMAN",
-          "teamId": "egypt",
+          "teamId": "new-zealand",
           "minute": 15,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "MOSTAFA ZICO",
-          "teamId": "new-zealand",
+          "teamId": "egypt",
           "minute": 58,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "MOHAMED SALAH",
-          "teamId": "new-zealand",
+          "teamId": "egypt",
           "minute": 67,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "TREZEGUET",
-          "teamId": "new-zealand",
+          "teamId": "egypt",
           "minute": 82,
           "isPenalty": true,
           "isOwnGoal": false
@@ -1939,71 +1939,71 @@
       "cards": [
         {
           "playerName": "Sarpreet SINGH",
-          "teamId": "egypt",
+          "teamId": "new-zealand",
           "minute": "20'",
           "card": 1
         },
         {
           "playerName": "Callum McCOWATT",
-          "teamId": "egypt",
+          "teamId": "new-zealand",
           "minute": "34'",
           "card": 1
         },
         {
           "playerName": "MOHANAD LASHIN",
-          "teamId": "new-zealand",
+          "teamId": "egypt",
           "minute": "17'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.505Z",
+      "updatedAt": "2026-08-03T08:38:35.902Z",
       "_v": 3
     },
     "G-5": {
       "score": [
-        1,
-        5
+        5,
+        1
       ],
       "goals": [
         {
           "playerName": "Elijah JUST",
-          "teamId": "belgium",
+          "teamId": "new-zealand",
           "minute": 84,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Leandro TROSSARD",
-          "teamId": "new-zealand",
+          "teamId": "belgium",
           "minute": 28,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Leandro TROSSARD",
-          "teamId": "new-zealand",
+          "teamId": "belgium",
           "minute": 50,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Kevin DE BRUYNE",
-          "teamId": "new-zealand",
+          "teamId": "belgium",
           "minute": 66,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Romelu LUKAKU",
-          "teamId": "new-zealand",
+          "teamId": "belgium",
           "minute": 86,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Alexis SAELEMAEKERS",
-          "teamId": "new-zealand",
+          "teamId": "belgium",
           "minute": 90,
           "isPenalty": true,
           "isOwnGoal": false
@@ -2013,19 +2013,19 @@
       "cards": [
         {
           "playerName": "Marko STAMENIC",
-          "teamId": "belgium",
+          "teamId": "new-zealand",
           "minute": "46'",
           "card": 1
         },
         {
           "playerName": "Elijah JUST",
-          "teamId": "belgium",
+          "teamId": "new-zealand",
           "minute": "56'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.941Z",
+      "updatedAt": "2026-08-03T08:38:36.072Z",
       "_v": 3
     },
     "G-6": {
@@ -2095,7 +2095,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.941Z",
+      "updatedAt": "2026-08-03T08:38:36.072Z",
       "_v": 3
     },
     "H-1": {
@@ -2120,7 +2120,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.941Z",
+      "updatedAt": "2026-08-03T08:38:36.072Z",
       "_v": 3
     },
     "H-2": {
@@ -2154,7 +2154,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.941Z",
+      "updatedAt": "2026-08-03T08:38:36.072Z",
       "_v": 3
     },
     "H-3": {
@@ -2208,7 +2208,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:04.941Z",
+      "updatedAt": "2026-08-03T08:38:36.072Z",
       "_v": 3
     },
     "H-4": {
@@ -2219,28 +2219,28 @@
       "goals": [
         {
           "playerName": "Maxi ARAUJO",
-          "teamId": "cape-verde",
+          "teamId": "uruguay",
           "minute": 44,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Agustin CANOBBIO",
-          "teamId": "cape-verde",
+          "teamId": "uruguay",
           "minute": 45,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "KEVIN PINA",
-          "teamId": "uruguay",
+          "teamId": "cape-verde",
           "minute": 21,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "HELIO VARELA",
-          "teamId": "uruguay",
+          "teamId": "cape-verde",
           "minute": 61,
           "isPenalty": true,
           "isOwnGoal": false
@@ -2250,42 +2250,42 @@
       "cards": [
         {
           "playerName": "Rodrigo BENTANCUR",
-          "teamId": "cape-verde",
+          "teamId": "uruguay",
           "minute": "20'",
           "card": 1
         },
         {
           "playerName": "Mathias OLIVERA",
-          "teamId": "cape-verde",
+          "teamId": "uruguay",
           "minute": "58'",
           "card": 1
         },
         {
           "playerName": "SIDNY LOPES CABRAL",
-          "teamId": "uruguay",
+          "teamId": "cape-verde",
           "minute": "5'",
           "card": 1
         },
         {
           "playerName": "DINEY BORGES",
-          "teamId": "uruguay",
+          "teamId": "cape-verde",
           "minute": "90'+3'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:05.367Z",
+      "updatedAt": "2026-08-03T08:38:36.223Z",
       "_v": 3
     },
     "H-5": {
       "score": [
-        0,
-        1
+        1,
+        0
       ],
       "goals": [
         {
           "playerName": "Alex BAENA",
-          "teamId": "uruguay",
+          "teamId": "spain",
           "minute": 42,
           "isPenalty": true,
           "isOwnGoal": false
@@ -2295,37 +2295,37 @@
       "cards": [
         {
           "playerName": "Juan Manuel SANABRIA",
-          "teamId": "spain",
+          "teamId": "uruguay",
           "minute": "54'",
           "card": 1
         },
         {
           "playerName": "Guillermo VARELA",
-          "teamId": "spain",
+          "teamId": "uruguay",
           "minute": "58'",
           "card": 1
         },
         {
           "playerName": "Nicolas DE LA CRUZ",
-          "teamId": "spain",
+          "teamId": "uruguay",
           "minute": "90'+3'",
           "card": 1
         },
         {
           "playerName": "Agustin CANOBBIO",
-          "teamId": "spain",
+          "teamId": "uruguay",
           "minute": "90'+4'",
           "card": 2
         },
         {
           "playerName": "Alex BAENA",
-          "teamId": "uruguay",
+          "teamId": "spain",
           "minute": "46'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:05.367Z",
+      "updatedAt": "2026-08-03T08:38:36.224Z",
       "_v": 3
     },
     "H-6": {
@@ -2362,7 +2362,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:05.368Z",
+      "updatedAt": "2026-08-03T08:38:36.224Z",
       "_v": 3
     },
     "I-1": {
@@ -2403,7 +2403,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:05.368Z",
+      "updatedAt": "2026-08-03T08:38:36.224Z",
       "_v": 3
     },
     "I-2": {
@@ -2458,7 +2458,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:05.368Z",
+      "updatedAt": "2026-08-03T08:38:36.224Z",
       "_v": 3
     },
     "I-3": {
@@ -2499,46 +2499,46 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:05.727Z",
+      "updatedAt": "2026-08-03T08:38:36.325Z",
       "_v": 3
     },
     "I-4": {
       "score": [
-        3,
-        2
+        2,
+        3
       ],
       "goals": [
         {
           "playerName": "Marcus HOLMGREN PEDERSEN",
-          "teamId": "senegal",
+          "teamId": "norway",
           "minute": 43,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Erling HAALAND",
-          "teamId": "senegal",
+          "teamId": "norway",
           "minute": 48,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Erling HAALAND",
-          "teamId": "senegal",
+          "teamId": "norway",
           "minute": 58,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Ismaila SARR",
-          "teamId": "norway",
+          "teamId": "senegal",
           "minute": 53,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Ismaila SARR",
-          "teamId": "norway",
+          "teamId": "senegal",
           "minute": 90,
           "isPenalty": true,
           "isOwnGoal": false
@@ -2547,46 +2547,46 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:05.727Z",
+      "updatedAt": "2026-08-03T08:38:36.325Z",
       "_v": 3
     },
     "I-5": {
       "score": [
-        1,
-        4
+        4,
+        1
       ],
       "goals": [
         {
           "playerName": "Thelo AASGAARD",
-          "teamId": "france",
+          "teamId": "norway",
           "minute": 21,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Ousmane DEMBELE",
-          "teamId": "norway",
+          "teamId": "france",
           "minute": 7,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Ousmane DEMBELE",
-          "teamId": "norway",
+          "teamId": "france",
           "minute": 20,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Ousmane DEMBELE",
-          "teamId": "norway",
+          "teamId": "france",
           "minute": 32,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Desire DOUE",
-          "teamId": "norway",
+          "teamId": "france",
           "minute": 90,
           "isPenalty": true,
           "isOwnGoal": false
@@ -2596,19 +2596,19 @@
       "cards": [
         {
           "playerName": "Patrick BERG",
-          "teamId": "france",
+          "teamId": "norway",
           "minute": "10'",
           "card": 1
         },
         {
           "playerName": "Aurelien TCHOUAMENI",
-          "teamId": "norway",
+          "teamId": "france",
           "minute": "74'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:05.727Z",
+      "updatedAt": "2026-08-03T08:38:36.325Z",
       "_v": 3
     },
     "I-6": {
@@ -2687,7 +2687,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:05.727Z",
+      "updatedAt": "2026-08-03T08:38:36.325Z",
       "_v": 3
     },
     "J-1": {
@@ -2721,7 +2721,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:05.727Z",
+      "updatedAt": "2026-08-03T08:38:36.325Z",
       "_v": 3
     },
     "J-2": {
@@ -2769,7 +2769,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.037Z",
+      "updatedAt": "2026-08-03T08:38:36.468Z",
       "_v": 3
     },
     "J-3": {
@@ -2821,32 +2821,32 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.037Z",
+      "updatedAt": "2026-08-03T08:38:36.468Z",
       "_v": 3
     },
     "J-4": {
       "score": [
-        1,
-        2
+        2,
+        1
       ],
       "goals": [
         {
           "playerName": "NIZAR ALRASHDAN",
-          "teamId": "algeria",
+          "teamId": "jordan",
           "minute": 36,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Nadhir BENBOUALI",
-          "teamId": "jordan",
+          "teamId": "algeria",
           "minute": 69,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Amine GOUIRI",
-          "teamId": "jordan",
+          "teamId": "algeria",
           "minute": 82,
           "isPenalty": true,
           "isOwnGoal": false
@@ -2856,51 +2856,51 @@
       "cards": [
         {
           "playerName": "HUSAM ABUDAHAB",
-          "teamId": "algeria",
+          "teamId": "jordan",
           "minute": "64'",
           "card": 1
         },
         {
           "playerName": "Ramiz ZERROUKI",
-          "teamId": "jordan",
+          "teamId": "algeria",
           "minute": "44'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.037Z",
+      "updatedAt": "2026-08-03T08:38:36.468Z",
       "_v": 3
     },
     "J-5": {
       "score": [
-        1,
-        3
+        3,
+        1
       ],
       "goals": [
         {
           "playerName": "MOUSA ALTAMARI",
-          "teamId": "argentina",
+          "teamId": "jordan",
           "minute": 55,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Giovani Lo Celso",
-          "teamId": "jordan",
+          "teamId": "argentina",
           "minute": 19,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Lautaro MARTINEZ",
-          "teamId": "jordan",
+          "teamId": "argentina",
           "minute": 31,
           "isPenalty": false,
           "isOwnGoal": false
         },
         {
           "playerName": "Lionel MESSI",
-          "teamId": "jordan",
+          "teamId": "argentina",
           "minute": 80,
           "isPenalty": true,
           "isOwnGoal": false
@@ -2910,25 +2910,25 @@
       "cards": [
         {
           "playerName": "MOHANNAD ABUTAHA",
-          "teamId": "argentina",
+          "teamId": "jordan",
           "minute": "17'",
           "card": 1
         },
         {
           "playerName": "YAZAN ALARAB",
-          "teamId": "argentina",
+          "teamId": "jordan",
           "minute": "64'",
           "card": 1
         },
         {
           "playerName": "MOHAMMAD ABUZRAIQ",
-          "teamId": "argentina",
+          "teamId": "jordan",
           "minute": "90'+4'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.037Z",
+      "updatedAt": "2026-08-03T08:38:36.468Z",
       "_v": 3
     },
     "J-6": {
@@ -2990,7 +2990,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.037Z",
+      "updatedAt": "2026-08-03T08:38:36.468Z",
       "_v": 3
     },
     "K-1": {
@@ -3042,7 +3042,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.369Z",
+      "updatedAt": "2026-08-03T08:38:36.625Z",
       "_v": 3
     },
     "K-2": {
@@ -3096,7 +3096,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.369Z",
+      "updatedAt": "2026-08-03T08:38:36.625Z",
       "_v": 3
     },
     "K-3": {
@@ -3157,18 +3157,18 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.369Z",
+      "updatedAt": "2026-08-03T08:38:36.625Z",
       "_v": 3
     },
     "K-4": {
       "score": [
-        1,
-        0
+        0,
+        1
       ],
       "goals": [
         {
           "playerName": "Daniel MUNOZ",
-          "teamId": "dr-congo",
+          "teamId": "colombia",
           "minute": 76,
           "isPenalty": true,
           "isOwnGoal": false
@@ -3178,25 +3178,25 @@
       "cards": [
         {
           "playerName": "Jhon LUCUMI",
-          "teamId": "dr-congo",
+          "teamId": "colombia",
           "minute": "56'",
           "card": 1
         },
         {
           "playerName": "Jefferson LERMA",
-          "teamId": "dr-congo",
+          "teamId": "colombia",
           "minute": "90'+4'",
           "card": 1
         },
         {
           "playerName": "Charles PICKEL",
-          "teamId": "colombia",
+          "teamId": "dr-congo",
           "minute": "90'+3'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.369Z",
+      "updatedAt": "2026-08-03T08:38:36.625Z",
       "_v": 3
     },
     "K-5": {
@@ -3209,13 +3209,13 @@
       "cards": [
         {
           "playerName": "Gustavo PUERTA",
-          "teamId": "portugal",
+          "teamId": "colombia",
           "minute": "86'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.369Z",
+      "updatedAt": "2026-08-03T08:38:36.625Z",
       "_v": 3
     },
     "K-6": {
@@ -3287,7 +3287,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.711Z",
+      "updatedAt": "2026-08-03T08:38:36.739Z",
       "_v": 3
     },
     "L-1": {
@@ -3342,7 +3342,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.711Z",
+      "updatedAt": "2026-08-03T08:38:36.739Z",
       "_v": 3
     },
     "L-2": {
@@ -3381,7 +3381,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.711Z",
+      "updatedAt": "2026-08-03T08:38:36.739Z",
       "_v": 3
     },
     "L-3": {
@@ -3406,18 +3406,18 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.711Z",
+      "updatedAt": "2026-08-03T08:38:36.739Z",
       "_v": 3
     },
     "L-4": {
       "score": [
-        0,
-        1
+        1,
+        0
       ],
       "goals": [
         {
           "playerName": "Ante BUDIMIR",
-          "teamId": "panama",
+          "teamId": "croatia",
           "minute": 54,
           "isPenalty": true,
           "isOwnGoal": false
@@ -3427,37 +3427,37 @@
       "cards": [
         {
           "playerName": "Edgar Yoel BARCENAS",
-          "teamId": "croatia",
+          "teamId": "panama",
           "minute": "61'",
           "card": 1
         },
         {
           "playerName": "Petar SUCIC",
-          "teamId": "panama",
+          "teamId": "croatia",
           "minute": "90'+2'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:06.711Z",
+      "updatedAt": "2026-08-03T08:38:36.739Z",
       "_v": 3
     },
     "L-5": {
       "score": [
-        0,
-        2
+        2,
+        0
       ],
       "goals": [
         {
           "playerName": "Jude BELLINGHAM",
-          "teamId": "panama",
+          "teamId": "england",
           "minute": 62,
           "isPenalty": true,
           "isOwnGoal": false
         },
         {
           "playerName": "Harry KANE",
-          "teamId": "panama",
+          "teamId": "england",
           "minute": 67,
           "isPenalty": true,
           "isOwnGoal": false
@@ -3467,25 +3467,25 @@
       "cards": [
         {
           "playerName": "Jose FAJARDO",
-          "teamId": "england",
+          "teamId": "panama",
           "minute": "53'",
           "card": 1
         },
         {
           "playerName": "Andres ANDRADE",
-          "teamId": "england",
+          "teamId": "panama",
           "minute": "83'",
           "card": 1
         },
         {
           "playerName": "Jarell QUANSAH",
-          "teamId": "panama",
+          "teamId": "england",
           "minute": "60'",
           "card": 1
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:07.036Z",
+      "updatedAt": "2026-08-03T08:38:36.877Z",
       "_v": 3
     },
     "L-6": {
@@ -3532,7 +3532,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:07.036Z",
+      "updatedAt": "2026-08-03T08:38:36.877Z",
       "_v": 3
     },
     "r32-0": {
@@ -3565,7 +3565,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:07.405Z",
+      "updatedAt": "2026-08-03T08:38:37.077Z",
       "team1": "south-africa",
       "team2": "canada",
       "date": "2026-06-28",
@@ -3634,7 +3634,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:07.678Z",
+      "updatedAt": "2026-08-03T08:38:37.077Z",
       "team1": "brazil",
       "team2": "japan",
       "date": "2026-06-29",
@@ -3763,7 +3763,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:07.995Z",
+      "updatedAt": "2026-08-03T08:38:37.077Z",
       "team1": "germany",
       "team2": "paraguay",
       "date": "2026-06-29",
@@ -3836,7 +3836,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:08.297Z",
+      "updatedAt": "2026-08-03T08:38:37.077Z",
       "team1": "netherlands",
       "team2": "morocco",
       "date": "2026-06-30",
@@ -3881,7 +3881,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:08.581Z",
+      "updatedAt": "2026-08-03T08:38:37.077Z",
       "team1": "ivory-coast",
       "team2": "norway",
       "date": "2026-06-30",
@@ -3919,7 +3919,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:08.847Z",
+      "updatedAt": "2026-08-03T08:38:37.915Z",
       "team1": "france",
       "team2": "sweden",
       "date": "2026-06-30",
@@ -3975,7 +3975,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:09.141Z",
+      "updatedAt": "2026-08-03T08:38:37.915Z",
       "team1": "mexico",
       "team2": "ecuador",
       "date": "2026-07-01",
@@ -4026,7 +4026,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:09.442Z",
+      "updatedAt": "2026-08-03T08:38:37.915Z",
       "team1": "england",
       "team2": "dr-congo",
       "date": "2026-07-01",
@@ -4097,7 +4097,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:09.746Z",
+      "updatedAt": "2026-08-03T08:38:37.915Z",
       "team1": "belgium",
       "team2": "senegal",
       "date": "2026-07-01",
@@ -4147,7 +4147,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:10.034Z",
+      "updatedAt": "2026-08-03T08:38:37.915Z",
       "team1": "usa",
       "team2": "bosnia",
       "date": "2026-07-02",
@@ -4192,7 +4192,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:10.311Z",
+      "updatedAt": "2026-08-03T08:38:38.102Z",
       "team1": "spain",
       "team2": "austria",
       "date": "2026-07-02",
@@ -4249,7 +4249,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:10.574Z",
+      "updatedAt": "2026-08-03T08:38:38.102Z",
       "team1": "portugal",
       "team2": "croatia",
       "date": "2026-07-02",
@@ -4293,7 +4293,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:10.871Z",
+      "updatedAt": "2026-08-03T08:38:38.102Z",
       "team1": "switzerland",
       "team2": "algeria",
       "date": "2026-07-03",
@@ -4385,7 +4385,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:11.155Z",
+      "updatedAt": "2026-08-03T08:38:38.102Z",
       "team1": "australia",
       "team2": "egypt",
       "date": "2026-07-03",
@@ -4450,7 +4450,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:11.453Z",
+      "updatedAt": "2026-08-03T08:38:38.102Z",
       "team1": "argentina",
       "team2": "cape-verde",
       "date": "2026-07-03",
@@ -4505,7 +4505,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:11.786Z",
+      "updatedAt": "2026-08-03T08:38:38.212Z",
       "team1": "colombia",
       "team2": "ghana",
       "date": "2026-07-04",
@@ -4592,7 +4592,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:13.586Z",
+      "updatedAt": "2026-08-03T08:38:38.212Z",
       "team1": "canada",
       "team2": "morocco",
       "date": "2026-07-04",
@@ -4641,7 +4641,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:13.922Z",
+      "updatedAt": "2026-08-03T08:38:38.212Z",
       "team1": "paraguay",
       "team2": "france",
       "date": "2026-07-04",
@@ -4686,7 +4686,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:14.243Z",
+      "updatedAt": "2026-08-03T08:38:38.212Z",
       "team1": "brazil",
       "team2": "norway",
       "date": "2026-07-05",
@@ -4781,7 +4781,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:14.543Z",
+      "updatedAt": "2026-08-03T08:38:38.212Z",
       "team1": "mexico",
       "team2": "england",
       "date": "2026-07-06",
@@ -4824,7 +4824,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:14.958Z",
+      "updatedAt": "2026-08-03T08:38:38.337Z",
       "team1": "portugal",
       "team2": "spain",
       "date": "2026-07-06",
@@ -4889,7 +4889,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:15.226Z",
+      "updatedAt": "2026-08-03T08:38:38.337Z",
       "team1": "usa",
       "team2": "belgium",
       "date": "2026-07-07",
@@ -4984,7 +4984,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:15.499Z",
+      "updatedAt": "2026-08-03T08:38:38.337Z",
       "team1": "argentina",
       "team2": "egypt",
       "date": "2026-07-07",
@@ -5087,7 +5087,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:15.802Z",
+      "updatedAt": "2026-08-03T08:38:38.337Z",
       "team1": "switzerland",
       "team2": "colombia",
       "date": "2026-07-07",
@@ -5125,7 +5125,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:16.157Z",
+      "updatedAt": "2026-08-03T08:38:38.337Z",
       "team1": "france",
       "team2": "morocco",
       "date": "2026-07-09",
@@ -5188,7 +5188,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:16.463Z",
+      "updatedAt": "2026-08-03T08:38:38.483Z",
       "team1": "spain",
       "team2": "belgium",
       "date": "2026-07-10",
@@ -5233,7 +5233,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:16.789Z",
+      "updatedAt": "2026-08-03T08:38:38.483Z",
       "team1": "norway",
       "team2": "england",
       "date": "2026-07-11",
@@ -5309,7 +5309,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:17.048Z",
+      "updatedAt": "2026-08-03T08:38:38.483Z",
       "team1": "argentina",
       "team2": "switzerland",
       "date": "2026-07-12",
@@ -5359,7 +5359,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:17.352Z",
+      "updatedAt": "2026-08-03T08:38:38.483Z",
       "team1": "france",
       "team2": "spain",
       "date": "2026-07-14",
@@ -5422,7 +5422,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:17.626Z",
+      "updatedAt": "2026-08-03T08:38:38.483Z",
       "team1": "england",
       "team2": "argentina",
       "date": "2026-07-15",
@@ -5509,7 +5509,7 @@
       "assists": [],
       "cards": [],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:17.885Z",
+      "updatedAt": "2026-08-03T08:38:38.563Z",
       "team1": "france",
       "team2": "england",
       "date": "2026-07-18",
@@ -5576,7 +5576,7 @@
         }
       ],
       "status": "finished",
-      "updatedAt": "2026-07-22T05:54:18.188Z",
+      "updatedAt": "2026-08-03T08:38:38.563Z",
       "team1": "spain",
       "team2": "argentina",
       "date": "2026-07-19",

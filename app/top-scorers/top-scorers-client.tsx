@@ -29,13 +29,37 @@ export default function TopScorersClient({ scorerPhotos, totalGoals = 0, totalMa
     teamGroup: string; goals: number; matches: number; position: string; age: number;
   }[]>([]);
   const [page, setPage] = useState(0);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
     fetch("/api/top-scorers?limit=200")
-      .then((r) => r.json())
-      .then(setAllScorers)
-      .catch(() => {});
+      .then((r) => {
+        if (!r.ok) throw new Error("failed");
+        return r.json();
+      })
+      .then((data) => {
+        if (!cancelled) setAllScorers(data);
+      })
+      .catch(() => {
+        if (!cancelled) setError(true);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
+
+  const retry = () => {
+    setError(false);
+    setAllScorers([]);
+    fetch("/api/top-scorers?limit=200")
+      .then((r) => {
+        if (!r.ok) throw new Error("failed");
+        return r.json();
+      })
+      .then(setAllScorers)
+      .catch(() => setError(true));
+  };
 
   const safeScorers = allScorers || [];
   const totalPages = Math.ceil(safeScorers.length / PER_PAGE);
@@ -58,6 +82,15 @@ export default function TopScorersClient({ scorerPhotos, totalGoals = 0, totalMa
           <span className="tabular-nums">{safeScorers.reduce((s, x) => s + x.goals, 0)} total goals</span>
         </div>
       </div>
+
+      {error && (
+        <div className="mb-6 flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 text-center">
+          <p className="text-sm text-muted-foreground">Could not load top scorers. Please try again.</p>
+          <Button variant="outline" size="sm" onClick={retry}>
+            Try again
+          </Button>
+        </div>
+      )}
 
       {safeScorers.length === 0 ? (
         totalGoals > 0 ? (

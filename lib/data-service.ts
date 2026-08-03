@@ -28,6 +28,7 @@ interface FIFAPlayer {
 interface FIFATeam {
   Score?: number;
   IdTeam?: string;
+  TeamName?: { Locale?: string; Description?: string }[];
   Players?: FIFAPlayer[];
   Goals?: {
     Type?: number;
@@ -147,6 +148,27 @@ export async function getFIFAIdMatch(team1Id: string, team2Id: string): Promise<
   const t1 = normalizeTeamName(getTeamName(team1Id));
   const t2 = normalizeTeamName(getTeamName(team2Id));
   return map.get(`${t1}-${t2}`) ?? map.get(`${t2}-${t1}`) ?? null;
+}
+
+export function getFIFATeamOrientation(
+  fifaHome: { TeamName?: { Description?: string }[] } | undefined,
+  fifaAway: { TeamName?: { Description?: string }[] } | undefined,
+  team1Id: string,
+  team2Id: string,
+): { homeIsTeam1: boolean; homeOurId: string; awayOurId: string } {
+  const t1 = normalizeTeamName(getTeamName(team1Id));
+  const t2 = normalizeTeamName(getTeamName(team2Id));
+  const home = normalizeTeamName(fifaHome?.TeamName?.[0]?.Description || "");
+  const away = normalizeTeamName(fifaAway?.TeamName?.[0]?.Description || "");
+  let homeIsTeam1: boolean;
+  if (home === t1 || away === t2) homeIsTeam1 = true;
+  else if (home === t2 || away === t1) homeIsTeam1 = false;
+  else homeIsTeam1 = true;
+  return {
+    homeIsTeam1,
+    homeOurId: homeIsTeam1 ? team1Id : team2Id,
+    awayOurId: homeIsTeam1 ? team2Id : team1Id,
+  };
 }
 
 export type DataSource = "simulated" | "sportsrc" | "fifa";
@@ -283,12 +305,13 @@ export async function getMatchData(
   matchId: string,
   team1Id: string,
   team2Id: string,
+  cachedResults?: Record<string, StoredMatchResult>,
 ): Promise<MatchDetail> {
   if (!isWcStarted()) {
     return { score: [0, 0], goals: [], status: "scheduled" };
   }
 
-  const cached = await getMatchResult(matchId);
+  const cached = cachedResults?.[matchId] ?? (await getMatchResult(matchId));
   if (cached && cached.status !== "scheduled") {
     return { score: cached.score, goals: cached.goals, status: cached.status };
   }
@@ -344,10 +367,11 @@ export async function getMatchData(
     if (fifaIdMatch) {
       const fifa = await fetchFIFA<FIFALiveResponse>(`live/football/${fifaIdMatch}`);
       if (fifa) {
+        const { homeIsTeam1, homeOurId, awayOurId } = getFIFATeamOrientation(fifa.HomeTeam, fifa.AwayTeam, team1Id, team2Id);
         const goals: GoalEvent[] = [];
         const teams = [
-          { data: fifa.HomeTeam, ourId: team1Id },
-          { data: fifa.AwayTeam, ourId: team2Id },
+          { data: fifa.HomeTeam, ourId: homeOurId },
+          { data: fifa.AwayTeam, ourId: awayOurId },
         ];
         for (const { data: team, ourId } of teams) {
           if (!team?.Goals) continue;
@@ -363,8 +387,10 @@ export async function getMatchData(
             });
           }
         }
+        const homeScore = fifa.HomeTeam?.Score ?? 0;
+        const awayScore = fifa.AwayTeam?.Score ?? 0;
         attempts.push({
-          score: [fifa.HomeTeam?.Score ?? 0, fifa.AwayTeam?.Score ?? 0],
+          score: homeIsTeam1 ? [homeScore, awayScore] : [awayScore, homeScore],
           goals,
           status: fifa.MatchStatus === 0 ? "finished" : fifa.MatchStatus === 2 ? "live" : "scheduled",
           rank: 2,
@@ -476,11 +502,14 @@ export async function getWeeklyStar(): Promise<StarData | null> {
 
   const { getAllMatchResults } = await import("@/lib/storage");
   const allResults = await getAllMatchResults();
+  const rosterKeys = new Set(getAllPlayers().map(p => normalizePlayerName(p.name)));
   const goalCounts = new Map<string, { name: string; teamId: string; goals: number; matches: Set<string> }>();
 
   for (const [matchId, result] of Object.entries(allResults)) {
     if (result.status !== "finished") continue;
     for (const g of result.goals) {
+      if (g.isOwnGoal) continue;
+      if (!rosterKeys.has(normalizePlayerName(g.playerName))) continue;
       const key = `${g.teamId}-${g.playerName}`;
       const existing = goalCounts.get(key);
       if (existing) {
@@ -556,7 +585,9 @@ export function computeStandingsFromResults(
     if (!t1 || !t2) continue;
     const result = results[match.id];
     if (!result || result.status === "scheduled") continue;
-    const [goals1, goals2] = result.score;
+    const score = Array.isArray(result.score) && result.score.length >= 2 ? result.score : [0, 0];
+    const goals1 = Number(score[0]) || 0;
+    const goals2 = Number(score[1]) || 0;
 
     stats[match.team1].played++;
     stats[match.team2].played++;
@@ -600,8 +631,7 @@ function getOrCreateEntry<T extends { playerName: string; teamId: string; teamNa
   map: Record<string, T>,
   teamId: string,
   playerName: string,
-  factory: () => T,
-): T {
+): T | null {
   const exact = `${teamId}-${playerName}`;
   if (map[exact]) return map[exact];
   const normalized = normalizePlayerName(playerName);
@@ -610,14 +640,7 @@ function getOrCreateEntry<T extends { playerName: string; teamId: string; teamNa
       return map[k];
     }
   }
-  const entry = factory();
-  map[exact] = entry;
-  return entry;
-}
-
-function teamInfo(teamId: string): { teamName: string; teamFlag: string; teamGroup: string } {
-  const t = getTeamById(teamId);
-  return { teamName: t?.name || teamId, teamFlag: t?.flag || "", teamGroup: t?.group || "" };
+  return null;
 }
 
 export function computeTopScorersFromResults(
@@ -645,10 +668,9 @@ export function computeTopScorersFromResults(
     for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
 
     for (const g of result.goals) {
-      const entry = getOrCreateEntry(map, g.teamId, g.playerName, () => ({
-        playerName: g.playerName, teamId: g.teamId, ...teamInfo(g.teamId),
-        position: "", goals: 0, matches: 0,
-      }));
+      if (g.isOwnGoal) continue;
+      const entry = getOrCreateEntry(map, g.teamId, g.playerName);
+      if (!entry) continue;
       entry.goals++;
     }
   }
@@ -707,10 +729,8 @@ export function computeTopAssistsFromResults(
     for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
 
     for (const a of (result.assists || [])) {
-      const entry = getOrCreateEntry(map, a.teamId, a.playerName, () => ({
-        playerName: a.playerName, teamId: a.teamId, ...teamInfo(a.teamId),
-        position: "", assists: 0, matches: 0,
-      }));
+      const entry = getOrCreateEntry(map, a.teamId, a.playerName);
+      if (!entry) continue;
       entry.assists++;
     }
   }
@@ -746,10 +766,8 @@ export function computeTopCardsFromResults(
     for (const pl of t2.players) { const k = `${t2.id}-${pl.name}`; if (map[k]) map[k].matches++; }
 
     for (const c of (result.cards || [])) {
-      const entry = getOrCreateEntry(map, c.teamId, c.playerName, () => ({
-        playerName: c.playerName, teamId: c.teamId, ...teamInfo(c.teamId),
-        position: "", yellowCards: 0, redCards: 0, matches: 0,
-      }));
+      const entry = getOrCreateEntry(map, c.teamId, c.playerName);
+      if (!entry) continue;
       if (c.card === 2) entry.redCards++;
       else entry.yellowCards++;
     }

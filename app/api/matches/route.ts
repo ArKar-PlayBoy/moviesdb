@@ -1,20 +1,24 @@
 import { NextResponse } from "next/server";
-import { MATCHES, getTeamFlag, getTeamName, getMatchScore, getStarOfTheMatch, getKnockoutBracket } from "@/data/worldcup-2026";
+import { MATCHES, getTeamFlag, getTeamName, getMatchScore, getStarOfTheMatch, getKnockoutBracket, getAllPlayers, normalizePlayerName } from "@/data/worldcup-2026";
 import { getMatchData, type GoalEvent } from "@/lib/data-service";
 import { getAllMatchResults } from "@/lib/storage";
 import { rateLimit } from "@/lib/rate-limit";
 
 function computePOTMFromGoals(goals: GoalEvent[]): { playerName: string; teamId: string; goals: number; minutes: number[] } | null {
-  if (goals.length === 0) return null;
+  const realGoals = goals.filter(g => !g.isOwnGoal);
+  if (realGoals.length === 0) return null;
   const counts: Record<string, { count: number; minutes: number[]; teamId: string }> = {};
-  for (const g of goals) {
+  for (const g of realGoals) {
     if (!counts[g.playerName]) counts[g.playerName] = { count: 0, minutes: [], teamId: g.teamId };
     counts[g.playerName].count++;
     counts[g.playerName].minutes.push(g.minute);
   }
-  const sorted = Object.entries(counts).sort((a, b) => b[1].count - a[1].count);
-  if (sorted.length === 0) return null;
-  return { playerName: sorted[0][0], teamId: sorted[0][1].teamId, goals: sorted[0][1].count, minutes: sorted[0][1].minutes };
+  const allPlayers = getAllPlayers();
+  const top = Object.entries(counts)
+    .sort((a, b) => b[1].count - a[1].count)
+    .find(([name, data]) => allPlayers.some(p => normalizePlayerName(p.name) === normalizePlayerName(name) && p.teamId === data.teamId));
+  if (!top) return null;
+  return { playerName: top[0], teamId: top[1].teamId, goals: top[1].count, minutes: top[1].minutes };
 }
 
 export async function GET(request: Request) {
@@ -28,59 +32,63 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }
 
-  const { searchParams } = new URL(request.url);
-  const teamId = searchParams.get("teamId");
-  const stage = searchParams.get("stage");
-  const limitParam = searchParams.get("limit");
+  try {
+    const { searchParams } = new URL(request.url);
+    const teamId = searchParams.get("teamId");
+    const stage = searchParams.get("stage");
+    const limitParam = searchParams.get("limit");
 
-  let matches: { id: string; group: string; team1: string; team2: string; date: string; venue: string; stage: string }[] = [...MATCHES];
+    let matches: { id: string; group: string; team1: string; team2: string; date: string; venue: string; stage: string }[] = [...MATCHES];
 
-  // Include knockout matches from stored data
-  const allResults = await getAllMatchResults();
-  const bracket = getKnockoutBracket(allResults);
-  for (const bm of bracket) {
-    if (bm.team1 && bm.team2) {
-      const stored = allResults[bm.id];
-      matches.push({
-        id: bm.id,
-        group: bm.round,
-        team1: bm.team1,
-        team2: bm.team2,
-        date: stored?.date || "",
-        venue: stored?.venue || "",
-        stage: bm.round,
-      });
+    // Include knockout matches from stored data
+    const allResults = await getAllMatchResults();
+    const bracket = getKnockoutBracket(allResults);
+    for (const bm of bracket) {
+      if (bm.team1 && bm.team2) {
+        const stored = allResults[bm.id];
+        matches.push({
+          id: bm.id,
+          group: bm.round,
+          team1: bm.team1,
+          team2: bm.team2,
+          date: stored?.date || "",
+          venue: stored?.venue || "",
+          stage: bm.round,
+        });
+      }
     }
-  }
 
-  if (teamId) {
-    matches = matches.filter((m) => m.team1 === teamId || m.team2 === teamId);
-  }
-  if (stage) {
-    matches = matches.filter((m) => m.stage === stage);
-  }
-  if (limitParam) {
-    matches = matches.slice(0, parseInt(limitParam, 10));
-  }
+    if (teamId) {
+      matches = matches.filter((m) => m.team1 === teamId || m.team2 === teamId);
+    }
+    if (stage) {
+      matches = matches.filter((m) => m.stage === stage);
+    }
+    if (limitParam) {
+      matches = matches.slice(0, parseInt(limitParam, 10));
+    }
 
-  const enriched = await Promise.all(matches.map(async (m) => {
-    const live = await getMatchData(m.id, m.team1, m.team2);
-    const [score1, score2] = live.status !== "scheduled" ? live.score : getMatchScore(m.id, m.team1, m.team2, m.date);
-    const star = live.goals.length > 0 ? computePOTMFromGoals(live.goals) : getStarOfTheMatch(m.id);
-    return {
-      ...m,
-      team1Name: getTeamName(m.team1),
-      team2Name: getTeamName(m.team2),
-      team1Flag: getTeamFlag(m.team1),
-      team2Flag: getTeamFlag(m.team2),
-      score1,
-      score2,
-      liveStatus: live.status,
-      starOfTheMatch: star || null,
-    };
-  }));
+    const enriched = await Promise.all(matches.map(async (m) => {
+      const live = await getMatchData(m.id, m.team1, m.team2, allResults);
+      const [score1, score2] = live.status !== "scheduled" ? live.score : getMatchScore(m.id, m.team1, m.team2, m.date, allResults);
+      const star = live.goals.length > 0 ? computePOTMFromGoals(live.goals) : getStarOfTheMatch(m.id, allResults);
+      return {
+        ...m,
+        team1Name: getTeamName(m.team1),
+        team2Name: getTeamName(m.team2),
+        team1Flag: getTeamFlag(m.team1),
+        team2Flag: getTeamFlag(m.team2),
+        score1,
+        score2,
+        liveStatus: live.status,
+        starOfTheMatch: star || null,
+      };
+    }));
 
-  return NextResponse.json(enriched, {
-    headers: { "Cache-Control": "public, s-maxage=30, stale-while-revalidate=120" },
-  });
+    return NextResponse.json(enriched, {
+      headers: { "Cache-Control": "public, s-maxage=30, stale-while-revalidate=120" },
+    });
+  } catch {
+    return NextResponse.json({ error: "Failed to load matches" }, { status: 500 });
+  }
 }

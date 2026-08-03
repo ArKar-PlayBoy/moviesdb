@@ -10,6 +10,7 @@ export async function getWikipediaImage(name: string): Promise<WikipediaImageRes
       `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(name)}`,
       {
         next: { revalidate: 86400 },
+        signal: AbortSignal.timeout(3000),
       }
     );
     if (!res.ok) return null;

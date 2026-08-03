@@ -569,7 +569,7 @@ export function getTeamFlag(id: string): string {
 // Live results override
 // Written by `npm run sync` (local) or Vercel cron → Redis (production).
 // ---------------------------------------------------------------------------
-export let LIVE_RESULTS: Record<string, { score1: number; score2: number; goalScorers?: { playerName: string; teamId: string; minute: number }[] }> = {};
+export let LIVE_RESULTS: Record<string, { score1: number; score2: number; goalScorers?: { playerName: string; teamId: string; minute: number; isOwnGoal?: boolean }[] }> = {};
 try {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const data = require("../data/live-results.json");
@@ -586,10 +586,11 @@ try {
           playerName: g.playerName as string,
           teamId: g.teamId as string,
           minute: (g.minute as number) || 0,
+          isOwnGoal: !!(g as Record<string, unknown>).isOwnGoal,
         })),
       };
     } else {
-      normalized[id] = entry as { score1: number; score2: number; goalScorers?: { playerName: string; teamId: string; minute: number }[] };
+      normalized[id] = entry as { score1: number; score2: number; goalScorers?: { playerName: string; teamId: string; minute: number; isOwnGoal?: boolean }[] };
     }
   }
   LIVE_RESULTS = normalized;
@@ -781,10 +782,12 @@ export function hasMatchResult(matchId: string, dynamicResults?: Record<string, 
 export function getMatchScore(matchId: string, team1Id: string, team2Id: string, date?: string, dynamicResults?: Record<string, StoredMatchResult>): [number, number] {
   if (!hasMatchResult(matchId, dynamicResults)) return [0, 0];
   if (dynamicResults && dynamicResults[matchId] && dynamicResults[matchId].status !== "scheduled") {
-    return dynamicResults[matchId].score;
+    const score = dynamicResults[matchId].score;
+    if (!Array.isArray(score) || score.length < 2) return [0, 0];
+    return [Number(score[0]) || 0, Number(score[1]) || 0];
   }
   const live = LIVE_RESULTS[matchId];
-  return [live.score1, live.score2];
+  return [live.score1 || 0, live.score2 || 0];
 }
 
 export interface KnockoutMatch {
@@ -869,21 +872,22 @@ export interface MatchGoalScorer {
 
 export function getMatchGoalScorers(matchId: string, team1Id: string, team2Id: string, date?: string, dynamicResults?: Record<string, StoredMatchResult>): { scorers1: MatchGoalScorer[]; scorers2: MatchGoalScorer[] } {
   if (dynamicResults && dynamicResults[matchId] && dynamicResults[matchId].status !== "scheduled") {
-    const goals = dynamicResults[matchId].goals || [];
+    const goals = (dynamicResults[matchId].goals || []).filter(g => !g.isOwnGoal);
     const scorers1 = goals.filter(g => g.teamId === team1Id).map(g => ({ playerName: g.playerName, teamId: g.teamId, minute: g.minute }));
     const scorers2 = goals.filter(g => g.teamId === team2Id).map(g => ({ playerName: g.playerName, teamId: g.teamId, minute: g.minute }));
     return { scorers1, scorers2 };
   }
   const live = LIVE_RESULTS[matchId];
   if (live?.goalScorers) {
-    const scorers1 = live.goalScorers.filter(g => g.teamId === team1Id).map(g => ({ playerName: g.playerName, teamId: g.teamId, minute: g.minute }));
-    const scorers2 = live.goalScorers.filter(g => g.teamId === team2Id).map(g => ({ playerName: g.playerName, teamId: g.teamId, minute: g.minute }));
+    const goals = live.goalScorers.filter(g => !g.isOwnGoal);
+    const scorers1 = goals.filter(g => g.teamId === team1Id).map(g => ({ playerName: g.playerName, teamId: g.teamId, minute: g.minute }));
+    const scorers2 = goals.filter(g => g.teamId === team2Id).map(g => ({ playerName: g.playerName, teamId: g.teamId, minute: g.minute }));
     return { scorers1, scorers2 };
   }
   return { scorers1: [], scorers2: [] };
 }
 
-function normalizePlayerName(name: string): string {
+export function normalizePlayerName(name: string): string {
   return name.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Z0-9\s-]/g, "").trim();
 }
 
@@ -913,22 +917,12 @@ export function getTopScorers(limit = 30, dynamicResults?: Record<string, Stored
     for (const pl of t2.players) { const entry = findInMap(map, t2.id, pl.name); if (entry) entry.matches++; }
     const gs = getMatchGoalScorers(m.id, m.team1, m.team2, m.date, dynamicResults);
     for (const sc of gs.scorers1) {
-      const entry = findInMap(map, sc.teamId, sc.playerName) || (() => {
-        const k = `${sc.teamId}-${sc.playerName}`;
-        const t = getTeamById(sc.teamId);
-        map[k] = { playerName: sc.playerName, teamId: sc.teamId, teamName: t?.name || sc.teamId, teamFlag: t?.flag || "", position: "", goals: 0, matches: 0, teamGroup: t?.group || "" };
-        return map[k];
-      })();
-      entry.goals++;
+      const entry = findInMap(map, sc.teamId, sc.playerName);
+      if (entry) entry.goals++;
     }
     for (const sc of gs.scorers2) {
-      const entry = findInMap(map, sc.teamId, sc.playerName) || (() => {
-        const k = `${sc.teamId}-${sc.playerName}`;
-        const t = getTeamById(sc.teamId);
-        map[k] = { playerName: sc.playerName, teamId: sc.teamId, teamName: t?.name || sc.teamId, teamFlag: t?.flag || "", position: "", goals: 0, matches: 0, teamGroup: t?.group || "" };
-        return map[k];
-      })();
-      entry.goals++;
+      const entry = findInMap(map, sc.teamId, sc.playerName);
+      if (entry) entry.goals++;
     }
   }
   return Object.values(map).filter(s => s.goals > 0).sort((a, b) => b.goals - a.goals || b.matches - a.matches).slice(0, limit);
@@ -946,13 +940,8 @@ export function getTopAssists(limit = 30, dynamicResults?: Record<string, Stored
     const result = dynamicResults[m.id];
     if (!result || result.status === "scheduled") continue;
     for (const a of result.assists || []) {
-      const entry = findInMap(map, a.teamId, a.playerName) || (() => {
-        const k = `${a.teamId}-${a.playerName}`;
-        const t = getTeamById(a.teamId);
-        map[k] = { playerName: a.playerName, teamId: a.teamId, teamName: t?.name || a.teamId, teamFlag: t?.flag || "", position: "", assists: 0, matches: 0, teamGroup: t?.group || "" };
-        return map[k];
-      })();
-      entry.assists++;
+      const entry = findInMap(map, a.teamId, a.playerName);
+      if (entry) entry.assists++;
     }
   }
   return Object.values(map).filter(s => s.assists > 0).sort((a, b) => b.assists - a.assists).slice(0, limit);
@@ -970,12 +959,8 @@ export function getTopCards(limit = 30, dynamicResults?: Record<string, StoredMa
     const result = dynamicResults[m.id];
     if (!result || result.status === "scheduled") continue;
     for (const c of result.cards || []) {
-      const entry = findInMap(map, c.teamId, c.playerName) || (() => {
-        const k = `${c.teamId}-${c.playerName}`;
-        const t = getTeamById(c.teamId);
-        map[k] = { playerName: c.playerName, teamId: c.teamId, teamName: t?.name || c.teamId, teamFlag: t?.flag || "", position: "", yellowCards: 0, redCards: 0, matches: 0, teamGroup: t?.group || "" };
-        return map[k];
-      })();
+      const entry = findInMap(map, c.teamId, c.playerName);
+      if (!entry) continue;
       if (c.card === 2) entry.redCards++;
       else entry.yellowCards++;
     }
@@ -1012,7 +997,7 @@ export function getPlayerMatchPerformances(playerName: string, teamId: string, d
     const oppScore = isTeam1 ? s2 : s1;
     const gs = getMatchGoalScorers(m.id, m.team1, m.team2, m.date, dynamicResults);
     const playerGoals = [...gs.scorers1, ...gs.scorers2]
-      .filter(sc => sc.playerName === playerName && sc.teamId === teamId);
+      .filter(sc => normalizePlayerName(sc.playerName) === normalizePlayerName(playerName) && sc.teamId === teamId);
     result.push({
       matchId: m.id,
       opponent: opponentTeam.name,
@@ -1065,8 +1050,12 @@ export function getStarOfTheMatch(matchId: string, dynamicResults?: Record<strin
   }
 
   const sorted = Object.entries(goalCounts).sort((a, b) => b[1].count - a[1].count);
-  const top = sorted[0];
-  const playerData = getAllPlayers().find(p => p.name === top[0] && p.teamId === top[1].teamId);
+  const allPlayers = getAllPlayers();
+  const top = sorted.find(([name, data]) =>
+    allPlayers.some(p => normalizePlayerName(p.name) === normalizePlayerName(name) && p.teamId === data.teamId)
+  ) ?? null;
+  if (!top) return null;
+  const playerData = allPlayers.find(p => normalizePlayerName(p.name) === normalizePlayerName(top[0]) && p.teamId === top[1].teamId);
   if (!playerData) return null;
 
   const [s1, s2] = getMatchScore(match.id, match.team1, match.team2, match.date, dynamicResults);

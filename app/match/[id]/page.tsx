@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { MATCHES, getTeamById, getTeamName, getAllPlayers, type StarOfMatch, getKnockoutBracket } from "@/data/worldcup-2026";
+import { MATCHES, getTeamById, getTeamName, getAllPlayers, normalizePlayerName, type StarOfMatch, getKnockoutBracket } from "@/data/worldcup-2026";
 import { getMatchData, type GoalEvent, getBracketData } from "@/lib/data-service";
 import { getAllMatchResults } from "@/lib/storage";
 import { slugify } from "@/lib/utils";
@@ -65,31 +65,35 @@ function computeStarOfMatch(
   t2Flag: string,
   score: [number, number],
 ): StarOfMatch | null {
-  if (goals.length === 0) return null;
+  const realGoals = goals.filter(g => !g.isOwnGoal);
+  if (realGoals.length === 0) return null;
   const counts: Record<string, { count: number; minutes: number[]; teamId: string }> = {};
-  for (const g of goals) {
+  for (const g of realGoals) {
     if (!counts[g.playerName]) counts[g.playerName] = { count: 0, minutes: [], teamId: g.teamId };
     counts[g.playerName].count++;
     counts[g.playerName].minutes.push(g.minute);
   }
-  const sorted = Object.entries(counts).sort((a, b) => b[1].count - a[1].count);
-  const top = sorted[0];
-  const isTeam1 = top[1].teamId === team1Id;
+  const allPlayers = getAllPlayers();
+  const top = Object.entries(counts)
+    .sort((a, b) => b[1].count - a[1].count)
+    .find(([name, data]) => allPlayers.some(p => normalizePlayerName(p.name) === normalizePlayerName(name) && p.teamId === data.teamId));
+  if (!top) return null;
+  const [topName, topData] = top;
+  const isTeam1 = topData.teamId === team1Id;
   const [s1, s2] = score;
   const teamScore = isTeam1 ? s1 : s2;
   const oppScore = isTeam1 ? s2 : s1;
 
-  const allPlayers = getAllPlayers();
-  const playerData = allPlayers.find(p => p.name === top[0] && p.teamId === top[1].teamId);
+  const playerData = allPlayers.find(p => normalizePlayerName(p.name) === normalizePlayerName(topName) && p.teamId === topData.teamId);
 
   return {
-    playerName: top[0],
-    teamId: top[1].teamId,
+    playerName: topName,
+    teamId: topData.teamId,
     teamName: isTeam1 ? t1Name : t2Name,
     teamFlag: isTeam1 ? t1Flag : t2Flag,
     position: playerData?.position || "",
-    goals: top[1].count,
-    minutes: top[1].minutes.sort((a, b) => a - b),
+    goals: topData.count,
+    minutes: topData.minutes.sort((a, b) => a - b),
     teamScore,
     opponentScore: oppScore,
     isWinningTeam: teamScore > oppScore,

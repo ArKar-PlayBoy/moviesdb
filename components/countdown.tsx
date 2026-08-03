@@ -3,23 +3,35 @@
 import { useState, useEffect } from "react";
 
 const WORLD_CUP_START = new Date("2026-06-11T00:00:00");
+const WORLD_CUP_END = new Date("2026-07-20T00:00:00");
 
-function calc() {
+type Status = "before" | "during" | "after";
+
+interface CountdownState {
+  status: Status;
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
+function calc(): CountdownState {
   const now = new Date();
+  if (now >= WORLD_CUP_END) return { status: "after", days: 0, hours: 0, minutes: 0, seconds: 0 };
+  if (now >= WORLD_CUP_START) return { status: "during", days: 0, hours: 0, minutes: 0, seconds: 0 };
   const diff = WORLD_CUP_START.getTime() - now.getTime();
-  if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0, started: true };
   return {
+    status: "before",
     days: Math.floor(diff / 86400000),
     hours: Math.floor((diff % 86400000) / 3600000),
     minutes: Math.floor((diff % 3600000) / 60000),
     seconds: Math.floor((diff % 60000) / 1000),
-    started: false,
   };
 }
 
 export default function Countdown() {
   const [mounted, setMounted] = useState(false);
-  const [t, setT] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0, started: false });
+  const [t, setT] = useState<CountdownState>({ status: "before", days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -31,7 +43,16 @@ export default function Countdown() {
 
   if (!mounted) return <div className="h-12" />;
 
-  if (t.started) {
+  if (t.status === "after") {
+    return (
+      <div className="inline-flex items-center gap-2 text-sm font-bold text-foreground bg-primary/10 px-3 py-1 rounded-full">
+        <span aria-hidden="true">🏆</span>
+        Tournament Complete
+      </div>
+    );
+  }
+
+  if (t.status === "during") {
     return (
       <div className="inline-flex items-center gap-2 text-sm font-bold text-foreground bg-primary/10 px-3 py-1 rounded-full">
         <span className="relative flex h-2 w-2">

@@ -1,5 +1,5 @@
 import TEAMS, { MATCHES, getTeamName } from "@/data/worldcup-2026";
-import { fetchFIFA, fetchFIFACalendar, normalizeTeamName, getFIFAIdMatch } from "@/lib/data-service";
+import { fetchFIFA, fetchFIFACalendar, normalizeTeamName, getFIFAIdMatch, getFIFATeamOrientation } from "@/lib/data-service";
 import { getMatchResult, setMatchResult } from "@/lib/storage";
 
 export interface GoalSyncEntry {
@@ -33,6 +33,7 @@ interface FIFAPlayer {
 interface FIFATeam {
   Score?: number;
   IdTeam?: string;
+  TeamName?: { Locale?: string; Description?: string }[];
   Players?: FIFAPlayer[];
   Goals?: {
     Type?: number;
@@ -73,9 +74,10 @@ export function parseFIFAData(
   const assists: AssistSyncEntry[] = [];
   const cards: CardSyncEntry[] = [];
 
+  const { homeOurId, awayOurId } = getFIFATeamOrientation(fifa.HomeTeam, fifa.AwayTeam, team1Id, team2Id);
   const teams = [
-    { data: fifa.HomeTeam, ourId: team1Id },
-    { data: fifa.AwayTeam, ourId: team2Id },
+    { data: fifa.HomeTeam, ourId: homeOurId },
+    { data: fifa.AwayTeam, ourId: awayOurId },
   ];
 
   for (const { data: team, ourId } of teams) {
@@ -222,12 +224,12 @@ export async function syncAllMatches(): Promise<SyncStats> {
             const fifa = await fetchFIFA<FIFAMatchResponse>(`live/football/${fifaIdMatch}`);
             if (fifa) {
               const parsed = parseFIFAData(fifa, m.team1, m.team2);
+              const { homeIsTeam1 } = getFIFATeamOrientation(fifa.HomeTeam, fifa.AwayTeam, m.team1, m.team2);
+              const homeScore = fifa.HomeTeam?.Score ?? 0;
+              const awayScore = fifa.AwayTeam?.Score ?? 0;
               return {
                 matchId: m.id,
-                score: [
-                  fifa.HomeTeam?.Score ?? 0,
-                  fifa.AwayTeam?.Score ?? 0,
-                ] as [number, number],
+                score: (homeIsTeam1 ? [homeScore, awayScore] : [awayScore, homeScore]) as [number, number],
                 goals: parsed.goals,
                 assists: parsed.assists,
                 cards: parsed.cards,
@@ -345,6 +347,17 @@ export async function syncAllMatches(): Promise<SyncStats> {
     teamNameToId[normalizeTeamName(t.name)] = t.id;
   }
 
+  const koMatches: {
+    matchId: string;
+    fifaIdMatch?: number;
+    homeId: string;
+    awayId: string;
+    calScore: [number, number];
+    hasCalScore: boolean;
+    calDate: string;
+    stage: string;
+  }[] = [];
+
   for (const cm of calMatches) {
     const stage = cm.StageName?.[0]?.Description;
     if (!stage || stage === "First Stage" || !stagePrefixMap[stage]) continue;
@@ -359,77 +372,91 @@ export async function syncAllMatches(): Promise<SyncStats> {
     const idx = stageCounters[stage] ?? 0;
     stageCounters[stage] = idx + 1;
     const matchId = stage === "Bronze final" || stage === "Final" ? prefix : `${prefix}-${idx}`;
-    const fifaIdMatch = cm.IdMatch;
 
-    knockoutAttempted++;
-
-    const calScore: [number, number] = [
-      cm.Home?.Score ?? 0,
-      cm.Away?.Score ?? 0,
-    ];
-    const hasCalScore = (cm.Home?.Score ?? -1) >= 0 && (cm.Away?.Score ?? -1) >= 0;
-    const calDate = cm.Date ? cm.Date.substring(0, 10) : "";
-
-    let status: "scheduled" | "live" | "finished" = "scheduled";
-    let score: [number, number] = [0, 0];
-    let goals: GoalSyncEntry[] = [];
-    let assists: AssistSyncEntry[] = [];
-    let cards: CardSyncEntry[] = [];
-
-    if (fifaIdMatch) {
-      try {
-        const fifa = await fetchFIFA<FIFAMatchResponse>(`live/football/${fifaIdMatch}`);
-        if (fifa) {
-          const parsed = parseFIFAData(fifa, homeId, awayId);
-          goals = parsed.goals;
-          assists = parsed.assists;
-          cards = parsed.cards;
-          status = fifa.MatchStatus === 0 ? "finished" : fifa.MatchStatus === 2 ? "live" : "scheduled";
-          score = [fifa.HomeTeam?.Score ?? calScore[0], fifa.AwayTeam?.Score ?? calScore[1]];
-        }
-      } catch {
-        // live/football failed, fall back to calendar scores
-      }
-    }
-
-    if (status === "scheduled" && hasCalScore) {
-      status = "finished";
-      score = calScore;
-    }
-
-    if (status === "scheduled" && calDate && calDate < new Date().toISOString().substring(0, 10)) {
-      status = "finished";
-    }
-
-    const prev = await getMatchResult(matchId);
-    const changed =
-      !prev ||
-      prev.score[0] !== score[0] ||
-      prev.score[1] !== score[1] ||
-      prev.status !== status ||
-      prev.team1 !== homeId ||
-      prev.team2 !== awayId ||
-      prev.goals.length !== goals.length ||
-      (prev.assists?.length ?? 0) !== assists.length ||
-      (prev.cards?.length ?? 0) !== cards.length;
-
-    const stored = await setMatchResult(matchId, {
-      score,
-      goals,
-      assists,
-      cards,
-      status,
-      updatedAt: new Date().toISOString(),
-      team1: homeId,
-      team2: awayId,
-      date: calDate,
+    koMatches.push({
+      matchId,
+      fifaIdMatch: cm.IdMatch,
+      homeId,
+      awayId,
+      calScore: [cm.Home?.Score ?? 0, cm.Away?.Score ?? 0],
+      hasCalScore: (cm.Home?.Score ?? -1) >= 0 && (cm.Away?.Score ?? -1) >= 0,
+      calDate: cm.Date ? cm.Date.substring(0, 10) : "",
       stage,
     });
+  }
 
-    if (stored) persisted++;
-    if (changed && stored) changedIds.push(matchId);
-    if (status === "live") live++;
-    if (status === "finished") finished++;
+  for (let i = 0; i < koMatches.length; i += BATCH_SIZE) {
+    const batch = koMatches.slice(i, i + BATCH_SIZE);
+    const fifaResults = await Promise.all(
+      batch.map(async (km) => {
+        if (!km.fifaIdMatch) return null;
+        try {
+          return await fetchFIFA<FIFAMatchResponse>(`live/football/${km.fifaIdMatch}`);
+        } catch {
+          return null;
+        }
+      }),
+    );
+
+    for (let j = 0; j < batch.length; j++) {
+      const km = batch[j];
+      const fifa = fifaResults[j];
+      knockoutAttempted++;
+
+      let status: "scheduled" | "live" | "finished" = "scheduled";
+      let score: [number, number] = [0, 0];
+      let goals: GoalSyncEntry[] = [];
+      let assists: AssistSyncEntry[] = [];
+      let cards: CardSyncEntry[] = [];
+
+      if (fifa) {
+        const parsed = parseFIFAData(fifa, km.homeId, km.awayId);
+        goals = parsed.goals;
+        assists = parsed.assists;
+        cards = parsed.cards;
+        status = fifa.MatchStatus === 0 ? "finished" : fifa.MatchStatus === 2 ? "live" : "scheduled";
+        score = [fifa.HomeTeam?.Score ?? km.calScore[0], fifa.AwayTeam?.Score ?? km.calScore[1]];
+      }
+
+      if (status === "scheduled" && km.hasCalScore) {
+        status = "finished";
+        score = km.calScore;
+      }
+
+      if (status === "scheduled" && km.calDate && km.calDate < new Date().toISOString().substring(0, 10)) {
+        status = "finished";
+      }
+
+      const prev = await getMatchResult(km.matchId);
+      const changed =
+        !prev ||
+        prev.score[0] !== score[0] ||
+        prev.score[1] !== score[1] ||
+        prev.status !== status ||
+        prev.team1 !== km.homeId ||
+        prev.team2 !== km.awayId ||
+        prev.goals.length !== goals.length ||
+        (prev.assists?.length ?? 0) !== assists.length ||
+        (prev.cards?.length ?? 0) !== cards.length;
+
+      const stored = await setMatchResult(km.matchId, {
+        score,
+        goals,
+        assists,
+        cards,
+        status,
+        updatedAt: new Date().toISOString(),
+        team1: km.homeId,
+        team2: km.awayId,
+        date: km.calDate,
+        stage: km.stage,
+      });
+
+      if (stored) persisted++;
+      if (changed && stored) changedIds.push(km.matchId);
+      if (status === "live") live++;
+      if (status === "finished") finished++;
+    }
   }
 
   return {

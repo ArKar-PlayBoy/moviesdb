@@ -30,13 +30,37 @@ export default function MatchesClient({ starPhotos }: { starPhotos: Record<strin
   const router = useRouter();
   const [matches, setMatches] = useState<EnrichedMatch[]>([]);
   const [groupIdx, setGroupIdx] = useState(0);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
     fetch("/api/matches")
-      .then((r) => r.json())
-      .then(setMatches)
-      .catch(() => {});
+      .then((r) => {
+        if (!r.ok) throw new Error("failed");
+        return r.json();
+      })
+      .then((data) => {
+        if (!cancelled) setMatches(data);
+      })
+      .catch(() => {
+        if (!cancelled) setError(true);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
+
+  const retry = () => {
+    setError(false);
+    setMatches([]);
+    fetch("/api/matches")
+      .then((r) => {
+        if (!r.ok) throw new Error("failed");
+        return r.json();
+      })
+      .then(setMatches)
+      .catch(() => setError(true));
+  };
 
   const safe = matches || [];
   const groups = [...new Set(safe.map((m) => m.group))].sort();
@@ -49,6 +73,15 @@ export default function MatchesClient({ starPhotos }: { starPhotos: Record<strin
         <h1 className="text-3xl md:text-4xl font-bold mb-2">Match Schedule</h1>
         <p className="text-muted-foreground">All 104 matches of the FIFA World Cup 2026</p>
       </div>
+
+      {error && (
+        <div className="mb-6 flex flex-col items-center gap-3 rounded-xl border border-border bg-card p-6 text-center">
+          <p className="text-sm text-muted-foreground">Could not load matches. Please try again.</p>
+          <Button variant="outline" size="sm" onClick={retry}>
+            Try again
+          </Button>
+        </div>
+      )}
 
       <div className="flex items-center justify-between mb-4 animate-in animate-in-delay-1">
         <h2 className="text-xl font-bold border-l-4 border-primary pl-3">
@@ -158,12 +191,14 @@ export default function MatchesClient({ starPhotos }: { starPhotos: Record<strin
 
                 {/* Team 2 */}
                 <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 min-w-0 flex-1">
                     <span onClick={e => { e.stopPropagation(); router.push(`/team/${match.team2}`); }} className="shrink-0 cursor-pointer">
                       <span className="text-3xl hover:scale-125 transition-transform inline-block drop-shadow-sm">{match.team2Flag}</span>
                     </span>
-                  <span className={`text-sm font-semibold truncate ${played ? (!t1Won ? "text-foreground" : "text-muted-foreground") : "text-foreground"}`}>
-                    {match.team2Name}
-                  </span>
+                    <span className={`text-sm font-semibold truncate ${played ? (!t1Won ? "text-foreground" : "text-muted-foreground") : "text-foreground"}`}>
+                      {match.team2Name}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Meta info */}

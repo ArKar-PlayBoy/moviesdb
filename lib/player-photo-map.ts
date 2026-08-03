@@ -8,6 +8,7 @@ const MEMO_KEY = "__playerWikiCache";
 
 const CACHE_DIR = path.join(process.cwd(), ".cache");
 const CACHE_FILE = path.join(CACHE_DIR, "player-wiki.json");
+const COMMITTED_FILE = path.join(process.cwd(), "data", "player-wiki.json");
 
 interface WikiCache {
   photos: Record<string, string | null>;
@@ -15,16 +16,31 @@ interface WikiCache {
   wikiUrls: Record<string, string | null>;
 }
 
+async function readCacheFile(filePath: string): Promise<WikiCache | null> {
+  try {
+    if (existsSync(filePath)) {
+      const data = JSON.parse(await readFile(filePath, "utf-8"));
+      if (data && typeof data === "object" && "photos" in data) return data;
+    }
+  } catch {}
+  return null;
+}
+
 async function getCache(): Promise<WikiCache | null> {
   const g = globalThis as unknown as { [key: string]: unknown };
   if (g[MEMO_KEY]) return g[MEMO_KEY] as WikiCache;
-  try {
-    if (existsSync(CACHE_FILE)) {
-      const data = JSON.parse(await readFile(CACHE_FILE, "utf-8"));
-      g[MEMO_KEY] = data;
-      return data;
-    }
-  } catch {}
+  // Prefer the committed cache (bundled with the app) so cold starts and builds
+  // never fan out to Wikipedia for all 240 players.
+  const committed = await readCacheFile(COMMITTED_FILE);
+  if (committed) {
+    g[MEMO_KEY] = committed;
+    return committed;
+  }
+  const runtime = await readCacheFile(CACHE_FILE);
+  if (runtime) {
+    g[MEMO_KEY] = runtime;
+    return runtime;
+  }
   return null;
 }
 
@@ -81,13 +97,16 @@ async function ensureCached(): Promise<WikiCache | null> {
 }
 
 export async function getPlayerData(name: string): Promise<{ photo: string | null; description: string | null; wikipediaUrl: string | null }> {
-  const cache = await ensureCached();
-  if (!cache) return { photo: null, description: null, wikipediaUrl: null };
-  return {
-    photo: cache.photos[name] ?? null,
-    description: cache.descriptions[name] ?? null,
-    wikipediaUrl: cache.wikiUrls[name] ?? null,
-  };
+  const cache = await getCache();
+  if (cache) {
+    return {
+      photo: cache.photos[name] ?? null,
+      description: cache.descriptions[name] ?? null,
+      wikipediaUrl: cache.wikiUrls[name] ?? null,
+    };
+  }
+  // No cache available: fetch just this player (bounded, never the full roster).
+  return fetchPlayerData(name);
 }
 
 export async function getAllPlayerPhotos(): Promise<Record<string, string | null>> {
