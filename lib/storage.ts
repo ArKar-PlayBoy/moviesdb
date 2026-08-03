@@ -1,4 +1,5 @@
 import { createClient } from "redis";
+import liveResultsData from "@/data/live-results.json";
 
 export interface StoredMatchResult {
   score: [number, number];
@@ -30,28 +31,19 @@ function shouldUseMemoryFallback(): boolean {
   return !process.env.REDIS_URL;
 }
 
-function getDataFilePath(): string {
-  return require("path").join(process.cwd(), "data", "live-results.json");
-}
-
 function loadFromFile(): void {
   if (fileLoaded) return;
   fileLoaded = true;
   try {
-    const fs = require("fs") as typeof import("fs");
-    const filePath = getDataFilePath();
-    if (!fs.existsSync(filePath)) return;
-    const raw = fs.readFileSync(filePath, "utf-8");
-    const parsed = JSON.parse(raw);
-    const matches = parsed.matches || {};
+    const matches = (liveResultsData as { matches?: Record<string, unknown> }).matches || {};
     for (const id of Object.keys(matches)) {
-      const entry = matches[id];
+      const entry = matches[id] as Record<string, unknown>;
       if (!entry) continue;
 
       if (entry.score1 !== undefined) {
         const stored = {
           score: [entry.score1 ?? 0, entry.score2 ?? 0] as [number, number],
-          goals: (entry.goalScorers || []).map((g: { playerName: string; teamId: string; minute: number }) => ({
+          goals: ((entry.goalScorers || []) as { playerName: string; teamId: string; minute: number }[]).map((g) => ({
             playerName: g.playerName,
             teamId: g.teamId || "",
             minute: g.minute || 0,
@@ -61,7 +53,7 @@ function loadFromFile(): void {
           assists: [] as { playerName: string; teamId: string; minute: number }[],
           cards: [] as { playerName: string; teamId: string; minute: string; card: number }[],
           status: "finished" as const,
-          updatedAt: parsed.updatedAt || "",
+          updatedAt: (liveResultsData as { updatedAt?: string }).updatedAt || "",
           _v: DATA_VERSION,
         };
         memoryStore.set(id, JSON.stringify(stored));
@@ -73,14 +65,15 @@ function loadFromFile(): void {
       }
     }
   } catch {
-    // File not found or invalid format — start fresh
+    // Invalid format — start fresh
   }
 }
 
 export function persistToFile(): void {
   try {
     const fs = require("fs") as typeof import("fs");
-    const filePath = getDataFilePath();
+    const path = require("path") as typeof import("path");
+    const filePath = path.join(process.cwd(), "data", "live-results.json");
     const matches: Record<string, unknown> = {};
     for (const id of memoryMatchIds) {
       const raw = memoryStore.get(id);
