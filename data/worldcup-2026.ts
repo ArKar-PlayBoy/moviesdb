@@ -271,7 +271,7 @@ const PLAYERS_BY_TEAM: Record<string, PlayerData[]> = {
   // Group I
   france: [
     { name: "Kylian Mbappé", position: "FW", age: 27 },
-    { name: "Eduardo Camavinga", position: "MF", age: 23 },
+    { name: "Ousmane Dembélé", position: "FW", age: 29 },
     { name: "William Saliba", position: "DF", age: 25 },
     { name: "Aurélien Tchouaméni", position: "MF", age: 26 },
     { name: "Mike Maignan", position: "GK", age: 30 },

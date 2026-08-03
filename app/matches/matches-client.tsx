@@ -270,23 +270,35 @@ export default function MatchesClient({ starPhotos }: { starPhotos: Record<strin
       </div>
 
       <div className="flex items-center justify-between mb-8">
-        <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1">
-          {groups.map((g, i) => (
-            <Button
-              key={g}
-              variant={i === groupIdx ? "default" : "outline"}
-              size="icon"
-              onClick={() => setGroupIdx(i)}
-            >
-              {g}
-            </Button>
-          ))}
+        <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none -mx-1 px-1 flex-wrap">
+          {groups.map((g, i) => {
+            const labels: Record<string, string> = {
+              "Bronze final": "🥉 Bronze",
+              "Quarter-final": "QF",
+              "Semi-final": "SF",
+              "Round of 16": "R16",
+              "Round of 32": "R32",
+              "Final": "🏆 Final",
+            };
+            const display = labels[g] || g;
+            return (
+              <Button
+                key={g}
+                variant={i === groupIdx ? "default" : "outline"}
+                size="sm"
+                onClick={() => setGroupIdx(i)}
+                className="shrink-0 h-8 px-2.5 text-xs"
+              >
+                {display}
+              </Button>
+            );
+          })}
         </div>
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setGroupIdx(Math.floor(Math.random() * groups.length))}
-          className="text-xs"
+          className="text-xs shrink-0"
         >
           Random
         </Button>
