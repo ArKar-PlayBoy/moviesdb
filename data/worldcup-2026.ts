@@ -888,7 +888,10 @@ export function getMatchGoalScorers(matchId: string, team1Id: string, team2Id: s
 }
 
 export function normalizePlayerName(name: string): string {
-  return name.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Z0-9\s-]/g, "").trim();
+  let normalized = name.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Z0-9\s-]/g, "").trim();
+  // Expand common abbreviations
+  normalized = normalized.replace(/\bJR\b/g, "JUNIOR");
+  return normalized;
 }
 
 function findInMap<T extends { playerName: string }>(map: Record<string, T>, teamId: string, playerName: string): T | undefined {
